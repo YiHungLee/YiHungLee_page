@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal professional portfolio website for Li Yi-Hong (李奕宏), a counseling psychology intern. Built with React 19, TypeScript, and Vite. All content is in Traditional Chinese.
+Personal professional portfolio website for Lee Yi-hung (李奕宏), a counseling psychology intern. Built with React 19, TypeScript, and Vite. All content is in Traditional Chinese.
 
 ## Commands
 

@@ -39,7 +39,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate 
     >
       <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
         <button onClick={() => handleLinkClick('home', 'home')} className="text-2xl font-serif font-bold text-forest-800 tracking-tighter hover:opacity-80 transition-opacity">
-          Yi-Hong<span className="text-olive-600">.</span>
+          Yi-hung<span className="text-olive-600">.</span>
         </button>
 
         {/* Desktop Nav */}
