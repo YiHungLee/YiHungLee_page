@@ -5,7 +5,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-forest-800 text-cream-100 py-12 px-6 mt-20">
       <div className="max-w-4xl mx-auto text-center space-y-6">
-        <h2 className="text-2xl font-serif">李奕宏 Li Yi-hung</h2>
+        <h2 className="text-2xl font-serif">李奕宏 Yi-hung Lee</h2>
         <p className="text-olive-100/80 max-w-lg mx-auto text-sm leading-relaxed">
           我們在生命中遭遇到的每一個困難，都可以是一個好好看見自己的機會。
         </p>
