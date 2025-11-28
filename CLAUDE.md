@@ -9,8 +9,11 @@ Personal professional portfolio website for Lee Yi-hung (李奕宏), a counselin
 ## Commands
 
 ```bash
+# Setup
+npm install      # Install dependencies (first time or after package.json changes)
+
 # Development
-npm run dev      # Start dev server on port 3000
+npm run dev      # Start dev server on http://localhost:3000
 
 # Production
 npm run build    # Build to /dist
@@ -25,10 +28,19 @@ npm run preview  # Preview production build
 - Lucide React for icons
 
 ### Project Structure
+**Important:** Files are in the root directory, not in a `src/` folder.
+
 - `App.tsx` - Root component managing page navigation state (home/blog/portfolio)
+- `index.tsx` - Entry point that renders App into the DOM
 - `constants.ts` - All content data (profile, experience, blog posts, portfolio items)
 - `types.ts` - TypeScript interfaces for all data structures
 - `components/` - React functional components for each section
+  - `Navigation.tsx` - Top navigation bar
+  - `Hero.tsx`, `Philosophy.tsx`, `Resume.tsx`, `Training.tsx` - Home page sections
+  - `Blog.tsx` - Blog list and single post views with custom markdown renderer
+  - `Portfolio.tsx` - Portfolio items categorized by type (poster/code/music)
+  - `Section.tsx` - Reusable wrapper component for consistent section styling
+  - `Footer.tsx` - Site footer with contact information
 
 ### Navigation Pattern
 Single Page Application with state-based routing:
@@ -44,8 +56,12 @@ Single Page Application with state-based routing:
 ### Component Patterns
 - Functional components with React hooks (`useState`, `useEffect`)
 - `Section` wrapper component for consistent styling
-- Blog uses custom markdown renderer (handles headers, lists, bold text)
+- Blog uses custom markdown renderer (`SimpleMarkdown` component in `Blog.tsx`)
+  - Supports: headers (h1-h3), bold text (`**text**`), lists (unordered/ordered), paragraphs
+  - No external markdown library - keeps bundle size small
 - Portfolio categorized into: poster, code, music
+  - Music items include audio playback functionality
+  - Code items display tech stack and links
 
 ### Custom Theme Colors
 - `forest-800/600/50` - Primary greens
@@ -55,9 +71,10 @@ Single Page Application with state-based routing:
 
 ## Key Files
 
-- `vite.config.ts` - Dev server config, path alias `@` to root, Gemini API key setup
-- `.env.local` - Contains `GEMINI_API_KEY` placeholder (configured but not currently used)
-- `index.html` - TailwindCSS CDN and Google Fonts (Noto Sans/Serif TC)
+- `vite.config.ts` - Dev server config (port 3000, host 0.0.0.0), path alias `@` to root, Gemini API key setup
+- `.env.local` - Contains `GEMINI_API_KEY` placeholder (configured in vite.config.ts but not currently used in app)
+- `index.html` - TailwindCSS CDN config with custom theme colors, Google Fonts (Noto Sans/Serif TC), importmap for React 19
+- `tsconfig.json` - TypeScript config with path alias support
 
 ## Deployment
 
