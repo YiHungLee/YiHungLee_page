@@ -16,8 +16,8 @@ export function markdownPlugin(): Plugin {
 
     load(id) {
       if (id === '\0virtual:content') {
-        const blogDir = path.resolve(__dirname, '../content/blog');
-        const portfolioDir = path.resolve(__dirname, '../content/portfolio');
+        const blogDir = path.resolve(__dirname, '../public/content/blog');
+        const portfolioDir = path.resolve(__dirname, '../public/content/portfolio');
 
         const loadMarkdownFiles = (dir: string) => {
           if (!fs.existsSync(dir)) {

@@ -1,19 +1,23 @@
 ---
-# 必填欄位
-id: 2025-11-29               # 檔案名稱與此一致（kebab-case）
+id: test
 title: 文章標題
-date: 2024-03-15                    # 格式：YYYY-MM-DD
-category: professional              # professional | creative | casual
+date: 2024-03-15
+category: professional
 summary: 這是文章的簡短摘要，會顯示在文章列表頁面。
-tags:                               # 標籤列表
+tags:
   - 標籤一
   - 標籤二
   - 標籤三
-
-# 選填欄位
-featured: true                      # 是否為精選文章（預設：false）
-readTime: 8                         # 預估閱讀時間（分鐘）
+featured: true
+readTime: 8
 ---
+# 重要註記
+* ID欄位要和檔名一致
+* DATE 格式為 YYYY-MM-DD
+* Category選項有三：professional | creative | casual
+* tags為標籤列表，無特別限制
+* Featured：True或是false，代表是否為精選文章
+* readtime：為預估閱讀時間
 
 # 文章標題
 
@@ -44,8 +48,7 @@ readTime: 8                         # 預估閱讀時間（分鐘）
 
 ## 程式碼區塊
 
-\`\`\`
-javascript
+\`\`\`javascript
 const greeting = "Hello, World!";
 console.log(greeting);
 \`\`\`
@@ -53,8 +56,7 @@ console.log(greeting);
 ## 連結與圖片
 
 [連結文字](https://example.com)
-
-![圖片替代文字](https://images.unsplash.com/photo-example)
+![](assets/file-20251116113610406.png)
 
 ## 表格
 
