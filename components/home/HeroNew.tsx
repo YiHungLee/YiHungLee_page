@@ -167,12 +167,12 @@ export const HeroNew: React.FC = () => {
       </div>
 
       {/* Scroll Indicator - Minimal */}
-      <div className="absolute bottom-12 left-6 md:left-12 flex items-center gap-3
+      <div className="absolute bottom-5 left-6 md:left-12 flex items-center gap-3
                       opacity-0 animate-fade-in stagger-5">
         <div className="w-px h-16 bg-charcoal-900 dark:bg-warmCream-50 animate-gentle-float"></div>
         <span className="font-body text-xs tracking-widest uppercase
                          text-charcoal-600 dark:text-warmCream-400
-                         -rotate-90 origin-left">
+                         -rotate-90 origin-left ">
           Scroll
         </span>
       </div>

@@ -130,7 +130,6 @@ export const Navigation: React.FC = () => {
               <div className="h-px w-16 bg-border-light dark:bg-border-dark"></div>
               <div className="font-body text-sm text-charcoal-600 dark:text-warmCream-400 space-y-2">
                 <p>lee2952000@gmail.com</p>
-                <p>0972-883-820</p>
               </div>
             </div>
           </div>
