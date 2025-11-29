@@ -47,7 +47,7 @@ export const Footer: React.FC = () => {
                                    text-charcoal-700 dark:text-warmCream-300
                                    leading-relaxed max-w-2xl
                                    border-l border-fine border-ochre-500 dark:border-ochre-400
-                                   pl-6 py-2">
+                                   pl-3.5 py-2">
               {PROFILE.philosophy.split('.')[0]}。
             </blockquote>
 

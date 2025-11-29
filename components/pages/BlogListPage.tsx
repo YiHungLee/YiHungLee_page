@@ -246,8 +246,8 @@ const BlogListPage: React.FC = () => {
             <p className="font-display text-2xl md:text-3xl lg:text-4xl italic
                           text-charcoal-800 dark:text-warmCream-200
                           leading-relaxed px-8">
-              在文字中，我們找到理解；<br className="hidden md:block" />
-              在對話中，我們找到自己
+              語言是一種理解世界的方式；<br className="hidden md:block" />
+              文字則讓人理解彼此
             </p>
             <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
           </div>

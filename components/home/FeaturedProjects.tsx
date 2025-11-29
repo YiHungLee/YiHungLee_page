@@ -41,7 +41,7 @@ export const FeaturedProjects: React.FC = () => {
               <p className="font-body text-lg
                             text-charcoal-600 dark:text-warmCream-400
                             max-w-xl leading-relaxed">
-                跨領域的實踐與探索，從學術研究到程式開發，從音樂創作到心理陪伴
+                多面向的實踐與探索從學術研究到程式開發，從音樂創作到助人專業
               </p>
             </div>
 

@@ -9,7 +9,7 @@ export const PROFILE = {
   currentRole: "世新大學諮商中心 全職實習諮商心理師",
   email: "lee2952000@gmail.com",
   philosophy: "活在當下，投入生活。困難會存在，但我們永遠有能力去尋找更多快樂",
-  heroTagline: "我是奕宏，在諮商中陪伴，在學術中探索，在音樂與科技中敘說"
+  heroTagline: "我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。"
 };
 
 // ===== 作品集 =====
