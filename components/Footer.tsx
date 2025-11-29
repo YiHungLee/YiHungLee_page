@@ -1,18 +1,134 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { PROFILE } from '../constants';
 
 export const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
+  const navLinks = [
+    { label: '首頁', path: '/' },
+    { label: '關於', path: '/about' },
+    { label: '作品', path: '/projects' },
+    { label: 'Blog', path: '/blog' },
+    { label: '聯絡', path: '/contact' },
+  ];
+
   return (
-    <footer className="bg-forest-800 text-cream-100 py-12 px-6 mt-20">
-      <div className="max-w-4xl mx-auto text-center space-y-6">
-        <h2 className="text-2xl font-serif">李奕宏 Yi-hung Lee</h2>
-        <p className="text-olive-100/80 max-w-lg mx-auto text-sm leading-relaxed">
-          我們在生命中遭遇到的每一個困難，都可以是一個好好看見自己的機會。
-        </p>
-        <div className="h-px w-20 bg-olive-600 mx-auto my-6"></div>
-        <div className="text-sm text-olive-100/60 space-y-1">
-           <p>{PROFILE.email}</p>
-           <p>© {new Date().getFullYear()} All Rights Reserved.</p>
+    <footer className="relative bg-warmCream-100 dark:bg-charcoal-900
+                       border-t border-fine border-border-light dark:border-border-dark
+                       transition-colors duration-500">
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-32">
+
+        {/* Main Grid */}
+        <div className="grid md:grid-cols-12 gap-12 md:gap-20 mb-20">
+
+          {/* Left: Branding & Philosophy */}
+          <div className="md:col-span-7 space-y-8">
+
+            {/* Name */}
+            <div>
+              <h3 className="font-display text-4xl md:text-5xl font-bold
+                             text-charcoal-900 dark:text-warmCream-50
+                             tracking-tight mb-2">
+                {PROFILE.name}
+              </h3>
+              <p className="font-accent italic text-xl
+                            text-charcoal-600 dark:text-warmCream-400">
+                {PROFILE.nameEn}
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px w-24 bg-ochre-500 dark:bg-ochre-400"></div>
+
+            {/* Philosophy Quote */}
+            <blockquote className="font-display text-xl md:text-2xl italic
+                                   text-charcoal-700 dark:text-warmCream-300
+                                   leading-relaxed max-w-2xl
+                                   border-l border-fine border-ochre-500 dark:border-ochre-400
+                                   pl-6 py-2">
+              {PROFILE.philosophy.split('.')[0]}。
+            </blockquote>
+
+            {/* Title & Institution */}
+            <div className="space-y-2 text-charcoal-600 dark:text-warmCream-400
+                            font-body text-sm">
+              <p>{PROFILE.title}</p>
+              <p>{PROFILE.school}</p>
+            </div>
+          </div>
+
+          {/* Right: Navigation & Contact */}
+          <div className="md:col-span-5 space-y-12">
+
+            {/* Quick Links */}
+            <div className="space-y-6">
+              <h4 className="font-body text-xs tracking-widest uppercase
+                             text-charcoal-600 dark:text-warmCream-400">
+                導覽
+              </h4>
+
+              <nav className="space-y-3">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="block font-body text-base
+                               text-charcoal-700 dark:text-warmCream-300
+                               editorial-underline
+                               transition-opacity duration-300 hover:opacity-60">
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            {/* Contact Information */}
+            <div className="space-y-6">
+              <h4 className="font-body text-xs tracking-widest uppercase
+                             text-charcoal-600 dark:text-warmCream-400">
+                聯絡方式
+              </h4>
+
+              <div className="space-y-3 font-body text-sm
+                              text-charcoal-700 dark:text-warmCream-300">
+                <div>
+                  <p className="text-xs text-charcoal-600 dark:text-warmCream-400
+                                tracking-wide mb-1">
+                    Email
+                  </p>
+                  <a
+                    href={`mailto:${PROFILE.email}`}
+                    className="editorial-underline
+                               transition-opacity duration-300 hover:opacity-60">
+                    {PROFILE.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="space-y-6">
+
+          {/* Divider */}
+          <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
+
+          {/* Copyright & Credits */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between
+                          gap-4 font-body text-xs
+                          text-charcoal-600 dark:text-warmCream-400">
+
+            <p>
+              © {currentYear} {PROFILE.name}. All Rights Reserved.
+            </p>
+
+            <p className="italic">
+              Designed with care • Built with React + TypeScript
+            </p>
+          </div>
         </div>
       </div>
     </footer>
