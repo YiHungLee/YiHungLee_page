@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory } from '../../types';
 
@@ -16,6 +16,7 @@ const categoryDescriptions: Record<ProjectCategory, string> = {
 
 const ProjectsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | 'all'>('all');
+  const projectsListRef = useRef<HTMLElement>(null);
 
   const filteredProjects = selectedCategory === 'all'
     ? PORTFOLIO_ITEMS
@@ -23,14 +24,22 @@ const ProjectsPage: React.FC = () => {
 
   const categories: Array<ProjectCategory | 'all'> = ['all', 'academic', 'coding', 'music'];
 
-  // 處理分類變更並滾動到頂部
+  // 處理分類變更並滾動到 Projects List
   const handleCategoryChange = (category: ProjectCategory | 'all') => {
     setSelectedCategory(category);
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth' // 使用平滑滾動效果
-    });
+
+    setTimeout(() => {
+      if (projectsListRef.current) {
+        const headerOffset = 80; // sticky header 的高度 (top-20 = 5rem = 80px)
+        const elementPosition = projectsListRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 0);
   };
 
   return (
@@ -112,7 +121,7 @@ const ProjectsPage: React.FC = () => {
       </section>
 
       {/* Projects List */}
-      <section className="relative py-20 md:py-32">
+      <section ref={projectsListRef} className="relative py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           {/* Category Description */}

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate } from '../../utils/featured';
+import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -146,7 +147,7 @@ const BlogPostPage: React.FC = () => {
 
           {/* Article Content - Editorial Typography */}
           <div className="prose-custom opacity-0 animate-fade-in-up stagger-6">
-            <MarkdownContent content={post.content} />
+            <MarkdownRenderer content={post.content} />
           </div>
         </div>
       </article>
@@ -211,104 +212,6 @@ const BlogPostPage: React.FC = () => {
       )}
     </div>
   );
-};
-
-// Simple Markdown Renderer Component
-const MarkdownContent: React.FC<{ content: string }> = ({ content }) => {
-  const renderMarkdown = (text: string) => {
-    const lines = text.trim().split('\n');
-    const elements: JSX.Element[] = [];
-    let listItems: string[] = [];
-    let listType: 'ul' | 'ol' | null = null;
-    let key = 0;
-
-    const flushList = () => {
-      if (listItems.length > 0 && listType) {
-        const ListTag = listType;
-        elements.push(
-          <ListTag key={`list-${key++}`} className="editorial-list">
-            {listItems.map((item, i) => (
-              <li key={i} dangerouslySetInnerHTML={{ __html: processInlineMarkdown(item) }} />
-            ))}
-          </ListTag>
-        );
-        listItems = [];
-        listType = null;
-      }
-    };
-
-    const processInlineMarkdown = (line: string): string => {
-      return line
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>');
-    };
-
-    lines.forEach((line) => {
-      const trimmed = line.trim();
-
-      if (!trimmed) {
-        flushList();
-        return;
-      }
-
-      // Headers
-      if (trimmed.startsWith('# ')) {
-        flushList();
-        elements.push(
-          <h1 key={`h1-${key++}`} className="editorial-h1">
-            {trimmed.substring(2)}
-          </h1>
-        );
-      } else if (trimmed.startsWith('## ')) {
-        flushList();
-        elements.push(
-          <h2 key={`h2-${key++}`} className="editorial-h2">
-            {trimmed.substring(3)}
-          </h2>
-        );
-      } else if (trimmed.startsWith('### ')) {
-        flushList();
-        elements.push(
-          <h3 key={`h3-${key++}`} className="editorial-h3">
-            {trimmed.substring(4)}
-          </h3>
-        );
-      }
-      // Unordered list
-      else if (trimmed.startsWith('- ')) {
-        if (listType !== 'ul') {
-          flushList();
-          listType = 'ul';
-        }
-        listItems.push(trimmed.substring(2));
-      }
-      // Ordered list
-      else if (/^\d+\.\s/.test(trimmed)) {
-        if (listType !== 'ol') {
-          flushList();
-          listType = 'ol';
-        }
-        listItems.push(trimmed.replace(/^\d+\.\s/, ''));
-      }
-      // Paragraph
-      else {
-        flushList();
-        elements.push(
-          <p
-            key={`p-${key++}`}
-            className="editorial-p"
-            dangerouslySetInnerHTML={{ __html: processInlineMarkdown(trimmed) }}
-          />
-        );
-      }
-    });
-
-    flushList();
-    return elements;
-  };
-
-  return <div className="editorial-content">{renderMarkdown(content)}</div>;
 };
 
 export default BlogPostPage;

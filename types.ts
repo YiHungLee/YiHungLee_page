@@ -23,7 +23,7 @@ export interface PortfolioItem {
   category: ProjectCategory;
   type: ProjectType;
   title: string;
-  year: string;
+  year: string | number;     // 支援字串或數字（markdown frontmatter 可能解析為數字）
   description: string;
   featured?: boolean;        // 首頁精選標記
 
@@ -54,7 +54,7 @@ export interface BlogPost {
   summary: string;
   content: string;           // Markdown 內容
   tags: string[];
-  category: 'professional' | 'creative'; // 主分類
+  category: 'professional' | 'creative' | 'casual'; // 主分類
   featured?: boolean;        // 首頁精選標記
   readTime?: number;         // 閱讀時間（分鐘）
 }

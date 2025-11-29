@@ -13,8 +13,13 @@ export const getFeaturedProjects = (limit: number = 2): PortfolioItem[] => {
     .filter(item => item.featured === true)
     .sort((a, b) => {
       // 按年份降序排序
-      const yearA = parseInt(a.year.split('-')[0]);
-      const yearB = parseInt(b.year.split('-')[0]);
+      // 支援數字或字串格式的 year
+      const yearA = typeof a.year === 'string'
+        ? parseInt(a.year.split('-')[0])
+        : parseInt(String(a.year));
+      const yearB = typeof b.year === 'string'
+        ? parseInt(b.year.split('-')[0])
+        : parseInt(String(b.year));
       return yearB - yearA;
     })
     .slice(0, limit);

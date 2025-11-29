@@ -288,23 +288,7 @@ const AboutPage: React.FC = () => {
         </section>
       )}
 
-      {/* Bottom Quote */}
-      <section className="relative py-20 md:py-32
-                          bg-warmCream-100 dark:bg-charcoal-900
-                          transition-colors duration-500">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
-            <p className="font-display text-2xl md:text-3xl lg:text-4xl italic
-                          text-charcoal-800 dark:text-warmCream-200
-                          leading-relaxed px-8">
-              在專業與創意之間<br className="hidden md:block" />
-              探索人性的深度與廣度
-            </p>
-            <div className="h-px w-full bg-border-light dark:bg-border-dark"></div>
-          </div>
-        </div>
-      </section>
+      
     </div>
   );
 };

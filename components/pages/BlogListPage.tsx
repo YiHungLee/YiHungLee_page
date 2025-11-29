@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate } from '../../utils/featured';
 
-type BlogCategory = 'all' | 'professional' | 'creative';
+type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
 
 const categoryLabels: Record<BlogCategory, string> = {
   all: '全部文章',
   professional: '專業分享',
   creative: '創意探索',
+  casual: '心情隨筆',
 };
 
 const BlogListPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('all');
+  const postsListRef = useRef<HTMLElement>(null);
 
   const filteredPosts = selectedCategory === 'all'
     ? BLOG_POSTS
     : BLOG_POSTS.filter(post => post.category === selectedCategory);
 
-  const categories: BlogCategory[] = ['all', 'professional', 'creative'];
+  const categories: BlogCategory[] = ['all', 'professional', 'creative', 'casual'];
 
-  // 處理分類變更並滾動到頂部
+  // 處理分類變更並滾動到 Posts List
   const handleCategoryChange = (category: BlogCategory) => {
     setSelectedCategory(category);
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth' // 使用平滑滾動效果
-    });
+
+    setTimeout(() => {
+      if (postsListRef.current) {
+        const headerOffset = 80; // sticky header 的高度 (top-20 = 5rem = 80px)
+        const elementPosition = postsListRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 0);
   };
 
   return (
@@ -67,8 +77,8 @@ const BlogListPage: React.FC = () => {
               <p className="font-body text-lg md:text-xl lg:text-2xl
                             text-charcoal-700 dark:text-warmCream-300
                             leading-relaxed max-w-3xl">
-                專業思考與創意分享<br className="hidden md:block" />
-                記錄成長路上的點點滴滴
+                紀錄思考分享創意<br className="hidden md:block" />
+                有時僅是心情隨筆
               </p>
             </div>
           </div>
@@ -109,7 +119,7 @@ const BlogListPage: React.FC = () => {
       </section>
 
       {/* Posts List */}
-      <section className="relative py-20 md:py-32">
+      <section ref={postsListRef} className="relative py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           <div className="space-y-1 bg-border-light dark:bg-border-dark">

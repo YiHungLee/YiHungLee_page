@@ -1,4 +1,7 @@
-import { ExperienceItem, SkillItem, TrainingItem, BlogPost, PortfolioItem } from './types';
+import { ExperienceItem, SkillItem, TrainingItem } from './types';
+
+// 從 virtual module 重新 export（透過 contentLoader）
+export { BLOG_POSTS, PORTFOLIO_ITEMS } from './utils/contentLoader';
 
 // ===== 個人資料 =====
 export const PROFILE = {
@@ -13,6 +16,10 @@ export const PROFILE = {
 };
 
 // ===== 作品集 =====
+// 已移至 content/portfolio/*.md 檔案中
+// PORTFOLIO_ITEMS 從 utils/contentLoader 重新匯出（見檔案開頭）
+
+/*
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   // Academic - 學術研究
   {
@@ -35,11 +42,11 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     category: 'coding',
     type: 'tool',
     title: 'TheraNotes',
-    year: '2023-2024',
-    description: '專為心理助人工作者設計的個案紀錄管理系統。結合安全隱私設計與直覺的介面，協助諮商師進行個案紀錄管理與結構化整理。支援多種紀錄範本、標籤分類、搜尋功能，並採用本地加密儲存確保個案隱私安全。',
-    techStack: ['React', 'TypeScript', 'TailwindCSS', 'Electron', 'SQLite'],
+    year: '2025',
+    description: '專為心理健康從業者打造的個人諮商紀錄管理系統。包含三大功能: 1.採用SQLCipher軍規資料加密；2.本機優先的儲存方式；3.輕快高效',
+    techStack: ['Tauri', 'Svelte', 'TypeScript', 'Rust', 'SQLCipher'],
     githubUrl: 'https://github.com/YiHungLee/TheraNotes',
-    tags: ['心理工具', '電子病歷', '隱私保護', 'Electron'],
+    tags: ['專業工具', '記錄管理', '隱私保護'],
     featured: true,
     imageUrl: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1200&auto=format&fit=crop'
   },
@@ -75,8 +82,13 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop'
   }
 ];
+*/
 
 // ===== 部落格文章 =====
+// 已移至 content/blog/*.md 檔案中
+// BLOG_POSTS 從 utils/contentLoader 重新匯出（見檔案開頭）
+
+/*
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 'resilience-in-relationships',
@@ -146,22 +158,17 @@ export const BLOG_POSTS: BlogPost[] = [
     `
   }
 ];
+*/
 
-// ===== 部落格標籤系統 =====
-export const BLOG_TAGS = {
-  PROFESSIONAL: ['心理諮商', '伴侶諮商', '焦慮調節', '自我成長', '關係韌性'],
-  MUSIC: ['音樂創作', '聲音設計', 'DAW教學', '環境音樂'],
-  CODING: ['程式開發', 'React', 'TypeScript', 'UI/UX', '工具開發']
-};
-
-// ===== 經歷學歷（保留原有） =====
+// ===== 經歷（保留原有） =====
 export const EXPERIENCE: ExperienceItem[] = [
-  { year: "2024~", title: "好窩心理諮商所 兼職實習心理師", type: "work" },
-  { year: "2023~", title: "臺北市立大學劉彥君教授 研究助理", type: "work" },
+  { year: "2025 ~", title: "國立臺北教育大學劉彥君教授 研究助理", type:"work"},
+  { year: "2024 ~ 2025", title: "好窩心理諮商所 兼職實習諮商心理師", type: "work" },
+  { year: "2023 ~ 2025", title: "臺北市立大學劉彥君教授 研究助理", type: "work" },
   { year: "2022", title: "臺北市中正區河堤國小 特教課輔班教師", type: "work" },
   { year: "2021", title: "臺北市信義區興雅國小 實習輔導教師", type: "work" },
   { year: "2020", title: "臺北市立大學游錦雲教授 研究助理", type: "work" },
-  { year: "2020", title: "臺北市立大學心理與諮商學系 行政工讀生", type: "work" },
+  { year: "2020", title: "臺北市立大學心理與諮商學系 辦公室行政人員", type: "work" },
 ];
 
 export const AWARDS: ExperienceItem[] = [
@@ -176,7 +183,7 @@ export const EDUCATION: ExperienceItem[] = [
 
 export const TRAININGS: TrainingItem[] = [
   { title: "碩士層級心理諮商專業訓練" },
-  { title: "心理劇導演訓練團體", details: "累計時數48小時，持續增加中" },
+  { title: "心理劇導演訓練團體", details: "累計時數48小時 UP" },
   { title: "臺北市立大學心理與諮商學系 研究生心理劇訓練團體", details: "第3年" },
   { title: "結構家族治療理論與個案研討會", details: "6小時" },
   { title: "完形治療個案研討會", details: "2.5小時" },
@@ -185,4 +192,5 @@ export const TRAININGS: TrainingItem[] = [
 
 export const OTHER_SKILLS: SkillItem[] = [
   { category: "多媒體製作", skills: ["影片剪輯 (Sony Vegas)", "網站設計 (基礎 HTML, CSS, JS)", "混音、錄音等音訊處理能力 (Reason, Cubase)"] },
+  { category: "AI應用", skills:["AI輔助程式設計", "AI工具應用（如RAG、Model Local Hosting等）"]}
 ];
