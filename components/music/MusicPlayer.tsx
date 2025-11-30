@@ -212,6 +212,93 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           background-color: #faf8f5;
           border-left: 3px solid #c4885f;
         }
+
+        /* Volume slider styling for all browsers including mobile */
+        .volume-slider {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 100%;
+          height: 8px;
+          border-radius: 4px;
+          outline: none;
+          background: transparent;
+        }
+
+        /* Webkit browsers (Chrome, Safari, Edge) */
+        .volume-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #c4885f;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          transition: transform 0.2s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.2);
+        }
+
+        .volume-slider::-webkit-slider-thumb:active {
+          transform: scale(0.95);
+        }
+
+        /* Firefox */
+        .volume-slider::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          border: none;
+          border-radius: 50%;
+          background: #c4885f;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          transition: transform 0.2s ease;
+        }
+
+        .volume-slider::-moz-range-thumb:hover {
+          transform: scale(1.2);
+        }
+
+        .volume-slider::-moz-range-thumb:active {
+          transform: scale(0.95);
+        }
+
+        /* Firefox track */
+        .volume-slider::-moz-range-track {
+          height: 8px;
+          border-radius: 4px;
+          background: #f5f3f0;
+        }
+
+        /* IE/Edge legacy */
+        .volume-slider::-ms-thumb {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #c4885f;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .volume-slider::-ms-track {
+          height: 8px;
+          border-radius: 4px;
+          background: transparent;
+          border-color: transparent;
+          color: transparent;
+        }
+
+        .volume-slider::-ms-fill-lower {
+          background: #c4885f;
+          border-radius: 4px;
+        }
+
+        .volume-slider::-ms-fill-upper {
+          background: #f5f3f0;
+          border-radius: 4px;
+        }
       `}</style>
 
       {/* Main Player */}
@@ -366,22 +453,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
         {/* Volume Control */}
         <div className="flex items-center gap-3 justify-center max-w-xs mx-auto">
-          <svg className="w-5 h-5 text-charcoal-600" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-charcoal-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
           </svg>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            className="flex-1 h-2 bg-warmCream-200 rounded-full appearance-none cursor-pointer"
-            style={{
-              background: `linear-gradient(to right, #c4885f 0%, #c4885f ${volume * 100}%, #f5f3f0 ${volume * 100}%, #f5f3f0 100%)`
-            }}
-          />
-          <span className="font-body text-xs text-charcoal-600 w-10 text-right">
+          <div className="flex-1 relative">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="volume-slider"
+              style={{
+                background: `linear-gradient(to right, #c4885f 0%, #c4885f ${volume * 100}%, #f5f3f0 ${volume * 100}%, #f5f3f0 100%)`
+              }}
+            />
+          </div>
+          <span className="font-body text-xs text-charcoal-600 w-10 text-right flex-shrink-0">
             {Math.round(volume * 100)}%
           </span>
         </div>

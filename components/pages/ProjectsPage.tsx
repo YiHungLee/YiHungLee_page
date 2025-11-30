@@ -63,7 +63,7 @@ const ProjectsPage: React.FC = () => {
       </section>
 
       {/* Category Navigation */}
-      <section className="sticky top-20 z-40 bg-warmCream-50/95
+      <section className="sticky top-20 z-30 bg-warmCream-50/95
                           backdrop-blur-md border-b border-fine
                           border-border-light
                           transition-colors duration-500">
