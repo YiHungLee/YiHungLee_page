@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PROFILE } from '../../constants';
+import InteractiveAvatar from '../InteractiveAvatar';
 
 export const HeroNew: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,15 +33,7 @@ export const HeroNew: React.FC = () => {
 
             {/* Avatar - next to name */}
             <div className="hidden md:block opacity-0 animate-fade-in stagger-2">
-              <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden
-                              border-4 border-warmCream-200
-                              shadow-xl transition-transform duration-500 hover:scale-105">
-                <img
-                  src="/assets/yihung_transparent.png"
-                  alt="李奕宏 Q版頭像"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <InteractiveAvatar size="small" />
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS } from '../../constants';
+import InteractiveAvatar from '../InteractiveAvatar';
 
 const AboutPage: React.FC = () => {
   return (
@@ -65,15 +66,7 @@ const AboutPage: React.FC = () => {
             {/* Right Column - Avatar */}
             <div className="md:col-span-5 flex items-center justify-center md:justify-end">
               <div className="opacity-0 animate-fade-in-up stagger-2">
-                <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden
-                                border-4 border-warmCream-200
-                                shadow-xl transition-transform duration-500 hover:scale-105">
-                  <img
-                    src="/assets/yihung_transparent.png"
-                    alt="李奕宏 Q版頭像"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <InteractiveAvatar size="large" />
               </div>
             </div>
 
