@@ -12,7 +12,7 @@ export const HeroNew: React.FC = () => {
 
   return (
     <section className="relative min-h-screen flex items-center
-                        bg-warmCream-100 dark:bg-charcoal-900
+                        bg-warmCream-100
                         transition-colors duration-500 subtle-texture overflow-hidden">
 
       {/* Main Content Container */}
@@ -21,7 +21,7 @@ export const HeroNew: React.FC = () => {
         {/* Large Name Display - Editorial Typography */}
         <div className="mb-20 md:mb-32">
           <h1 className={`font-display font-bold tracking-tighter
-                         text-charcoal-900 dark:text-warmCream-50
+                         text-charcoal-900
                          transition-all duration-1200 ease-out-expo
                          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
                          text-6xl sm:text-7xl md:text-8xl lg:text-9xl
@@ -33,9 +33,9 @@ export const HeroNew: React.FC = () => {
           <div className={`flex items-center gap-6 mt-8 transition-all duration-1200 ease-out-expo
                           ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}
                           stagger-2`}>
-            <div className="h-px w-12 md:w-20 bg-charcoal-900 dark:bg-warmCream-50"></div>
+            <div className="h-px w-12 md:w-20 bg-charcoal-900"></div>
             <p className="font-accent italic text-2xl md:text-4xl
-                          text-charcoal-700 dark:text-warmCream-300">
+                          text-charcoal-700">
               {PROFILE.nameEn}
             </p>
           </div>
@@ -51,25 +51,25 @@ export const HeroNew: React.FC = () => {
 
             {/* Professional Title */}
             <div className="space-y-4">
-              <div className="inline-block px-4 py-2 border border-fine border-border-light dark:border-border-dark
-                              rounded-full bg-warmCream-50/50 dark:bg-charcoal-800/50 backdrop-blur-sm">
+              <div className="inline-block px-4 py-2 border border-fine border-border-light
+                              rounded-full bg-warmCream-50/50 backdrop-blur-sm">
                 <span className="font-body text-sm tracking-wide
-                                 text-charcoal-700 dark:text-warmCream-300">
+                                 text-charcoal-700">
                   {PROFILE.title}
                 </span>
               </div>
 
               <h2 className="font-body text-lg md:text-xl
-                             text-charcoal-600 dark:text-warmCream-400
+                             text-charcoal-600
                              leading-relaxed max-w-xl">
                 {PROFILE.school}
               </h2>
             </div>
 
             {/* Tagline - Large Editorial Text */}
-            <div className="relative pl-5 py-1 border-1 border-fine border-ochre-500 dark:border-ochre-400">
+            <div className="relative pl-5 py-1 border-1 border-fine border-ochre-500">
               <p className="font-display text-2xl md:text-3xl lg:text-4xl
-                            text-charcoal-800 dark:text-warmCream-200
+                            text-charcoal-800
                             leading-relaxed italic">
                 {PROFILE.heroTagline}
               </p>
@@ -80,19 +80,19 @@ export const HeroNew: React.FC = () => {
               <a
                 href="#identity"
                 className="group inline-block px-8 py-4 border border-fine
-                           border-charcoal-900 dark:border-warmCream-50
-                           text-charcoal-900 dark:text-warmCream-50
+                           border-charcoal-900
+                           text-charcoal-900
                            font-body text-sm tracking-wide uppercase
                            transition-all duration-400 ease-out-expo
-                           hover:bg-charcoal-900 dark:hover:bg-warmCream-50
-                           hover:text-warmCream-50 dark:hover:text-charcoal-900">
+                           hover:bg-charcoal-900
+                           hover:text-warmCream-50">
                 探索更多
               </a>
 
               <a
                 href="#/contact"
                 className="inline-block px-8 py-4
-                           text-ochre-500 dark:text-ochre-400
+                           text-ochre-500
                            font-body text-sm tracking-wide uppercase
                            editorial-underline
                            transition-all duration-400">
@@ -108,14 +108,14 @@ export const HeroNew: React.FC = () => {
 
             {/* Current Role */}
             <div className="space-y-3">
-              <div className="h-px w-12 bg-border-light dark:bg-border-dark"></div>
+              <div className="h-px w-12 bg-border-light"></div>
               <div className="space-y-2">
                 <p className="font-body text-xs tracking-widest uppercase
-                              text-charcoal-600 dark:text-warmCream-400">
+                              text-charcoal-600">
                   目前
                 </p>
                 <p className="font-body text-base
-                              text-charcoal-800 dark:text-warmCream-200">
+                              text-charcoal-800">
                   {PROFILE.currentRole}
                 </p>
               </div>
@@ -123,14 +123,14 @@ export const HeroNew: React.FC = () => {
 
             {/* Contact Info */}
             <div className="space-y-3">
-              <div className="h-px w-12 bg-border-light dark:bg-border-dark"></div>
+              <div className="h-px w-12 bg-border-light"></div>
               <div className="space-y-2">
                 <p className="font-body text-xs tracking-widest uppercase
-                              text-charcoal-600 dark:text-warmCream-400">
+                              text-charcoal-600">
                   聯絡
                 </p>
                 <div className="space-y-1 font-body text-sm
-                                text-charcoal-700 dark:text-warmCream-300">
+                                text-charcoal-700">
                   <p className="editorial-underline">
                     <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
                   </p>
@@ -140,23 +140,23 @@ export const HeroNew: React.FC = () => {
 
             {/* Location Tags */}
             <div className="space-y-3">
-              <div className="h-px w-12 bg-border-light dark:bg-border-dark"></div>
+              <div className="h-px w-12 bg-border-light"></div>
               <div className="space-y-2">
                 <p className="font-body text-xs tracking-widest uppercase
-                              text-charcoal-600 dark:text-warmCream-400">
+                              text-charcoal-600">
                   地點
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-border-dark
-                                   font-body text-xs text-charcoal-700 dark:text-warmCream-300">
+                  <span className="px-3 py-1 border border-fine border-border-light
+                                   font-body text-xs text-charcoal-700">
                     台北市
                   </span>
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-border-dark
-                                   font-body text-xs text-charcoal-700 dark:text-warmCream-300">
+                  <span className="px-3 py-1 border border-fine border-border-light
+                                   font-body text-xs text-charcoal-700">
                     臺北市立大學
                   </span>
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-border-dark
-                                   font-body text-xs text-charcoal-700 dark:text-warmCream-300">
+                  <span className="px-3 py-1 border border-fine border-border-light
+                                   font-body text-xs text-charcoal-700">
                     世新大學
                   </span>
                 </div>
@@ -169,9 +169,9 @@ export const HeroNew: React.FC = () => {
       {/* Scroll Indicator - Minimal */}
       <div className="absolute bottom-5 left-6 md:left-12 flex items-center gap-3
                       opacity-0 animate-fade-in stagger-5">
-        <div className="w-px h-16 bg-charcoal-900 dark:bg-warmCream-50 animate-gentle-float"></div>
+        <div className="w-px h-16 bg-charcoal-900 animate-gentle-float"></div>
         <span className="font-body text-xs tracking-widest uppercase
-                         text-charcoal-600 dark:text-warmCream-400
+                         text-charcoal-600
                          -rotate-90 origin-left ">
           Scroll
         </span>
@@ -179,7 +179,7 @@ export const HeroNew: React.FC = () => {
 
       {/* Decorative Element - Asymmetric Line */}
       <div className="absolute top-1/3 right-0 w-1/3 h-px
-                      bg-border-light dark:bg-border-dark
+                      bg-border-light
                       opacity-0 animate-draw-line stagger-6"></div>
     </section>
   );

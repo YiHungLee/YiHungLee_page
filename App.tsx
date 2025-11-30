@@ -11,6 +11,7 @@ import AboutPage from './components/pages/AboutPage';
 import ContactPage from './components/pages/ContactPage';
 import ProjectsPage from './components/pages/ProjectsPage';
 import ProjectCategoryPage from './components/pages/ProjectCategoryPage';
+import ProjectDetailPage from './components/pages/ProjectDetailPage';
 import BlogListPage from './components/pages/BlogListPage';
 import BlogPostPage from './components/pages/BlogPostPage';
 
@@ -20,9 +21,7 @@ const App: React.FC = () => {
       <ScrollToTop />
       <ThemeProvider>
         <div className="min-h-screen font-body
-                        bg-warmPaper-100 dark:bg-cosmicBlue-900
-                        text-deepOlive-800 dark:text-warmPaper-50
-                        transition-colors duration-600">
+                        bg-warmPaper-100 text-deepOlive-800">
           <Navigation />
 
           <main>
@@ -32,6 +31,7 @@ const App: React.FC = () => {
               <Route path="/contact" element={<ContactPage />} />
 
               <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:category/:projectId" element={<ProjectDetailPage />} />
               <Route path="/projects/:category" element={<ProjectCategoryPage />} />
 
               <Route path="/blog" element={<BlogListPage />} />

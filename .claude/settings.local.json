@@ -4,7 +4,10 @@
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
       "Skill(frontend-design:frontend-design)",
-      "Skill(frontend-design)"
+      "Skill(frontend-design)",
+      "Bash(perl -i -pe:*)",
+      "Bash(for file in \"components\\Navigation.tsx\" \"components\\Footer.tsx\" \"components\\home\\HeroNew.tsx\" \"components\\home\\FeaturedProjects.tsx\" \"components\\home\\LatestPosts.tsx\" \"components\\home\\IdentityGateway.tsx\" \"components\\pages\\HomePage.tsx\" \"components\\pages\\AboutPage.tsx\" \"components\\pages\\ContactPage.tsx\" \"components\\pages\\ProjectsPage.tsx\" \"components\\pages\\ProjectCategoryPage.tsx\" \"components\\pages\\BlogListPage.tsx\" \"components\\pages\\BlogPostPage.tsx\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

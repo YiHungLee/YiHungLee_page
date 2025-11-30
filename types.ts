@@ -24,7 +24,8 @@ export interface PortfolioItem {
   type: ProjectType;
   title: string;
   year: string | number;     // 支援字串或數字（markdown frontmatter 可能解析為數字）
-  description: string;
+  description: string;       // 簡短描述（用於列表頁）
+  content?: string;          // Markdown 正文內容（用於詳細頁）
   featured?: boolean;        // 首頁精選標記
 
   // 專業領域專屬
@@ -37,8 +38,10 @@ export interface PortfolioItem {
   liveUrl?: string;          // Live Demo 連結
 
   // 音樂作品專屬
-  audioUrl?: string;         // 音訊檔案 URL
-  duration?: string;         // 時長（如 "5:32"）
+  audioUrl?: string;         // 音訊檔案 URL（向後相容）
+  duration?: string;         // 時長（向後相容）
+  tracks?: MusicTrack[];     // 專輯曲目列表
+  albumCover?: string;       // 專輯封面圖片
   tools?: string[];          // DAW 軟體
 
   // 共用
@@ -77,6 +80,18 @@ export interface SkillItem {
 export interface TrainingItem {
   title: string;
   details?: string;
+}
+
+// ===== 音樂曲目介面 =====
+export interface MusicTrack {
+  id: string;               // 曲目唯一 ID
+  title: string;            // 曲名
+  audioUrl: string;         // Cloudflare R2 URL
+  duration: string;         // 時長（如 "3:45"）
+  trackNumber?: number;     // 曲目編號
+  albumTitle?: string;      // 所屬專輯（用於全站播放器）
+  albumCover?: string;      // 專輯封面
+  description?: string;     // 曲目描述
 }
 
 // ===== 導航項目介面 =====
