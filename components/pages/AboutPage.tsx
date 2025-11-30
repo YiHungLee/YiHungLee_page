@@ -12,51 +12,71 @@ const AboutPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
-          {/* Title Group */}
-          <div className="space-y-8 md:space-y-12">
+          {/* Subtitle */}
+          <div className="opacity-0 animate-fade-in-up mb-8 md:mb-12">
+            <p className="font-body text-xs tracking-widest uppercase
+                          text-charcoal-600">
+              About
+            </p>
+          </div>
 
-            {/* Subtitle */}
-            <div className="opacity-0 animate-fade-in-up">
-              <p className="font-body text-xs tracking-widest uppercase
-                            text-charcoal-600">
-                About
-              </p>
+          {/* Two Column Layout */}
+          <div className="grid md:grid-cols-12 gap-12 md:gap-16 lg:gap-20">
+
+            {/* Left Column - Content */}
+            <div className="md:col-span-7 space-y-8 md:space-y-12">
+
+              {/* Main Title */}
+              <div className="opacity-0 animate-fade-in-up stagger-1">
+                <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-bold
+                               text-charcoal-900
+                               tracking-tight leading-none optical-align">
+                  {PROFILE.name}
+                </h1>
+
+                <div className="h-px w-24 md:w-32 bg-ochre-500 mt-8"></div>
+              </div>
+
+              {/* Current Role */}
+              <div className="opacity-0 animate-fade-in-up stagger-2">
+                <p className="font-body text-lg md:text-xl lg:text-2xl
+                              text-charcoal-700
+                              leading-relaxed">
+                  {PROFILE.currentRole}
+                </p>
+                <p className="font-body text-base md:text-lg
+                              text-charcoal-600
+                              mt-4">
+                  {PROFILE.school}
+                </p>
+              </div>
+
+              {/* Philosophy */}
+              <div className="opacity-0 animate-fade-in-up stagger-3">
+                <blockquote className="font-display text-2xl md:text-3xl italic
+                                       text-charcoal-800
+                                       border-l border-fine border-ochre-500
+                                       pl-6 py-2">
+                  {PROFILE.philosophy}
+                </blockquote>
+              </div>
             </div>
 
-            {/* Main Title */}
-            <div className="opacity-0 animate-fade-in-up stagger-1">
-              <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-bold
-                             text-charcoal-900
-                             tracking-tight leading-none optical-align">
-                {PROFILE.name}
-              </h1>
-
-              <div className="h-px w-24 md:w-32 bg-ochre-500 mt-8"></div>
+            {/* Right Column - Avatar */}
+            <div className="md:col-span-5 flex items-center justify-center md:justify-end">
+              <div className="opacity-0 animate-fade-in-up stagger-2">
+                <div className="relative w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden
+                                border-4 border-warmCream-200
+                                shadow-xl transition-transform duration-500 hover:scale-105">
+                  <img
+                    src="/assets/yihung_transparent.png"
+                    alt="李奕宏 Q版頭像"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Current Role */}
-            <div className="opacity-0 animate-fade-in-up stagger-2">
-              <p className="font-body text-lg md:text-xl lg:text-2xl
-                            text-charcoal-700
-                            leading-relaxed max-w-3xl">
-                {PROFILE.currentRole}
-              </p>
-              <p className="font-body text-base md:text-lg
-                            text-charcoal-600
-                            mt-4">
-                {PROFILE.school}
-              </p>
-            </div>
-
-            {/* Philosophy */}
-            <div className="opacity-0 animate-fade-in-up stagger-3">
-              <blockquote className="font-display text-2xl md:text-3xl italic
-                                     text-charcoal-800
-                                     border-l border-fine border-ochre-500
-                                     pl-6 py-2 max-w-3xl">
-                {PROFILE.philosophy}
-              </blockquote>
-            </div>
           </div>
         </div>
       </section>

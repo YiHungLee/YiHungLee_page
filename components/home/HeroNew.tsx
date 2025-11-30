@@ -106,6 +106,19 @@ export const HeroNew: React.FC = () => {
                           ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
                           stagger-4`}>
 
+            {/* Avatar */}
+            <div className="flex justify-center md:justify-start mb-8">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden
+                              border-4 border-warmCream-200
+                              shadow-lg transition-transform duration-500 hover:scale-105">
+                <img
+                  src="/assets/yihung_transparent.png"
+                  alt="李奕宏 Q版頭像"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
             {/* Current Role */}
             <div className="space-y-3">
               <div className="h-px w-12 bg-border-light"></div>
