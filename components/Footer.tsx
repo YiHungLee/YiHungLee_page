@@ -66,7 +66,7 @@ export const Footer: React.FC = () => {
             <div className="space-y-6">
               <h4 className="font-body text-xs tracking-widest uppercase
                              text-charcoal-600">
-                導覽
+                
               </h4>
 
               <nav className="space-y-3">
@@ -126,7 +126,7 @@ export const Footer: React.FC = () => {
             </p>
 
             <p className="italic">
-              Designed with care • Built with React + TypeScript
+              Website Designed by Yi-Hung Lee
             </p>
           </div>
         </div>

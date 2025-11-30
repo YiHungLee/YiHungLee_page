@@ -13,7 +13,7 @@ const categoryLabels: Record<BlogCategory, string> = {
 };
 
 const BlogListPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('all');
+  const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('professional');
   const postsListRef = useRef<HTMLElement>(null);
 
   const filteredPosts = selectedCategory === 'all'

@@ -17,7 +17,7 @@ const AboutPage: React.FC = () => {
           <div className="opacity-0 animate-fade-in-up mb-8 md:mb-12">
             <p className="font-body text-xs tracking-widest uppercase
                           text-charcoal-600">
-              About
+              About 關於我
             </p>
           </div>
 

@@ -379,3 +379,202 @@ button:focus-visible {
   background: linear-gradient(to right, transparent 0%, #d0ccc5 20%, #d0ccc5 80%, transparent 100%);
   margin: 3rem 0;
 }
+
+/* ========== HERO SECTION ========== */
+.scroll-hero-section {
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  width: 100%;
+  padding-inline: 5rem;
+}
+
+.scroll-hero-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  margin: 0;
+  font-weight: 600;
+  background: linear-gradient(
+    #1a1a1a 60%,
+    color-mix(in oklch, #faf8f5, #1a1a1a)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-wrap: pretty;
+}
+
+/* ========== SCROLL TEXT SECTION ========== */
+.scroll-text-section {
+  display: flex;
+  line-height: 1.25;
+  width: 100%;
+  padding-left: 5rem;
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+.scroll-text-section .sticky-text {
+  position: sticky;
+  top: calc(50% - 0.5lh);
+  height: fit-content;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: inherit;
+  font-weight: 600;
+  margin: 0;
+  display: inline-block;
+  background: linear-gradient(
+    #1a1a1a 50%,
+    color-mix(in oklch, #faf8f5, #1a1a1a 25%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.scroll-text-section ul {
+  --ochre-l: 65%;
+  --ochre-c: 0.12;
+  --sage-h: 130;
+  --ochre-h: 60;
+  --hue-step: calc((var(--ochre-h) - var(--sage-h)) / (var(--count) - 1));
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-weight: 600;
+  padding: 0;
+  padding-inline: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.scroll-text-section .verb-item {
+  color: oklch(
+    var(--ochre-l)
+    var(--ochre-c)
+    calc(var(--sage-h) + (var(--hue-step) * var(--i)))
+  );
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+  will-change: opacity, filter;
+  margin: 0;
+  scroll-snap-align: center;
+}
+
+.scroll-text-section .verb-item:last-of-type {
+  background: linear-gradient(
+    #1a1a1a 50%,
+    color-mix(in oklch, #faf8f5, #1a1a1a 25%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  opacity: 1;
+}
+
+/* Utility for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========== Modern Browser: CSS Scroll Animations ========== */
+/* * Original design and code by Jhey Tompkins (@jh3y)
+ * Source: https://codepen.io/jh3y/pen/MYgaaem
+ * Licensed under MIT License
+ */
+@supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+  .scroll-text-section[data-animate="true"] .verb-item {
+    opacity: 0.2;
+    animation-name: brighten-verb;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-range: cover calc(50% - 1lh) calc(50% + 1lh);
+    animation-timeline: view();
+  }
+
+  .scroll-text-section[data-animate="true"] .verb-item:first-of-type {
+    --start-opacity: 1;
+  }
+
+  .scroll-text-section[data-animate="true"] .verb-item:last-of-type {
+    --brightness: 1;
+    --end-opacity: 1;
+  }
+
+  @keyframes brighten-verb {
+    0% {
+      opacity: var(--start-opacity, 0.2);
+    }
+    50% {
+      opacity: 1;
+      filter: brightness(var(--brightness, 1.2));
+    }
+    100% {
+      opacity: var(--end-opacity, 0.2);
+    }
+  }
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+  .scroll-hero-section {
+    padding-inline: 2rem;
+  }
+
+  .scroll-hero-title {
+    font-size: clamp(2.5rem, 10vw, 6rem);
+  }
+
+  .scroll-text-section {
+    padding-left: 2rem;
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
+
+  .scroll-text-section .sticky-text {
+    top: calc(40vh - 0.5lh);
+  }
+}
+
+@media (max-width: 640px) {
+  .scroll-hero-section {
+    padding-inline: 1.5rem;
+  }
+
+  .scroll-hero-title {
+    font-size: clamp(2rem, 12vw, 4rem);
+  }
+
+  .scroll-text-section {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+  }
+
+  .scroll-text-section .sticky-text {
+    position: relative;
+    top: auto;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+}
+
+/* ========== Accessibility ========== */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-text-section .verb-item {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+/* ========== OKLch Fallback for older browsers ========== */
+@supports not (color: oklch(0% 0 0)) {
+  .scroll-text-section .verb-item {
+    color: hsl(calc(60 + (70 / 13) * var(--i)), 60%, 60%);
+  }
+}
