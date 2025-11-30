@@ -19,20 +19,35 @@ export const HeroNew: React.FC = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-32 md:py-40">
 
         {/* Large Name Display - Editorial Typography */}
-        <div className="mb-20 md:mb-32">
-          <h1 className={`font-display font-bold tracking-tighter
-                         text-charcoal-900
-                         transition-all duration-1200 ease-out-expo
-                         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-                         text-6xl sm:text-7xl md:text-8xl lg:text-9xl
-                         leading-none optical-align`}>
-            {PROFILE.name}
-          </h1>
+        <div className="mb-20 md:mb-32 relative">
+          <div className="flex items-center gap-8 md:gap-12 lg:gap-16">
+            <h1 className={`font-display font-bold tracking-tighter
+                           text-charcoal-900
+                           transition-all duration-1200 ease-out-expo
+                           ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
+                           text-6xl sm:text-7xl md:text-8xl lg:text-9xl
+                           leading-none optical-align`}>
+              {PROFILE.name}
+            </h1>
+
+            {/* Avatar - next to name */}
+            <div className="hidden md:block opacity-0 animate-fade-in stagger-2">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full overflow-hidden
+                              border-4 border-warmCream-200
+                              shadow-xl transition-transform duration-500 hover:scale-105">
+                <img
+                  src="/assets/yihung_transparent.png"
+                  alt="李奕宏 Q版頭像"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
 
           {/* English Name with Fine Line */}
           <div className={`flex items-center gap-6 mt-8 transition-all duration-1200 ease-out-expo
                           ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}
-                          stagger-2`}>
+                          stagger-3`}>
             <div className="h-px w-12 md:w-20 bg-charcoal-900"></div>
             <p className="font-accent italic text-2xl md:text-4xl
                           text-charcoal-700">
@@ -105,19 +120,6 @@ export const HeroNew: React.FC = () => {
           <div className={`md:col-span-5 space-y-8 transition-all duration-1200 ease-out-expo
                           ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
                           stagger-4`}>
-
-            {/* Avatar */}
-            <div className="flex justify-center md:justify-start mb-8">
-              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden
-                              border-4 border-warmCream-200
-                              shadow-lg transition-transform duration-500 hover:scale-105">
-                <img
-                  src="/assets/yihung_transparent.png"
-                  alt="李奕宏 Q版頭像"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
 
             {/* Current Role */}
             <div className="space-y-3">
