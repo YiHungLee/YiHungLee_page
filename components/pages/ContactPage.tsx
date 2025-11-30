@@ -88,7 +88,6 @@ const ContactPage: React.FC = () => {
         supportsNative={supportsScrollTimeline}
         gsapReady={gsapLoaded}
       />
-      <TransitionSection />
       <ContactForm />
     </div>
   );

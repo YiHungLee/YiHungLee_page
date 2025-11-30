@@ -8,7 +8,7 @@ interface ScrollTextSectionProps {
 const VERBS = [
   '探索', '研究', '玩樂', '創作', '學習',
   '投入', '寫作', '傾聽', '支持', '連結',
-  '關懷', '成長', '欣賞', '享受'
+  '關懷', '成長', '欣賞', '享受', '聯絡我'
 ];
 
 declare global {

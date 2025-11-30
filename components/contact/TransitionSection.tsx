@@ -7,7 +7,7 @@ const TransitionSection: React.FC = () => {
       <h2 className="font-display text-6xl md:text-7xl lg:text-8xl
                      font-bold text-charcoal-900 tracking-tight
                      text-center mb-8 optical-align">
-        聯絡我
+        取得聯繫
       </h2>
       <p className="font-body text-lg md:text-xl text-charcoal-600
                     text-center max-w-2xl leading-relaxed">

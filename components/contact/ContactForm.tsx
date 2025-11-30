@@ -16,13 +16,13 @@ interface FormErrors {
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 // TODO: Replace with your actual Google Apps Script deployment URL
-const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzk0sDc4lEOPKZA-qHRkdP2ckydUNidjYJiDneH1-Xag0bBD6NyTRjV4s68Ca0qMKc/exec';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    category: 'other',
+    category: 'speech',
     message: ''
   });
 
@@ -105,14 +105,16 @@ const ContactForm: React.FC = () => {
 
         {/* Form Header */}
         <div className="mb-16 opacity-0 animate-fade-in-up">
-          <h2 className="font-display text-4xl md:text-5xl font-bold
-                         text-charcoal-900 tracking-tight mb-6">
-            開啟對話
-          </h2>
-          <div className="h-px w-16 bg-ochre-500 mb-6"></div>
-          <p className="font-body text-lg text-charcoal-700 leading-relaxed">
-            無論您有任何想法、問題，或是希望進一步了解我的服務，都歡迎透過以下表單與我聯繫。
-          </p>
+          <h2 className="font-display text-6xl md:text-7xl lg:text-8xl
+                     font-bold text-charcoal-900 tracking-tight
+                     text-center mb-8 optical-align">
+        取得聯繫
+      </h2>
+          
+          <p className="font-body text-lg md:text-xl text-charcoal-600
+                    text-center max-w-2xl leading-relaxed">
+        演講邀約｜課程邀請｜找我家教
+      </p>
         </div>
 
         {/* Form */}
@@ -189,10 +191,10 @@ const ContactForm: React.FC = () => {
                          transition-colors duration-300
                          cursor-pointer"
             >
-              <option value="other">一般諮詢</option>
               <option value="speech">演講邀約</option>
               <option value="course">課程邀請</option>
               <option value="tutoring">找我家教</option>
+              <option value="other">其他</option>
             </select>
           </div>
 
