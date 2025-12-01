@@ -48,9 +48,22 @@ npm install -g wrangler
   - 在右側欄可以找到 "Account ID"
   - 或從 URL 取得：`dash.cloudflare.com/<ACCOUNT_ID>/workers`
 
-- `APPS_SCRIPT_URL`
-  - 你現有的 Google Apps Script 部署 URL
-  - 格式：`https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec`
+### 2.5 設定 Worker 環境變數（重要！）
+
+**在 Cloudflare Dashboard 設定 `APPS_SCRIPT_URL`**：
+
+1. 先完成步驟 3 部署 Worker（第一次部署會失敗沒關係）
+2. 前往 [Cloudflare Dashboard](https://dash.cloudflare.com/) → Workers & Pages
+3. 找到 `yi-hung-lee-contact-form` Worker
+4. 點擊 "Settings" → "Variables"
+5. 在 "Environment Variables" 區域：
+   - 點擊 "Add variable"
+   - Variable name: `APPS_SCRIPT_URL`
+   - Value: 你的 Google Apps Script URL（`https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec`）
+   - 類型選擇：**Secret**（加密儲存）
+6. 點擊 "Save and deploy"
+
+**注意**：這個環境變數必須在 Cloudflare Dashboard 手動設定，無法透過 GitHub Actions 自動設定（需要更高權限的 API Token）。
 
 ### 3. 部署 Worker
 

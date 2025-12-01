@@ -29,7 +29,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
           workingDirectory: worker
-          secrets: |
-            APPS_SCRIPT_URL
-        env:
-          APPS_SCRIPT_URL: ${{ secrets.APPS_SCRIPT_URL }}
