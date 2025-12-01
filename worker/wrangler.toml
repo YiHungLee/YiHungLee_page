@@ -1,0 +1,29 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "yi-hung-lee-contact-form"
+main = "contact-form.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables (set via GitHub Secrets or wrangler CLI)
+# These are NOT committed to the repository for security
+[vars]
+# APPS_SCRIPT_URL will be set as a secret
+
+# Production environment
+[env.production]
+name = "yi-hung-lee-contact-form"
+route = { pattern = "contact.lee-yi-hung.com", zone_name = "lee-yi-hung.com", custom_domain = true }
+
+# Optional: KV namespace for rate limiting
+# Uncomment and configure if you want to enable rate limiting
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT_KV"
+# id = "your-kv-namespace-id"
+
+# Workers limits (adjust as needed)
+[limits]
+cpu_ms = 50
+
+# For local development
+[dev]
+port = 8787

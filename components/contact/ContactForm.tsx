@@ -15,8 +15,8 @@ interface FormErrors {
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-// TODO: Replace with your actual Google Apps Script deployment URL
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzk0sDc4lEOPKZA-qHRkdP2ckydUNidjYJiDneH1-Xag0bBD6NyTRjV4s68Ca0qMKc/exec';
+// Cloudflare Worker endpoint (secure proxy to Google Apps Script)
+const WORKER_URL = import.meta.env.VITE_WORKER_URL || 'https://yi-hung-lee-contact-form.your-subdomain.workers.dev';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -66,18 +66,24 @@ const ContactForm: React.FC = () => {
     setStatus('submitting');
 
     try {
-      await fetch(APPS_SCRIPT_URL, {
+      const response = await fetch(WORKER_URL, {
         method: 'POST',
-        mode: 'no-cors',  // Google Apps Script CORS limitation
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
-          timestamp: new Date().toISOString(),
-          source: 'portfolio-website'
+          name: formData.name,
+          email: formData.email,
+          category: formData.category,
+          message: formData.message
         })
       });
 
-      // mode: 'no-cors' prevents reading response, assume success
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || '送出失敗');
+      }
+
+      // Success
       setStatus('success');
       setFormData({ name: '', email: '', category: 'other', message: '' });
 
