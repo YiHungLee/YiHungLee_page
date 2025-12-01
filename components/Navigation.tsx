@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { PowerSwitchToggle } from './PowerSwitchToggle';
 
 export const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,7 +29,7 @@ export const Navigation: React.FC = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-warmCream-50/95 backdrop-blur-md py-4 border-b border-fine border-border-light'
+            ? 'bg-warmCream-50/95 dark:bg-darkMode-bg/95 backdrop-blur-md py-4 border-b border-fine border-border-light dark:border-darkMode-border'
             : 'bg-transparent py-6'
         }`}
       >
@@ -41,11 +42,11 @@ export const Navigation: React.FC = () => {
               className="group flex flex-col transition-opacity duration-300 hover:opacity-60"
             >
               <span className="font-display text-2xl md:text-3xl font-semibold tracking-tight
-                             text-charcoal-900 optical-align">
+                             text-charcoal-900 dark:text-darkMode-text optical-align">
                 李奕宏
               </span>
               <span className="font-body text-xs tracking-widest uppercase
-                             text-charcoal-600 -mt-1">
+                             text-charcoal-600 dark:text-darkMode-textMuted -mt-1">
                 Yi-hung Lee
               </span>
             </NavLink>
@@ -60,8 +61,8 @@ export const Navigation: React.FC = () => {
                   className={({ isActive }) =>
                     `relative font-body text-sm tracking-wide transition-all duration-300
                      ${isActive
-                       ? 'text-ochre-500'
-                       : 'text-charcoal-700 hover:text-ochre-500'
+                       ? 'text-ochre-500 dark:text-darkMode-ochre'
+                       : 'text-charcoal-700 dark:text-darkMode-textMuted hover:text-ochre-500 dark:hover:text-darkMode-ochre'
                      }`
                   }
                 >
@@ -71,23 +72,33 @@ export const Navigation: React.FC = () => {
                       {/* Active Indicator - Fine Line */}
                       {isActive && (
                         <div className="absolute -bottom-1 left-0 w-full h-px
-                                        bg-ochre-500"></div>
+                                        bg-ochre-500 dark:bg-darkMode-ochre"></div>
                       )}
                     </>
                   )}
                 </NavLink>
               ))}
+
+              {/* Theme Toggle - Power Switch */}
+              <div className="text-charcoal-700 dark:text-warmCream-50 ml-2">
+                <PowerSwitchToggle />
+              </div>
             </div>
 
-            {/* Mobile Menu Button - Functional Icon Only */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 transition-opacity duration-300 hover:opacity-60
-                         text-charcoal-900"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} strokeWidth={1} /> : <Menu size={24} strokeWidth={1} />}
-            </button>
+            {/* Mobile - Theme Toggle & Menu Button */}
+            <div className="md:hidden flex items-center gap-4">
+              <div className="text-charcoal-700 dark:text-warmCream-50">
+                <PowerSwitchToggle />
+              </div>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 transition-opacity duration-300 hover:opacity-60
+                           text-charcoal-900 dark:text-darkMode-text"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={24} strokeWidth={1} /> : <Menu size={24} strokeWidth={1} />}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -95,7 +106,7 @@ export const Navigation: React.FC = () => {
       {/* Mobile Menu - Full Screen Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-40 md:hidden
-                        bg-warmCream-50/98
+                        bg-warmCream-50/98 dark:bg-darkMode-bg/98
                         backdrop-blur-xl animate-fade-in">
 
           {/* Padding to avoid nav bar */}
@@ -112,11 +123,11 @@ export const Navigation: React.FC = () => {
                   end={link.path === '/'}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `py-4 border-b border-fine border-border-light
+                    `py-4 border-b border-fine border-border-light dark:border-darkMode-border
                      font-display text-3xl transition-all duration-300
                      ${isActive
-                       ? 'text-ochre-500 border-ochre-500'
-                       : 'text-charcoal-800 hover:text-ochre-500'
+                       ? 'text-ochre-500 dark:text-darkMode-ochre border-ochre-500 dark:border-darkMode-ochre'
+                       : 'text-charcoal-800 dark:text-darkMode-text hover:text-ochre-500 dark:hover:text-darkMode-ochre'
                      } stagger-${index + 1} opacity-0 animate-fade-in-up`
                   }
                 >
@@ -127,8 +138,8 @@ export const Navigation: React.FC = () => {
 
             {/* Contact Information */}
             <div className="space-y-4 opacity-0 animate-fade-in-up stagger-6">
-              <div className="h-px w-16 bg-border-light"></div>
-              <div className="font-body text-sm text-charcoal-600 space-y-2">
+              <div className="h-px w-16 bg-border-light dark:bg-darkMode-border"></div>
+              <div className="font-body text-sm text-charcoal-600 dark:text-darkMode-textMuted space-y-2">
                 <p>lee2952000@gmail.com</p>
               </div>
             </div>

@@ -21,7 +21,9 @@ const App: React.FC = () => {
       <ScrollToTop />
       <ThemeProvider>
         <div className="min-h-screen font-body
-                        bg-warmPaper-100 text-deepOlive-800">
+                        bg-warmCream-50 dark:bg-darkMode-bg
+                        text-charcoal-900 dark:text-darkMode-text
+                        transition-colors duration-400">
           <Navigation />
 
           <main>

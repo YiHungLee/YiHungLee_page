@@ -14,7 +14,7 @@ export const FeaturedProjects: React.FC = () => {
 
   return (
     <section className="relative py-32 md:py-40
-                        bg-warmCream-100
+                        bg-warmCream-100 dark:bg-darkMode-bg
                         transition-colors duration-500 subtle-texture">
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -26,20 +26,20 @@ export const FeaturedProjects: React.FC = () => {
             {/* Left: Title */}
             <div className="space-y-6">
               <p className="font-body text-xs tracking-widest uppercase
-                            text-charcoal-600">
+                            text-charcoal-600 dark:text-darkMode-textMuted">
                 Featured Works
               </p>
 
               <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold
-                             text-charcoal-900
+                             text-charcoal-900 dark:text-darkMode-text
                              tracking-tight">
                 精選作品
               </h2>
 
-              <div className="h-px w-24 bg-ochre-500"></div>
+              <div className="h-px w-24 bg-ochre-500 dark:bg-darkMode-ochre"></div>
 
               <p className="font-body text-lg
-                            text-charcoal-600
+                            text-charcoal-600 dark:text-darkMode-textMuted
                             max-w-xl leading-relaxed">
                 多面向的實踐與探索從學術研究到程式開發，從音樂創作到助人專業
               </p>
@@ -49,7 +49,7 @@ export const FeaturedProjects: React.FC = () => {
             <Link
               to="/projects"
               className="font-body text-sm tracking-wide uppercase
-                         text-ochre-500
+                         text-ochre-500 dark:text-darkMode-ochre
                          editorial-underline
                          transition-opacity duration-300 hover:opacity-60">
               查看全部作品
@@ -58,14 +58,14 @@ export const FeaturedProjects: React.FC = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="space-y-1 bg-border-light">
+        <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
           {projects.map((project, index) => (
             <Link
               key={project.id}
               to={`/projects/${project.category}`}
-              className="group block bg-warmCream-50
+              className="group block bg-warmCream-50 dark:bg-darkMode-bgElevated
                          transition-all duration-500 ease-out-expo
-                         hover:bg-warmCream-100
+                         hover:bg-warmCream-100 dark:hover:bg-darkMode-bg
                          opacity-0 animate-fade-in-up"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
@@ -75,32 +75,32 @@ export const FeaturedProjects: React.FC = () => {
                 <div className="md:col-span-3 space-y-4">
                   {/* Index */}
                   <div className="font-display text-6xl md:text-7xl font-bold
-                                  text-charcoal-900
+                                  text-charcoal-900 dark:text-darkMode-text
                                   opacity-20">
                     0{index + 1}
                   </div>
 
                   {/* Category Label */}
                   <div className="space-y-2">
-                    <div className="h-px w-12 bg-border-light"></div>
+                    <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                     <p className="font-body text-xs tracking-widest uppercase
-                                  text-charcoal-600">
+                                  text-charcoal-600 dark:text-darkMode-textMuted">
                       {categoryLabels[project.category]}
                     </p>
                   </div>
 
                   {/* Year */}
                   <p className="font-body text-sm
-                                text-charcoal-500">
+                                text-charcoal-500 dark:text-darkMode-textFaint">
                     {project.year}
                   </p>
 
                   {/* Award Badge */}
                   {project.award && (
                     <div className="inline-block px-3 py-1 border border-fine
-                                    border-ochre-500
+                                    border-ochre-500 dark:border-darkMode-ochre
                                     font-body text-xs tracking-wide
-                                    text-ochre-500">
+                                    text-ochre-500 dark:text-darkMode-ochre">
                       獲獎作品
                     </div>
                   )}
@@ -111,24 +111,24 @@ export const FeaturedProjects: React.FC = () => {
 
                   {/* Title */}
                   <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold
-                                 text-charcoal-900
+                                 text-charcoal-900 dark:text-darkMode-text
                                  tracking-tight leading-tight
                                  transition-colors duration-500
-                                 group-hover:text-ochre-500">
+                                 group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre">
                     {project.title}
                   </h3>
 
                   {/* Award Detail */}
                   {project.award && (
                     <p className="font-accent italic text-lg
-                                  text-ochre-600">
+                                  text-ochre-600 dark:text-darkMode-ochre">
                       {project.award}
                     </p>
                   )}
 
                   {/* Description */}
                   <p className="font-body text-base md:text-lg
-                                text-charcoal-700
+                                text-charcoal-700 dark:text-darkMode-textMuted
                                 leading-relaxed max-w-3xl">
                     {project.description}
                   </p>
@@ -140,11 +140,11 @@ export const FeaturedProjects: React.FC = () => {
                         <span
                           key={tag}
                           className="font-body text-xs tracking-wide
-                                     text-charcoal-600
+                                     text-charcoal-600 dark:text-darkMode-textMuted
                                      px-3 py-1 border border-fine
-                                     border-border-light
+                                     border-border-light dark:border-darkMode-border
                                      transition-colors duration-300
-                                     group-hover:border-ochre-500">
+                                     group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                           {tag}
                         </span>
                       ))}
@@ -161,7 +161,7 @@ export const FeaturedProjects: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           GitHub
@@ -174,7 +174,7 @@ export const FeaturedProjects: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           Live Demo
@@ -186,7 +186,7 @@ export const FeaturedProjects: React.FC = () => {
               </div>
 
               {/* Hover Indicator Line */}
-              <div className="h-px w-0 bg-ochre-500
+              <div className="h-px w-0 bg-ochre-500 dark:bg-darkMode-ochre
                               transition-all duration-500 ease-out-expo
                               group-hover:w-full"></div>
             </Link>

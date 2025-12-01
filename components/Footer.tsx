@@ -14,8 +14,8 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative bg-warmCream-100
-                       border-t border-fine border-border-light
+    <footer className="relative bg-warmCream-100 dark:bg-darkMode-bgElevated
+                       border-t border-fine border-border-light dark:border-darkMode-border
                        transition-colors duration-500">
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-32">
@@ -29,30 +29,30 @@ export const Footer: React.FC = () => {
             {/* Name */}
             <div>
               <h3 className="font-display text-4xl md:text-5xl font-bold
-                             text-charcoal-900
+                             text-charcoal-900 dark:text-darkMode-text
                              tracking-tight mb-2">
                 {PROFILE.name}
               </h3>
               <p className="font-accent italic text-xl
-                            text-charcoal-600">
+                            text-charcoal-600 dark:text-darkMode-textMuted">
                 {PROFILE.nameEn}
               </p>
             </div>
 
             {/* Divider */}
-            <div className="h-px w-24 bg-ochre-500"></div>
+            <div className="h-px w-24 bg-ochre-500 dark:bg-darkMode-ochre"></div>
 
             {/* Philosophy Quote */}
             <blockquote className="font-display text-xl md:text-2xl italic
-                                   text-charcoal-700
+                                   text-charcoal-700 dark:text-darkMode-textMuted
                                    leading-relaxed max-w-2xl
-                                   border-l border-fine border-ochre-500
+                                   border-l border-fine border-ochre-500 dark:border-darkMode-ochre
                                    pl-3.5 py-2">
               {PROFILE.philosophy.split('.')[0]}。
             </blockquote>
 
             {/* Title & Institution */}
-            <div className="space-y-2 text-charcoal-600
+            <div className="space-y-2 text-charcoal-600 dark:text-darkMode-textMuted
                             font-body text-sm">
               <p>{PROFILE.title}</p>
               <p>{PROFILE.school}</p>
@@ -65,8 +65,8 @@ export const Footer: React.FC = () => {
             {/* Quick Links */}
             <div className="space-y-6">
               <h4 className="font-body text-xs tracking-widest uppercase
-                             text-charcoal-600">
-                
+                             text-charcoal-600 dark:text-darkMode-textMuted">
+
               </h4>
 
               <nav className="space-y-3">
@@ -75,7 +75,7 @@ export const Footer: React.FC = () => {
                     key={link.path}
                     to={link.path}
                     className="block font-body text-base
-                               text-charcoal-700
+                               text-charcoal-700 dark:text-darkMode-textMuted
                                editorial-underline
                                transition-opacity duration-300 hover:opacity-60">
                     {link.label}
@@ -87,14 +87,14 @@ export const Footer: React.FC = () => {
             {/* Contact Information */}
             <div className="space-y-6">
               <h4 className="font-body text-xs tracking-widest uppercase
-                             text-charcoal-600">
+                             text-charcoal-600 dark:text-darkMode-textMuted">
                 聯絡方式
               </h4>
 
               <div className="space-y-3 font-body text-sm
-                              text-charcoal-700">
+                              text-charcoal-700 dark:text-darkMode-textMuted">
                 <div>
-                  <p className="text-xs text-charcoal-600
+                  <p className="text-xs text-charcoal-600 dark:text-darkMode-textFaint
                                 tracking-wide mb-1">
                     Email
                   </p>
@@ -114,12 +114,12 @@ export const Footer: React.FC = () => {
         <div className="space-y-6">
 
           {/* Divider */}
-          <div className="h-px w-full bg-border-light"></div>
+          <div className="h-px w-full bg-border-light dark:bg-darkMode-border"></div>
 
           {/* Copyright & Credits */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between
                           gap-4 font-body text-xs
-                          text-charcoal-600">
+                          text-charcoal-600 dark:text-darkMode-textMuted">
 
             <p>
               © {currentYear} {PROFILE.name}. All Rights Reserved.

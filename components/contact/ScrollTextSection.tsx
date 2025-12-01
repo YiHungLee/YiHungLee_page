@@ -1,3 +1,8 @@
+/* * Original design and code by Jhey Tompkins (@jh3y)
+ * Source: https://codepen.io/jh3y/pen/MYgaaem
+ * Licensed under MIT License
+ */
+
 import React, { useRef, useEffect } from 'react';
 
 interface ScrollTextSectionProps {

@@ -29,7 +29,8 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({
   return (
     <div
       className={`relative ${sizeClasses[size]} rounded-full overflow-hidden
-                  border-4 border-warmCream-200
+                  border-4 border-warmCream-200 dark:border-darkMode-border
+                  bg-warmCream-50 dark:bg-charcoal-600
                   shadow-xl transition-all duration-500
                   hover:scale-105 cursor-pointer ${className}`}
       onClick={handleClick}
