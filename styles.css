@@ -537,7 +537,10 @@ button:focus-visible {
   }
 
   .scroll-text-section .sticky-text {
-    top: calc(40vh - 0.5lh);
+    top: calc(50% - 0.5lh);
+  }
+  .scroll-text-section .verb-item {
+    scroll-snap-align: none;
   }
 }
 
@@ -551,15 +554,17 @@ button:focus-visible {
   }
 
   .scroll-text-section {
-    flex-direction: column;
     padding: 2rem 1.5rem;
+    font-size: clamp(2rem, 10vw, 3.5rem);
   }
 
   .scroll-text-section .sticky-text {
-    position: relative;
-    top: auto;
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
+    font-size: inherit;
+    top: calc(50% - 0.5lh + 0.5rem);
+  }
+
+  .scroll-text-section .verb-item {
+    scroll-snap-align: none;
   }
 }
 

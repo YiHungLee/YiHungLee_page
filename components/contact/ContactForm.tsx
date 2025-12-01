@@ -35,8 +35,8 @@ const ContactForm: React.FC = () => {
     // Name validation
     if (!formData.name.trim()) {
       newErrors.name = '請輸入您的姓名';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = '姓名至少需要 2 個字元';
+    } else if (formData.name.trim().length < 1) {
+      newErrors.name = '姓名至少需要 1 個字元';
     }
 
     // Email validation
