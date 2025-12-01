@@ -20,9 +20,9 @@ route = { pattern = "contact.lee-yi-hung.com", zone_name = "lee-yi-hung.com", cu
 # binding = "RATE_LIMIT_KV"
 # id = "your-kv-namespace-id"
 
-# Workers limits (adjust as needed)
-[limits]
-cpu_ms = 50
+# Workers limits (only available on paid plans)
+# [limits]
+# cpu_ms = 50
 
 # For local development
 [dev]
