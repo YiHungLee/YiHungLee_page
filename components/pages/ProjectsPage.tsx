@@ -18,11 +18,11 @@ const ProjectsPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-warmCream-50 transition-colors duration-500">
+    <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500 subtle-texture">
 
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -33,7 +33,7 @@ const ProjectsPage: React.FC = () => {
             {/* Subtitle */}
             <div className="opacity-0 animate-fade-in-up">
               <p className="font-body text-xs tracking-widest uppercase
-                            text-charcoal-600">
+                            text-charcoal-600 dark:text-darkMode-textMuted">
                 Portfolio
               </p>
             </div>
@@ -41,18 +41,18 @@ const ProjectsPage: React.FC = () => {
             {/* Main Title */}
             <div className="opacity-0 animate-fade-in-up stagger-1">
               <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-bold
-                             text-charcoal-900
+                             text-charcoal-900 dark:text-darkMode-text
                              tracking-tight leading-none optical-align">
                 作品集
               </h1>
 
-              <div className="h-px w-24 md:w-32 bg-ochre-500 mt-8"></div>
+              <div className="h-px w-24 md:w-32 bg-ochre-500 dark:bg-darkMode-ochre mt-8"></div>
             </div>
 
             {/* Description */}
             <div className="opacity-0 animate-fade-in-up stagger-2">
               <p className="font-body text-lg md:text-xl lg:text-2xl
-                            text-charcoal-700
+                            text-charcoal-700 dark:text-darkMode-textMuted
                             leading-relaxed max-w-3xl">
                 多面向的實踐與探索<br className="hidden md:block" />
                 從學術研究到程式開發，從音樂創作到助人專業
@@ -63,9 +63,9 @@ const ProjectsPage: React.FC = () => {
       </section>
 
       {/* Category Navigation */}
-      <section className="sticky top-20 z-30 bg-warmCream-50/95
+      <section className="sticky top-20 z-30 bg-warmCream-50/95 dark:bg-darkMode-bg/95
                           backdrop-blur-md border-b border-fine
-                          border-border-light
+                          border-border-light dark:border-darkMode-borderLight
                           transition-colors duration-500">
 
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
@@ -76,7 +76,8 @@ const ProjectsPage: React.FC = () => {
                 key={category.key}
                 to={category.path}
                 className="relative font-body text-sm md:text-base tracking-wide
-                           text-charcoal-600 hover:text-ochre-500
+                           text-charcoal-600 dark:text-darkMode-textMuted
+                           hover:text-ochre-500 dark:hover:text-darkMode-ochre
                            transition-all duration-300 pb-2"
               >
                 {category.label}
@@ -91,14 +92,14 @@ const ProjectsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           {/* Projects Grid */}
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {PORTFOLIO_ITEMS.map((project, index) => (
               <Link
                 key={project.id}
                 to={`/projects/${project.category}/${project.id}`}
-                className="group bg-warmCream-100
+                className="group bg-warmCream-100 dark:bg-darkMode-bgElevated
                            transition-all duration-500 ease-out-expo
-                           hover:bg-warmCream-50:bg-charcoal-800
+                           hover:bg-warmCream-50 dark:hover:bg-darkMode-bg
                            opacity-0 animate-fade-in-up cursor-pointer block"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
@@ -109,16 +110,16 @@ const ProjectsPage: React.FC = () => {
 
                     {/* Index Number */}
                     <div className="font-display text-6xl md:text-7xl font-bold
-                                    text-charcoal-900
+                                    text-charcoal-900 dark:text-darkMode-text
                                     opacity-20">
                       {String(index + 1).padStart(2, '0')}
                     </div>
 
                     {/* Category Label */}
                     <div className="space-y-2">
-                      <div className="h-px w-12 bg-border-light"></div>
+                      <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                       <p className="font-body text-xs tracking-widest uppercase
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         {categoryLabels[project.category]}
                       </p>
                     </div>
@@ -126,11 +127,11 @@ const ProjectsPage: React.FC = () => {
                     {/* Year & Type */}
                     <div className="space-y-2">
                       <p className="font-body text-sm
-                                    text-charcoal-500">
+                                    text-charcoal-500 dark:text-darkMode-textFaint">
                         {project.year}
                       </p>
                       <p className="font-body text-xs tracking-wide
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.type === 'research' && '研究'}
                         {project.type === 'tool' && '工具開發'}
                         {project.type === 'composition' && '音樂創作'}
@@ -140,9 +141,9 @@ const ProjectsPage: React.FC = () => {
                     {/* Award Badge */}
                     {project.award && (
                       <div className="inline-block px-3 py-1 border border-fine
-                                      border-ochre-500
+                                      border-ochre-500 dark:border-darkMode-ochre
                                       font-body text-xs tracking-wide
-                                      text-ochre-500">
+                                      text-ochre-500 dark:text-darkMode-ochre">
                         獲獎作品
                       </div>
                     )}
@@ -153,17 +154,17 @@ const ProjectsPage: React.FC = () => {
 
                     {/* Title */}
                     <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold
-                                   text-charcoal-900
+                                   text-charcoal-900 dark:text-darkMode-text
                                    tracking-tight leading-tight
                                    transition-colors duration-500
-                                   group-hover:text-ochre-500">
+                                   group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre">
                       {project.title}
                     </h3>
 
                     {/* Award Detail */}
                     {project.award && (
                       <p className="font-accent italic text-lg
-                                    text-ochre-600">
+                                    text-ochre-600 dark:text-darkMode-ochre">
                         {project.award}
                       </p>
                     )}
@@ -171,14 +172,14 @@ const ProjectsPage: React.FC = () => {
                     {/* Venue */}
                     {project.venue && (
                       <p className="font-body text-base
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.venue}
                       </p>
                     )}
 
                     {/* Description */}
                     <p className="font-body text-base md:text-lg
-                                  text-charcoal-700
+                                  text-charcoal-700 dark:text-darkMode-textMuted
                                   leading-relaxed max-w-3xl">
                       {project.description}
                     </p>
@@ -187,7 +188,7 @@ const ProjectsPage: React.FC = () => {
                     {project.techStack && project.techStack.length > 0 && (
                       <div className="pt-4">
                         <p className="font-body text-xs tracking-wide uppercase
-                                      text-charcoal-600 mb-3">
+                                      text-charcoal-600 dark:text-darkMode-textMuted mb-3">
                           技術棧
                         </p>
                         <div className="flex flex-wrap gap-3">
@@ -195,11 +196,11 @@ const ProjectsPage: React.FC = () => {
                             <span
                               key={tech}
                               className="font-body text-xs tracking-wide
-                                         text-charcoal-700
+                                         text-charcoal-700 dark:text-darkMode-textMuted
                                          px-3 py-1 border border-fine
-                                         border-border-light
+                                         border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
-                                         group-hover:border-ochre-500">
+                                         group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                               {tech}
                             </span>
                           ))}
@@ -211,7 +212,7 @@ const ProjectsPage: React.FC = () => {
                     {project.tools && project.tools.length > 0 && (
                       <div className="pt-4">
                         <p className="font-body text-xs tracking-wide uppercase
-                                      text-charcoal-600 mb-3">
+                                      text-charcoal-600 dark:text-darkMode-textMuted mb-3">
                           製作工具
                         </p>
                         <div className="flex flex-wrap gap-3">
@@ -219,11 +220,11 @@ const ProjectsPage: React.FC = () => {
                             <span
                               key={tool}
                               className="font-body text-xs tracking-wide
-                                         text-charcoal-700
+                                         text-charcoal-700 dark:text-darkMode-textMuted
                                          px-3 py-1 border border-fine
-                                         border-border-light
+                                         border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
-                                         group-hover:border-ochre-500">
+                                         group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                               {tool}
                             </span>
                           ))}
@@ -234,7 +235,7 @@ const ProjectsPage: React.FC = () => {
                     {/* Audio Duration */}
                     {project.duration && (
                       <p className="font-body text-sm
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         時長：{project.duration}
                       </p>
                     )}
@@ -246,11 +247,11 @@ const ProjectsPage: React.FC = () => {
                           <span
                             key={tag}
                             className="font-body text-xs tracking-wide
-                                       text-charcoal-600
+                                       text-charcoal-600 dark:text-darkMode-textMuted
                                        px-3 py-1 border border-fine
-                                       border-border-light
+                                       border-border-light dark:border-darkMode-border
                                        transition-colors duration-300
-                                       group-hover:border-ochre-500">
+                                       group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                             {tag}
                           </span>
                         ))}
@@ -266,7 +267,7 @@ const ProjectsPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           GitHub Repository
@@ -279,7 +280,7 @@ const ProjectsPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           Live Demo
@@ -292,7 +293,7 @@ const ProjectsPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           試聽音樂
@@ -303,7 +304,7 @@ const ProjectsPage: React.FC = () => {
                 </div>
 
                 {/* Hover Indicator Line */}
-                <div className="h-px w-0 bg-ochre-500
+                <div className="h-px w-0 bg-ochre-500 dark:bg-darkMode-ochre
                                 transition-all duration-500 ease-out-expo
                                 group-hover:w-full"></div>
               </Link>
@@ -315,18 +316,18 @@ const ProjectsPage: React.FC = () => {
 
       {/* Bottom Quote */}
       <section className="relative py-20 md:py-32
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="h-px w-full bg-border-light"></div>
+            <div className="h-px w-full bg-border-light dark:bg-darkMode-border"></div>
             <p className="font-display text-2xl md:text-3xl lg:text-4xl italic
-                          text-charcoal-800
+                          text-charcoal-800 dark:text-darkMode-text
                           leading-relaxed px-8">
               每一個作品，<br className="hidden md:block" />
               都是一次對話與探索的紀錄
             </p>
-            <div className="h-px w-full bg-border-light"></div>
+            <div className="h-px w-full bg-border-light dark:bg-darkMode-border"></div>
           </div>
         </div>
       </section>

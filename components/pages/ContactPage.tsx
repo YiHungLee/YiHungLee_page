@@ -82,7 +82,7 @@ const ContactPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-warmCream-50 transition-colors duration-500">
+    <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
       <HeroSection />
       <ScrollTextSection
         supportsNative={supportsScrollTimeline}

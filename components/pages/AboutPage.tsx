@@ -4,11 +4,11 @@ import InteractiveAvatar from '../InteractiveAvatar';
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-warmCream-50 transition-colors duration-500">
+    <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500 subtle-texture">
 
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -16,7 +16,7 @@ const AboutPage: React.FC = () => {
           {/* Subtitle */}
           <div className="opacity-0 animate-fade-in-up mb-8 md:mb-12">
             <p className="font-body text-xs tracking-widest uppercase
-                          text-charcoal-600">
+                          text-charcoal-600 dark:text-darkMode-textMuted">
               About 關於我
             </p>
           </div>
@@ -30,23 +30,23 @@ const AboutPage: React.FC = () => {
               {/* Main Title */}
               <div className="opacity-0 animate-fade-in-up stagger-1">
                 <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-bold
-                               text-charcoal-900
+                               text-charcoal-900 dark:text-darkMode-text
                                tracking-tight leading-none optical-align">
                   {PROFILE.name}
                 </h1>
 
-                <div className="h-px w-24 md:w-32 bg-ochre-500 mt-8"></div>
+                <div className="h-px w-24 md:w-32 bg-ochre-500 dark:bg-darkMode-ochre mt-8"></div>
               </div>
 
               {/* Current Role */}
               <div className="opacity-0 animate-fade-in-up stagger-2">
                 <p className="font-body text-lg md:text-xl lg:text-2xl
-                              text-charcoal-700
+                              text-charcoal-700 dark:text-darkMode-textMuted
                               leading-relaxed">
                   {PROFILE.currentRole}
                 </p>
                 <p className="font-body text-base md:text-lg
-                              text-charcoal-600
+                              text-charcoal-600 dark:text-darkMode-textMuted
                               mt-4">
                   {PROFILE.school}
                 </p>
@@ -55,8 +55,8 @@ const AboutPage: React.FC = () => {
               {/* Philosophy */}
               <div className="opacity-0 animate-fade-in-up stagger-3">
                 <blockquote className="font-display text-2xl md:text-3xl italic
-                                       text-charcoal-800
-                                       border-l border-fine border-ochre-500
+                                       text-charcoal-800 dark:text-darkMode-text
+                                       border-l border-fine border-ochre-500 dark:border-darkMode-ochre
                                        pl-6 py-2">
                   {PROFILE.philosophy}
                 </blockquote>
@@ -80,34 +80,34 @@ const AboutPage: React.FC = () => {
 
           <div className="mb-16 md:mb-20">
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold
-                           text-charcoal-900
+                           text-charcoal-900 dark:text-darkMode-text
                            tracking-tight mb-6">
               學歷
             </h2>
-            <div className="h-px w-16 bg-ochre-500"></div>
+            <div className="h-px w-16 bg-ochre-500 dark:bg-darkMode-ochre"></div>
           </div>
 
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {EDUCATION.map((item, index) => (
               <div
                 key={index}
-                className="bg-warmCream-100 p-8 md:p-12
+                className="bg-warmCream-100 dark:bg-darkMode-bgElevated p-8 md:p-12
                            transition-colors duration-500">
                 <div className="grid md:grid-cols-12 gap-6">
                   <div className="md:col-span-3">
                     <p className="font-body text-sm
-                                  text-charcoal-500">
+                                  text-charcoal-500 dark:text-darkMode-textFaint">
                       {item.year}
                     </p>
                   </div>
                   <div className="md:col-span-9">
                     <h3 className="font-display text-2xl md:text-3xl font-bold
-                                   text-charcoal-900">
+                                   text-charcoal-900 dark:text-darkMode-text">
                       {item.title}
                     </h3>
                     {item.description && (
                       <p className="font-body text-base
-                                    text-charcoal-700 mt-3">
+                                    text-charcoal-700 dark:text-darkMode-textMuted mt-3">
                         {item.description}
                       </p>
                     )}
@@ -121,40 +121,40 @@ const AboutPage: React.FC = () => {
 
       {/* Awards Section */}
       <section className="relative py-20 md:py-32
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           <div className="mb-16 md:mb-20">
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold
-                           text-charcoal-900
+                           text-charcoal-900 dark:text-darkMode-text
                            tracking-tight mb-6">
               獲獎紀錄
             </h2>
-            <div className="h-px w-16 bg-ochre-500"></div>
+            <div className="h-px w-16 bg-ochre-500 dark:bg-darkMode-ochre"></div>
           </div>
 
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {AWARDS.map((item, index) => (
               <div
                 key={index}
-                className="bg-warmCream-50 p-8 md:p-12
+                className="bg-warmCream-50 dark:bg-darkMode-bg p-8 md:p-12
                            transition-colors duration-500">
                 <div className="grid md:grid-cols-12 gap-6">
                   <div className="md:col-span-3">
                     <p className="font-body text-sm
-                                  text-charcoal-500">
+                                  text-charcoal-500 dark:text-darkMode-textFaint">
                       {item.year}
                     </p>
                   </div>
                   <div className="md:col-span-9">
                     <h3 className="font-display text-2xl md:text-3xl font-bold
-                                   text-ochre-500">
+                                   text-ochre-500 dark:text-darkMode-ochre">
                       {item.title}
                     </h3>
                     {item.description && (
                       <p className="font-body text-base
-                                    text-charcoal-700 mt-3">
+                                    text-charcoal-700 dark:text-darkMode-textMuted mt-3">
                         {item.description}
                       </p>
                     )}
@@ -172,34 +172,34 @@ const AboutPage: React.FC = () => {
 
           <div className="mb-16 md:mb-20">
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold
-                           text-charcoal-900
+                           text-charcoal-900 dark:text-darkMode-text
                            tracking-tight mb-6">
               經歷
             </h2>
-            <div className="h-px w-16 bg-ochre-500"></div>
+            <div className="h-px w-16 bg-ochre-500 dark:bg-darkMode-ochre"></div>
           </div>
 
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {EXPERIENCE.map((item, index) => (
               <div
                 key={index}
-                className="bg-warmCream-100 p-8 md:p-12
+                className="bg-warmCream-100 dark:bg-darkMode-bgElevated p-8 md:p-12
                            transition-colors duration-500">
                 <div className="grid md:grid-cols-12 gap-6">
                   <div className="md:col-span-3">
                     <p className="font-body text-sm
-                                  text-charcoal-500">
+                                  text-charcoal-500 dark:text-darkMode-textFaint">
                       {item.year}
                     </p>
                   </div>
                   <div className="md:col-span-9">
                     <h3 className="font-display text-2xl md:text-3xl font-bold
-                                   text-charcoal-900">
+                                   text-charcoal-900 dark:text-darkMode-text">
                       {item.title}
                     </h3>
                     {item.description && (
                       <p className="font-body text-base
-                                    text-charcoal-700 mt-3">
+                                    text-charcoal-700 dark:text-darkMode-textMuted mt-3">
                         {item.description}
                       </p>
                     )}
@@ -213,34 +213,34 @@ const AboutPage: React.FC = () => {
 
       {/* Training Section */}
       <section className="relative py-20 md:py-32
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           <div className="mb-16 md:mb-20">
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold
-                           text-charcoal-900
+                           text-charcoal-900 dark:text-darkMode-text
                            tracking-tight mb-6">
               專業訓練
             </h2>
-            <div className="h-px w-16 bg-ochre-500"></div>
+            <div className="h-px w-16 bg-ochre-500 dark:bg-darkMode-ochre"></div>
           </div>
 
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {TRAININGS.map((item, index) => (
               <div
                 key={index}
-                className="bg-warmCream-50 p-8 md:p-12
+                className="bg-warmCream-50 dark:bg-darkMode-bg p-8 md:p-12
                            transition-colors duration-500">
                 <div className="grid md:grid-cols-12 gap-6">
                   <div className="md:col-span-9">
                     <h3 className="font-display text-xl md:text-2xl font-semibold
-                                   text-charcoal-900">
+                                   text-charcoal-900 dark:text-darkMode-text">
                       {item.title}
                     </h3>
                     {item.details && (
                       <p className="font-body text-sm
-                                    text-charcoal-600 mt-2">
+                                    text-charcoal-600 dark:text-darkMode-textMuted mt-2">
                         {item.details}
                       </p>
                     )}
@@ -259,23 +259,23 @@ const AboutPage: React.FC = () => {
 
             <div className="mb-16 md:mb-20">
               <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold
-                             text-charcoal-900
+                             text-charcoal-900 dark:text-darkMode-text
                              tracking-tight mb-6">
                 其他專長
               </h2>
-              <div className="h-px w-16 bg-ochre-500"></div>
+              <div className="h-px w-16 bg-ochre-500 dark:bg-darkMode-ochre"></div>
             </div>
 
-            <div className="space-y-1 bg-border-light">
+            <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
               {OTHER_SKILLS.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-warmCream-100 p-8 md:p-12
+                  className="bg-warmCream-100 dark:bg-darkMode-bgElevated p-8 md:p-12
                              transition-colors duration-500">
                   <div className="grid md:grid-cols-12 gap-6">
                     <div className="md:col-span-3">
                       <h3 className="font-display text-xl md:text-2xl font-semibold
-                                     text-charcoal-900">
+                                     text-charcoal-900 dark:text-darkMode-text">
                         {item.category}
                       </h3>
                     </div>
@@ -285,9 +285,9 @@ const AboutPage: React.FC = () => {
                           <li
                             key={skillIndex}
                             className="font-body text-base
-                                       text-charcoal-700
+                                       text-charcoal-700 dark:text-darkMode-textMuted
                                        flex items-start">
-                            <span className="mr-3 text-ochre-500">•</span>
+                            <span className="mr-3 text-ochre-500 dark:text-darkMode-ochre">•</span>
                             <span>{skill}</span>
                           </li>
                         ))}

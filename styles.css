@@ -584,27 +584,27 @@ button:focus-visible {
 /* ========== DARK MODE - 温暖专业风格 ========== */
 
 .dark {
-  /* 背景层次 */
-  --bg-primary: #1a1614;
-  --bg-secondary: #252220;
-  --bg-elevated: #252220;
-  --bg-hover: #2d2926;
-  --bg-subtle: #1f1d1b;
+  /* 背景层次 - 更新為新配色 */
+  --bg-primary: #2a2826;
+  --bg-secondary: #35322f;
+  --bg-elevated: #35322f;
+  --bg-hover: #3d3936;
+  --bg-subtle: #252320;
 
-  /* 文本层次 */
-  --text-primary: #f5f2ed;
-  --text-secondary: #c4bcb4;
-  --text-muted: #8a837c;
+  /* 文本层次 - 更新為新配色 */
+  --text-primary: #e8e3db;
+  --text-secondary: #b8b0a6;
+  --text-muted: #918a80;
 
-  /* 边框 */
-  --border-color: #3a3632;
-  --border-light: #2d2926;
+  /* 边框 - 更新為新配色 */
+  --border-color: #44413d;
+  --border-light: #38352f;
 
-  /* 品牌色深色变体 */
-  --accent-ochre: #d4a574;
-  --accent-ochre-dim: #b8936a;
-  --accent-sage: #a8b89a;
-  --accent-sage-dim: #8a9a7e;
+  /* 品牌色深色变体 - 更新為新配色 */
+  --accent-ochre: #c7a378;
+  --accent-ochre-dim: #a88f6f;
+  --accent-sage: #9aaa8e;
+  --accent-sage-dim: #869780;
 }
 
 /* 全局背景和文字 */
@@ -685,6 +685,87 @@ button:focus-visible {
 /* 深色模式下的 Drop Cap */
 .dark .drop-cap::first-letter {
   color: var(--accent-ochre);
+}
+
+/* 深色模式下的 Hero Section */
+.dark .scroll-hero-title {
+  background: linear-gradient(
+    var(--text-primary) 60%,
+    color-mix(in oklch, var(--bg-primary), var(--text-primary))
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* 深色模式下的 Scroll Text Section */
+.dark .scroll-text-section .sticky-text {
+  background: linear-gradient(
+    var(--text-primary) 50%,
+    color-mix(in oklch, var(--bg-primary), var(--text-primary) 25%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.dark .scroll-text-section .verb-item:last-of-type {
+  background: linear-gradient(
+    var(--text-primary) 50%,
+    color-mix(in oklch, var(--bg-primary), var(--text-primary) 25%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  opacity: 1;
+}
+
+/* 深色模式下的標題樣式 */
+.dark .editorial-content h1,
+.dark .editorial-h1 {
+  color: var(--text-primary);
+}
+
+.dark .editorial-content h2,
+.dark .editorial-h2 {
+  color: var(--text-primary);
+}
+
+.dark .editorial-content h3,
+.dark .editorial-h3 {
+  color: var(--text-primary);
+}
+
+.dark .editorial-content p,
+.dark .editorial-p {
+  color: var(--text-secondary);
+}
+
+.dark .editorial-content strong,
+.dark .editorial-p strong {
+  color: var(--text-primary);
+}
+
+.dark .editorial-content em,
+.dark .editorial-p em {
+  color: var(--text-muted);
+}
+
+/* 深色模式下的列表樣式 - 提高可讀性 */
+.dark .editorial-content ul,
+.dark .editorial-content ol,
+.dark .editorial-list {
+  color: var(--text-secondary);
+}
+
+.dark .editorial-content li,
+.dark .editorial-list li {
+  color: var(--text-secondary);
+}
+
+.dark .editorial-content li strong,
+.dark .editorial-list li strong {
+  color: var(--text-primary);
 }
 
 /* ========== LIGHT BULB TOGGLE - CSS 变量 ========== */

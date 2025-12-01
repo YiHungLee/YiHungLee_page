@@ -33,17 +33,17 @@ const ProjectCategoryPage: React.FC = () => {
 
   if (!currentCategory) {
     return (
-      <div className="min-h-screen bg-warmCream-50
-                      flex items-center justify-center">
+      <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg
+                      flex items-center justify-center transition-colors duration-500">
         <div className="text-center space-y-6">
           <h1 className="font-display text-4xl md:text-5xl font-bold
-                         text-charcoal-900">
+                         text-charcoal-900 dark:text-darkMode-text">
             找不到此分類
           </h1>
           <Link
             to="/projects"
             className="inline-block font-body text-sm tracking-wide uppercase
-                       text-ochre-500
+                       text-ochre-500 dark:text-darkMode-ochre
                        editorial-underline">
             返回作品集
           </Link>
@@ -82,11 +82,11 @@ const ProjectCategoryPage: React.FC = () => {
     : [];
 
   return (
-    <div className="min-h-screen bg-warmCream-50 transition-colors duration-500">
+    <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500 subtle-texture">
 
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -96,7 +96,7 @@ const ProjectCategoryPage: React.FC = () => {
             <Link
               to="/projects"
               className="font-body text-xs tracking-widest uppercase
-                         text-charcoal-600
+                         text-charcoal-600 dark:text-darkMode-textMuted
                          editorial-underline">
               ← 返回作品集
             </Link>
@@ -108,7 +108,7 @@ const ProjectCategoryPage: React.FC = () => {
             {/* Subtitle */}
             <div className="opacity-0 animate-fade-in-up stagger-1">
               <p className="font-body text-xs tracking-widest uppercase
-                            text-charcoal-600">
+                            text-charcoal-600 dark:text-darkMode-textMuted">
                 {categoryDescriptions[currentCategory]}
               </p>
             </div>
@@ -116,18 +116,18 @@ const ProjectCategoryPage: React.FC = () => {
             {/* Main Title */}
             <div className="opacity-0 animate-fade-in-up stagger-2">
               <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-bold
-                             text-charcoal-900
+                             text-charcoal-900 dark:text-darkMode-text
                              tracking-tight leading-none optical-align">
                 {categoryLabels[currentCategory]}
               </h1>
 
-              <div className="h-px w-24 md:w-32 bg-ochre-500 mt-8"></div>
+              <div className="h-px w-24 md:w-32 bg-ochre-500 dark:bg-darkMode-ochre mt-8"></div>
             </div>
 
             {/* Description */}
             <div className="opacity-0 animate-fade-in-up stagger-3">
               <p className="font-body text-lg md:text-xl lg:text-2xl
-                            text-charcoal-700
+                            text-charcoal-700 dark:text-darkMode-textMuted
                             leading-relaxed max-w-3xl">
                 {categoryIntros[currentCategory]}
               </p>
@@ -137,11 +137,11 @@ const ProjectCategoryPage: React.FC = () => {
             <div className="opacity-0 animate-fade-in-up stagger-4">
               <div className="inline-flex items-center gap-4">
                 <div className="font-display text-5xl md:text-6xl font-bold
-                                text-ochre-500">
+                                text-ochre-500 dark:text-darkMode-ochre">
                   {categoryProjects.length}
                 </div>
                 <div className="font-body text-sm tracking-wide
-                                text-charcoal-600">
+                                text-charcoal-600 dark:text-darkMode-textMuted">
                   件作品
                 </div>
               </div>
@@ -154,14 +154,14 @@ const ProjectCategoryPage: React.FC = () => {
       <section className="relative py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
-          <div className="space-y-1 bg-border-light">
+          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {categoryProjects.map((project, index) => (
               <Link
                 key={project.id}
                 to={`/projects/${project.category}/${project.id}`}
-                className="group bg-warmCream-100
+                className="group bg-warmCream-100 dark:bg-darkMode-bgElevated
                            transition-all duration-500 ease-out-expo
-                           hover:bg-warmCream-50:bg-charcoal-800
+                           hover:bg-warmCream-50 dark:hover:bg-darkMode-bg
                            opacity-0 animate-fade-in-up cursor-pointer block"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -172,20 +172,20 @@ const ProjectCategoryPage: React.FC = () => {
 
                     {/* Index Number */}
                     <div className="font-display text-6xl md:text-7xl font-bold
-                                    text-charcoal-900
+                                    text-charcoal-900 dark:text-darkMode-text
                                     opacity-20">
                       {String(index + 1).padStart(2, '0')}
                     </div>
 
                     {/* Year & Type */}
                     <div className="space-y-2">
-                      <div className="h-px w-12 bg-border-light"></div>
+                      <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                       <p className="font-body text-sm
-                                    text-charcoal-500">
+                                    text-charcoal-500 dark:text-darkMode-textFaint">
                         {project.year}
                       </p>
                       <p className="font-body text-xs tracking-wide
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.type === 'research' && '研究'}
                         {project.type === 'tool' && '工具開發'}
                         {project.type === 'composition' && '音樂創作'}
@@ -195,9 +195,9 @@ const ProjectCategoryPage: React.FC = () => {
                     {/* Award Badge */}
                     {project.award && (
                       <div className="inline-block px-3 py-1 border border-fine
-                                      border-ochre-500
+                                      border-ochre-500 dark:border-darkMode-ochre
                                       font-body text-xs tracking-wide
-                                      text-ochre-500">
+                                      text-ochre-500 dark:text-darkMode-ochre">
                         獲獎作品
                       </div>
                     )}
@@ -208,17 +208,17 @@ const ProjectCategoryPage: React.FC = () => {
 
                     {/* Title */}
                     <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold
-                                   text-charcoal-900
+                                   text-charcoal-900 dark:text-darkMode-text
                                    tracking-tight leading-tight
                                    transition-colors duration-500
-                                   group-hover:text-ochre-500">
+                                   group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre">
                       {project.title}
                     </h3>
 
                     {/* Award Detail */}
                     {project.award && (
                       <p className="font-accent italic text-lg
-                                    text-ochre-600">
+                                    text-ochre-600 dark:text-darkMode-ochre">
                         {project.award}
                       </p>
                     )}
@@ -226,14 +226,14 @@ const ProjectCategoryPage: React.FC = () => {
                     {/* Venue */}
                     {project.venue && (
                       <p className="font-body text-base
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.venue}
                       </p>
                     )}
 
                     {/* Description */}
                     <p className="font-body text-base md:text-lg
-                                  text-charcoal-700
+                                  text-charcoal-700 dark:text-darkMode-textMuted
                                   leading-relaxed max-w-3xl">
                       {project.description}
                     </p>
@@ -242,7 +242,7 @@ const ProjectCategoryPage: React.FC = () => {
                     {project.techStack && project.techStack.length > 0 && (
                       <div className="pt-4">
                         <p className="font-body text-xs tracking-wide uppercase
-                                      text-charcoal-600 mb-3">
+                                      text-charcoal-600 dark:text-darkMode-textMuted mb-3">
                           技術棧
                         </p>
                         <div className="flex flex-wrap gap-3">
@@ -250,11 +250,11 @@ const ProjectCategoryPage: React.FC = () => {
                             <span
                               key={tech}
                               className="font-body text-xs tracking-wide
-                                         text-charcoal-700
+                                         text-charcoal-700 dark:text-darkMode-textMuted
                                          px-3 py-1 border border-fine
-                                         border-border-light
+                                         border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
-                                         group-hover:border-ochre-500:border-ochre-400">
+                                         group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                               {tech}
                             </span>
                           ))}
@@ -266,7 +266,7 @@ const ProjectCategoryPage: React.FC = () => {
                     {project.tools && project.tools.length > 0 && (
                       <div className="pt-4">
                         <p className="font-body text-xs tracking-wide uppercase
-                                      text-charcoal-600 mb-3">
+                                      text-charcoal-600 dark:text-darkMode-textMuted mb-3">
                           製作工具
                         </p>
                         <div className="flex flex-wrap gap-3">
@@ -274,11 +274,11 @@ const ProjectCategoryPage: React.FC = () => {
                             <span
                               key={tool}
                               className="font-body text-xs tracking-wide
-                                         text-charcoal-700
+                                         text-charcoal-700 dark:text-darkMode-textMuted
                                          px-3 py-1 border border-fine
-                                         border-border-light
+                                         border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
-                                         group-hover:border-ochre-500:border-ochre-400">
+                                         group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                               {tool}
                             </span>
                           ))}
@@ -289,7 +289,7 @@ const ProjectCategoryPage: React.FC = () => {
                     {/* Audio Duration */}
                     {project.duration && (
                       <p className="font-body text-sm
-                                    text-charcoal-600">
+                                    text-charcoal-600 dark:text-darkMode-textMuted">
                         時長：{project.duration}
                       </p>
                     )}
@@ -301,11 +301,11 @@ const ProjectCategoryPage: React.FC = () => {
                           <span
                             key={tag}
                             className="font-body text-xs tracking-wide
-                                       text-charcoal-600
+                                       text-charcoal-600 dark:text-darkMode-textMuted
                                        px-3 py-1 border border-fine
-                                       border-border-light
+                                       border-border-light dark:border-darkMode-border
                                        transition-colors duration-300
-                                       group-hover:border-ochre-500:border-ochre-400">
+                                       group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                             {tag}
                           </span>
                         ))}
@@ -321,7 +321,7 @@ const ProjectCategoryPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           GitHub Repository
@@ -334,7 +334,7 @@ const ProjectCategoryPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           Live Demo
@@ -347,7 +347,7 @@ const ProjectCategoryPage: React.FC = () => {
                           rel="noopener noreferrer"
                           onClick={(e: React.MouseEvent) => e.stopPropagation()}
                           className="font-body text-sm tracking-wide uppercase
-                                     text-charcoal-700
+                                     text-charcoal-700 dark:text-darkMode-textMuted
                                      editorial-underline
                                      transition-opacity duration-300 hover:opacity-60">
                           試聽音樂
@@ -358,7 +358,7 @@ const ProjectCategoryPage: React.FC = () => {
                 </div>
 
                 {/* Hover Indicator Line */}
-                <div className="h-px w-0 bg-ochre-500
+                <div className="h-px w-0 bg-ochre-500 dark:bg-darkMode-ochre
                                 transition-all duration-500 ease-out-expo
                                 group-hover:w-full"></div>
               </Link>
@@ -368,7 +368,7 @@ const ProjectCategoryPage: React.FC = () => {
           {/* Empty State */}
           {categoryProjects.length === 0 && (
             <div className="text-center py-20">
-              <p className="font-body text-lg text-charcoal-600">
+              <p className="font-body text-lg text-charcoal-600 dark:text-darkMode-textMuted">
                 此分類暫無作品
               </p>
             </div>
@@ -378,13 +378,13 @@ const ProjectCategoryPage: React.FC = () => {
 
       {/* Global Music Player for Music Category */}
       {currentCategory === 'music' && allMusicTracks.length > 0 && (
-        <section className="relative py-20 md:py-32 bg-warmCream-100">
+        <section className="relative py-20 md:py-32 bg-warmCream-100 dark:bg-darkMode-bgElevated transition-colors duration-500">
           <div className="max-w-4xl mx-auto px-6 md:px-12">
             <div className="text-center mb-12 opacity-0 animate-fade-in-up">
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-charcoal-900 mb-4">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-charcoal-900 dark:text-darkMode-text mb-4">
                 播放全部音樂
               </h2>
-              <p className="font-body text-lg text-charcoal-600">
+              <p className="font-body text-lg text-charcoal-600 dark:text-darkMode-textMuted">
                 收錄 {categoryProjects.length} 張專輯，共 {allMusicTracks.length} 首曲目
               </p>
             </div>
@@ -401,42 +401,42 @@ const ProjectCategoryPage: React.FC = () => {
 
       {/* Navigation to Other Categories */}
       <section className="relative py-20 md:py-32
-                          bg-warmCream-100
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="space-y-12">
 
-            <div className="h-px w-full bg-border-light"></div>
+            <div className="h-px w-full bg-border-light dark:bg-darkMode-border"></div>
 
             <div>
               <p className="font-body text-xs tracking-widest uppercase
-                            text-charcoal-600 mb-8">
+                            text-charcoal-600 dark:text-darkMode-textMuted mb-8">
                 探索其他分類
               </p>
 
-              <div className="grid md:grid-cols-3 gap-1 bg-border-light">
+              <div className="grid md:grid-cols-3 gap-1 bg-border-light dark:bg-darkMode-border">
                 {validCategories
                   .filter((cat) => cat !== currentCategory)
                   .map((cat) => (
                     <Link
                       key={cat}
                       to={`/projects/${cat}`}
-                      className="group bg-warmCream-50
+                      className="group bg-warmCream-50 dark:bg-darkMode-bg
                                  p-8 md:p-12
                                  transition-all duration-500 ease-out-expo
-                                 hover:bg-warmCream-200:bg-charcoal-800">
+                                 hover:bg-warmCream-200 dark:hover:bg-darkMode-bgElevated">
                       <div className="space-y-4">
                         <h3 className="font-display text-2xl md:text-3xl font-bold
-                                       text-charcoal-900
+                                       text-charcoal-900 dark:text-darkMode-text
                                        transition-colors duration-500
-                                       group-hover:text-ochre-500">
+                                       group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre">
                           {categoryLabels[cat]}
                         </h3>
                         <p className="font-body text-sm
-                                      text-charcoal-600">
+                                      text-charcoal-600 dark:text-darkMode-textMuted">
                           {categoryDescriptions[cat]}
                         </p>
-                        <div className="h-px w-0 bg-ochre-500
+                        <div className="h-px w-0 bg-ochre-500 dark:bg-darkMode-ochre
                                         transition-all duration-500 ease-out-expo
                                         group-hover:w-full"></div>
                       </div>
@@ -445,7 +445,7 @@ const ProjectCategoryPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="h-px w-full bg-border-light"></div>
+            <div className="h-px w-full bg-border-light dark:bg-darkMode-border"></div>
           </div>
         </div>
       </section>

@@ -29,10 +29,26 @@ export const Navigation: React.FC = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-warmCream-50/95 dark:bg-darkMode-bg/95 backdrop-blur-md py-4 border-b border-fine border-border-light dark:border-darkMode-border'
+            ? 'bg-warmCream-50/95 dark:bg-darkMode-bg/95 backdrop-blur-md py-4 border-b border-fine border-border-light dark:border-darkMode-border nav-glow-dark'
             : 'bg-transparent py-6'
         }`}
       >
+        <style>{`
+          /* 暗色模式下的微弱崁燈發光效果 */
+          .dark .nav-glow-dark::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(to bottom,
+              rgba(232, 227, 219, 0.03) 0%,
+              rgba(232, 227, 219, 0.015) 50%,
+              transparent 100%);
+            pointer-events: none;
+          }
+        `}</style>
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex justify-between items-center">
 

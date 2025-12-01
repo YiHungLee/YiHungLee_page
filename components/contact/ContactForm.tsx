@@ -100,18 +100,18 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <section className="py-32 md:py-40 bg-warmCream-100 transition-colors duration-500">
+    <section className="py-32 md:py-40 bg-warmCream-100 dark:bg-darkMode-bg transition-colors duration-500">
       <div className="max-w-3xl mx-auto px-6 md:px-12">
 
         {/* Form Header */}
         <div className="mb-16 opacity-0 animate-fade-in-up">
           <h2 className="font-display text-6xl md:text-7xl lg:text-8xl
-                     font-bold text-charcoal-900 tracking-tight
+                     font-bold text-charcoal-900 dark:text-darkMode-text tracking-tight
                      text-center mb-8 optical-align">
         取得聯繫
       </h2>
-          
-          <p className="font-body text-lg md:text-xl text-charcoal-600
+
+          <p className="font-body text-lg md:text-xl text-charcoal-600 dark:text-darkMode-textMuted
                     text-center max-w-2xl leading-relaxed">
         演講邀約｜課程邀請｜找我家教
       </p>
@@ -124,8 +124,8 @@ const ContactForm: React.FC = () => {
           <div className="space-y-3">
             <label
               htmlFor="name"
-              className="font-body text-sm tracking-wider uppercase text-charcoal-600">
-              姓名 <span className="text-ochre-500">*</span>
+              className="font-body text-sm tracking-wider uppercase text-charcoal-600 dark:text-darkMode-textMuted">
+              姓名 <span className="text-ochre-500 dark:text-darkMode-ochre">*</span>
             </label>
             <input
               type="text"
@@ -134,15 +134,15 @@ const ContactForm: React.FC = () => {
               value={formData.name}
               onChange={handleChange}
               className={`w-full px-6 py-4 font-body text-lg
-                         bg-warmCream-50 border-2
-                         ${errors.name ? 'border-red-500' : 'border-border-light'}
-                         text-charcoal-900
-                         focus:outline-none focus:border-ochre-500
+                         bg-warmCream-50 dark:bg-darkMode-bgSubtle border-2
+                         ${errors.name ? 'border-red-500 dark:border-red-600' : 'border-border-light dark:border-darkMode-border'}
+                         text-charcoal-900 dark:text-darkMode-text
+                         focus:outline-none focus:border-ochre-500 dark:focus:border-darkMode-ochre
                          transition-colors duration-300`}
               placeholder="您的姓名"
             />
             {errors.name && (
-              <p className="font-body text-sm text-red-500">{errors.name}</p>
+              <p className="font-body text-sm text-red-500 dark:text-red-400">{errors.name}</p>
             )}
           </div>
 
@@ -150,8 +150,8 @@ const ContactForm: React.FC = () => {
           <div className="space-y-3">
             <label
               htmlFor="email"
-              className="font-body text-sm tracking-wider uppercase text-charcoal-600">
-              Email <span className="text-ochre-500">*</span>
+              className="font-body text-sm tracking-wider uppercase text-charcoal-600 dark:text-darkMode-textMuted">
+              Email <span className="text-ochre-500 dark:text-darkMode-ochre">*</span>
             </label>
             <input
               type="email"
@@ -160,15 +160,15 @@ const ContactForm: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               className={`w-full px-6 py-4 font-body text-lg
-                         bg-warmCream-50 border-2
-                         ${errors.email ? 'border-red-500' : 'border-border-light'}
-                         text-charcoal-900
-                         focus:outline-none focus:border-ochre-500
+                         bg-warmCream-50 dark:bg-darkMode-bgSubtle border-2
+                         ${errors.email ? 'border-red-500 dark:border-red-600' : 'border-border-light dark:border-darkMode-border'}
+                         text-charcoal-900 dark:text-darkMode-text
+                         focus:outline-none focus:border-ochre-500 dark:focus:border-darkMode-ochre
                          transition-colors duration-300`}
               placeholder="your.email@example.com"
             />
             {errors.email && (
-              <p className="font-body text-sm text-red-500">{errors.email}</p>
+              <p className="font-body text-sm text-red-500 dark:text-red-400">{errors.email}</p>
             )}
           </div>
 
@@ -176,7 +176,7 @@ const ContactForm: React.FC = () => {
           <div className="space-y-3">
             <label
               htmlFor="category"
-              className="font-body text-sm tracking-wider uppercase text-charcoal-600">
+              className="font-body text-sm tracking-wider uppercase text-charcoal-600 dark:text-darkMode-textMuted">
               聯絡類別
             </label>
             <select
@@ -185,9 +185,9 @@ const ContactForm: React.FC = () => {
               value={formData.category}
               onChange={handleChange}
               className="w-full px-6 py-4 font-body text-lg
-                         bg-warmCream-50 border-2 border-border-light
-                         text-charcoal-900
-                         focus:outline-none focus:border-ochre-500
+                         bg-warmCream-50 dark:bg-darkMode-bgSubtle border-2 border-border-light dark:border-darkMode-border
+                         text-charcoal-900 dark:text-darkMode-text
+                         focus:outline-none focus:border-ochre-500 dark:focus:border-darkMode-ochre
                          transition-colors duration-300
                          cursor-pointer"
             >
@@ -202,8 +202,8 @@ const ContactForm: React.FC = () => {
           <div className="space-y-3">
             <label
               htmlFor="message"
-              className="font-body text-sm tracking-wider uppercase text-charcoal-600">
-              訊息 <span className="text-ochre-500">*</span>
+              className="font-body text-sm tracking-wider uppercase text-charcoal-600 dark:text-darkMode-textMuted">
+              訊息 <span className="text-ochre-500 dark:text-darkMode-ochre">*</span>
             </label>
             <textarea
               id="message"
@@ -212,16 +212,16 @@ const ContactForm: React.FC = () => {
               onChange={handleChange}
               rows={6}
               className={`w-full px-6 py-4 font-body text-lg
-                         bg-warmCream-50 border-2
-                         ${errors.message ? 'border-red-500' : 'border-border-light'}
-                         text-charcoal-900
-                         focus:outline-none focus:border-ochre-500
+                         bg-warmCream-50 dark:bg-darkMode-bgSubtle border-2
+                         ${errors.message ? 'border-red-500 dark:border-red-600' : 'border-border-light dark:border-darkMode-border'}
+                         text-charcoal-900 dark:text-darkMode-text
+                         focus:outline-none focus:border-ochre-500 dark:focus:border-darkMode-ochre
                          transition-colors duration-300
                          resize-y`}
               placeholder="請告訴我您的想法或需求..."
             />
             {errors.message && (
-              <p className="font-body text-sm text-red-500">{errors.message}</p>
+              <p className="font-body text-sm text-red-500 dark:text-red-400">{errors.message}</p>
             )}
           </div>
 
@@ -232,15 +232,17 @@ const ContactForm: React.FC = () => {
               disabled={status === 'submitting'}
               className="group relative w-full md:w-auto px-12 py-4
                          font-display text-xl font-semibold
-                         bg-ochre-500 text-warmCream-50
-                         hover:bg-ochre-600
-                         disabled:bg-charcoal-600 disabled:cursor-not-allowed
+                         bg-ochre-500 dark:bg-darkMode-ochre
+                         text-warmCream-50 dark:text-charcoal-900
+                         hover:bg-ochre-600 dark:hover:bg-darkMode-ochreDim
+                         hover:text-warmCream-50 dark:hover:text-darkMode-text
+                         disabled:bg-charcoal-600 dark:disabled:bg-darkMode-textMuted disabled:cursor-not-allowed
                          transition-all duration-500 ease-out-expo
                          overflow-hidden">
               <span className="relative z-10">
                 {status === 'submitting' ? '傳送中...' : '送出訊息'}
               </span>
-              <div className="absolute inset-0 bg-charcoal-900
+              <div className="absolute inset-0 bg-charcoal-900 dark:bg-darkMode-bgElevated
                               transform translate-y-full
                               group-hover:translate-y-0
                               transition-transform duration-500 ease-out-expo
@@ -250,16 +252,16 @@ const ContactForm: React.FC = () => {
 
           {/* Status Messages */}
           {status === 'success' && (
-            <div className="p-6 bg-green-50 border-2 border-green-500">
-              <p className="font-body text-lg text-green-700">
+            <div className="p-6 bg-green-50 dark:bg-darkMode-bgElevated border-2 border-green-500 dark:border-green-600">
+              <p className="font-body text-lg text-green-700 dark:text-green-400">
                 ✓ 訊息已成功送出！我會盡快回覆您。
               </p>
             </div>
           )}
 
           {status === 'error' && (
-            <div className="p-6 bg-red-50 border-2 border-red-500">
-              <p className="font-body text-lg text-red-700">
+            <div className="p-6 bg-red-50 dark:bg-darkMode-bgElevated border-2 border-red-500 dark:border-red-600">
+              <p className="font-body text-lg text-red-700 dark:text-red-400">
                 ✗ 送出時發生錯誤，請稍後再試或直接寄信至我的 Email。
               </p>
             </div>
