@@ -16,7 +16,7 @@ interface FormErrors {
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 // Cloudflare Worker endpoint (secure proxy to Google Apps Script)
-const WORKER_URL = import.meta.env.VITE_WORKER_URL || 'https://yi-hung-lee-contact-form.your-subdomain.workers.dev';
+const WORKER_URL = import.meta.env.VITE_WORKER_URL || 'yi-hung-lee-contact-form.lee2952000.workers.dev';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
