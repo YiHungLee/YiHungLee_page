@@ -6,7 +6,7 @@ title: Leave With No Message
 year: 2025
 description: 使用 Cubase 製作的Lo-fi音樂，音樂以柔和的鋼琴或木吉他為核心製作的聲音內容。平穩但是帶一點點小憂鬱
 featured: true
-albumCover: https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop
+albumCover: assets/file-20251130105544.png
 tracks:
   - id: leave-with-no-message-1
     title: Leave With No Message - Part 1
