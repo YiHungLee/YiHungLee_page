@@ -9,8 +9,8 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen">
       <HeroNew />
       <IdentityGateway />
-      <FeaturedProjects />
       <LatestPosts />
+      <FeaturedProjects />
     </div>
   );
 };

@@ -14,9 +14,9 @@ techStack:                          # 技術棧列表
   - TypeScript
   - Node.js
   - PostgreSQL
-githubUrl: https://github.com/username/repo  # GitHub 連結
-liveUrl: https://example.com        # Live Demo 連結
-imageUrl:   # 預覽圖片
+githubUrl: https://github.com/counselearning/TheraNotes  # GitHub 連結
+liveUrl: https://theranotes.net/demo        # Live Demo 連結
+imageUrl:
 tags:                               # 標籤列表
   - Web開發
   - 全端
