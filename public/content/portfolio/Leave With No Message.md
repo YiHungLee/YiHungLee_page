@@ -11,17 +11,17 @@ tracks:
   - id: leave-with-no-message-1
     title: Leave With No Message - Part 1
     audioUrl: https://music.yi-hung-lee.work/leave%20with%20no%20message/leave%20with%20no%20message1.mp3
-    duration: 2:13
+    duration: 02:13
     trackNumber: 1
   - id: leave-with-no-message-2
     title: Leave With No Message - Part 2
     audioUrl: https://music.yi-hung-lee.work/leave%20with%20no%20message/leave%20with%20no%20message2.mp3
-    duration: 3:58
+    duration: 03:58
     trackNumber: 2
   - id: leave-with-no-message-3
     title: Leave With No Message - Part 3
     audioUrl: https://music.yi-hung-lee.work/leave%20with%20no%20message/leave%20with%20no%20message3.mp3
-    duration: 3:59
+    duration: 03:59
     trackNumber: 3
 tools:
   - Cubase

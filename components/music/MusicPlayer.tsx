@@ -175,6 +175,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           50% { opacity: 0.2; }
         }
 
+        .vinyl-grooves {
+          background: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+        }
+
+        .dark .vinyl-grooves {
+          background: repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+        }
+
         .vinyl-record {
           animation: ${isPlaying ? 'spin-vinyl 3s linear infinite' : 'none'};
           transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -208,9 +216,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           background-color: #f5f3f0;
         }
 
+        .dark .playlist-item:hover {
+          background-color: #3d3936;
+        }
+
         .playlist-item.active {
           background-color: #faf8f5;
           border-left: 3px solid #c4885f;
+        }
+
+        .dark .playlist-item.active {
+          background-color: #35322f;
+          border-left: 3px solid #c7a378;
         }
 
         /* Volume slider styling for all browsers including mobile */
@@ -221,7 +238,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           height: 8px;
           border-radius: 4px;
           outline: none;
-          background: transparent;
+          background: linear-gradient(to right, #c4885f 0%, #c4885f var(--volume-percent, 70%), #f5f3f0 var(--volume-percent, 70%), #f5f3f0 100%);
+        }
+
+        .dark .volume-slider {
+          background: linear-gradient(to right, #c7a378 0%, #c7a378 var(--volume-percent, 70%), #44413d var(--volume-percent, 70%), #44413d 100%);
         }
 
         /* Webkit browsers (Chrome, Safari, Edge) */
@@ -235,6 +256,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
           transition: transform 0.2s ease;
+        }
+
+        .dark .volume-slider::-webkit-slider-thumb {
+          background: #c7a378;
         }
 
         .volume-slider::-webkit-slider-thumb:hover {
@@ -257,6 +282,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           transition: transform 0.2s ease;
         }
 
+        .dark .volume-slider::-moz-range-thumb {
+          background: #c7a378;
+        }
+
         .volume-slider::-moz-range-thumb:hover {
           transform: scale(1.2);
         }
@@ -270,6 +299,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           height: 8px;
           border-radius: 4px;
           background: #f5f3f0;
+        }
+
+        .dark .volume-slider::-moz-range-track {
+          background: #44413d;
         }
 
         /* IE/Edge legacy */
@@ -302,20 +335,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       `}</style>
 
       {/* Main Player */}
-      <div className="bg-warmCream-50 rounded-lg border border-fine border-border-light p-8 md:p-12 shadow-lg">
+      <div className="bg-warmCream-50 dark:bg-darkMode-bgElevated rounded-lg border border-fine border-border-light dark:border-darkMode-border p-8 md:p-12 shadow-lg">
 
         {/* Vinyl Record Visual */}
         <div className="flex justify-center mb-12">
           <div className="relative">
             {/* Vinyl disc */}
-            <div className={`vinyl-record relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-charcoal-900 via-charcoal-800 to-charcoal-900 shadow-2xl ${!isPlaying ? 'paused' : ''}`}>
+            <div className={`vinyl-record relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-charcoal-900 via-charcoal-800 to-charcoal-900 dark:from-warmCream-200 dark:via-warmCream-300 dark:to-warmCream-200 shadow-2xl ${!isPlaying ? 'paused' : ''}`}>
               {/* Grooves */}
-              <div className="absolute inset-0 rounded-full" style={{
-                background: 'repeating-radial-gradient(circle at center, transparent 0, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
-              }}></div>
+              <div className="absolute inset-0 rounded-full vinyl-grooves"></div>
 
               {/* Center label */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 md:w-32 md:h-32 rounded-full bg-warmCream-100 border-4 border-charcoal-800 shadow-inner flex items-center justify-center overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 md:w-32 md:h-32 rounded-full bg-warmCream-100 dark:bg-charcoal-800 border-4 border-charcoal-800 dark:border-warmCream-200 shadow-inner flex items-center justify-center overflow-hidden">
                 {displayAlbumCover ? (
                   <img
                     src={displayAlbumCover}
@@ -324,7 +355,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   />
                 ) : (
                   <div className="text-center">
-                    <div className="font-display text-xs text-ochre-600 tracking-wider">
+                    <div className="font-display text-xs text-ochre-600 dark:text-darkMode-ochre tracking-wider">
                       {currentTrack.trackNumber || currentTrackIndex + 1}
                     </div>
                   </div>
@@ -332,7 +363,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               </div>
 
               {/* Vinyl hole */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-charcoal-950"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-charcoal-950 dark:bg-warmCream-50"></div>
 
               {/* Playing indicator glow */}
               {isPlaying && (
@@ -341,11 +372,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
 
             {/* Tonearm (decorative) */}
-            <div className={`absolute -right-6 top-8 w-32 h-1 bg-charcoal-700 origin-right transition-transform duration-700 ${isPlaying ? '-rotate-12' : 'rotate-12'}`} style={{
+            <div className={`absolute -right-6 top-8 w-32 h-1 bg-charcoal-700 dark:bg-warmCream-300 origin-right transition-transform duration-700 ${isPlaying ? '-rotate-12' : 'rotate-12'}`} style={{
               borderRadius: '2px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}>
-              <div className="absolute left-0 w-3 h-3 bg-ochre-500 rounded-full -translate-y-1"></div>
+              <div className="absolute left-0 w-3 h-3 bg-ochre-500 dark:bg-darkMode-ochre rounded-full -translate-y-1"></div>
             </div>
           </div>
         </div>
@@ -353,15 +384,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         {/* Track Info */}
         <div className="text-center mb-8 space-y-3">
           {displayAlbumTitle && (
-            <p className="font-body text-sm tracking-wider uppercase text-charcoal-600">
+            <p className="font-body text-sm tracking-wider uppercase text-charcoal-600 dark:text-darkMode-textMuted">
               {displayAlbumTitle}
             </p>
           )}
-          <h3 className="font-display text-2xl md:text-3xl font-bold text-charcoal-900 tracking-tight">
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-charcoal-900 dark:text-darkMode-text tracking-tight">
             {currentTrack.title}
           </h3>
           {currentTrack.trackNumber && (
-            <p className="font-body text-sm text-charcoal-500">
+            <p className="font-body text-sm text-charcoal-500 dark:text-darkMode-textFaint">
               曲目 {currentTrack.trackNumber} / {tracks.length}
             </p>
           )}
@@ -370,17 +401,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         {/* Progress Bar */}
         <div className="mb-6">
           <div
-            className="h-2 bg-warmCream-200 rounded-full cursor-pointer relative overflow-hidden group"
+            className="h-2 bg-warmCream-200 dark:bg-darkMode-border rounded-full cursor-pointer relative overflow-hidden group"
             onClick={handleSeek}
           >
             <div
-              className="progress-bar-fill h-full bg-gradient-to-r from-ochre-500 to-ochre-600 rounded-full relative"
+              className="progress-bar-fill h-full bg-gradient-to-r from-ochre-500 to-ochre-600 dark:from-darkMode-ochre dark:to-darkMode-ochreDim rounded-full relative"
               style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
             >
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-ochre-500 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-ochre-500 dark:bg-darkMode-ochre rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
           </div>
-          <div className="flex justify-between mt-2 font-body text-xs text-charcoal-500">
+          <div className="flex justify-between mt-2 font-body text-xs text-charcoal-500 dark:text-darkMode-textMuted">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -391,7 +422,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {/* Shuffle */}
           <button
             onClick={() => setIsShuffled(!isShuffled)}
-            className={`control-button p-3 ${isShuffled ? 'text-ochre-500' : 'text-charcoal-600'} hover:text-ochre-500`}
+            className={`control-button p-3 ${isShuffled ? 'text-ochre-500 dark:text-darkMode-ochre' : 'text-charcoal-600 dark:text-darkMode-textMuted'} hover:text-ochre-500 dark:hover:text-darkMode-ochre`}
             title="隨機播放"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -402,7 +433,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {/* Previous */}
           <button
             onClick={previousTrack}
-            className="control-button p-3 text-charcoal-700 hover:text-ochre-500"
+            className="control-button p-3 text-charcoal-700 dark:text-darkMode-text hover:text-ochre-500 dark:hover:text-darkMode-ochre"
             title="上一首"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -413,7 +444,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {/* Play/Pause */}
           <button
             onClick={togglePlay}
-            className="control-button p-5 bg-ochre-500 text-white rounded-full hover:bg-ochre-600 shadow-lg"
+            className="control-button p-5 bg-ochre-500 dark:bg-darkMode-ochre text-white rounded-full hover:bg-ochre-600 dark:hover:bg-darkMode-ochreDim shadow-lg"
             title={isPlaying ? '暫停' : '播放'}
           >
             {isPlaying ? (
@@ -430,7 +461,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {/* Next */}
           <button
             onClick={nextTrack}
-            className="control-button p-3 text-charcoal-700 hover:text-ochre-500"
+            className="control-button p-3 text-charcoal-700 dark:text-darkMode-text hover:text-ochre-500 dark:hover:text-darkMode-ochre"
             title="下一首"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -441,7 +472,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {/* Loop */}
           <button
             onClick={() => setIsLooping(!isLooping)}
-            className={`control-button p-3 ${isLooping ? 'text-ochre-500' : 'text-charcoal-600'} hover:text-ochre-500`}
+            className={`control-button p-3 ${isLooping ? 'text-ochre-500 dark:text-darkMode-ochre' : 'text-charcoal-600 dark:text-darkMode-textMuted'} hover:text-ochre-500 dark:hover:text-darkMode-ochre`}
             title="循環播放"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -453,7 +484,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
         {/* Volume Control */}
         <div className="flex items-center gap-3 justify-center max-w-xs mx-auto">
-          <svg className="w-5 h-5 text-charcoal-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-charcoal-600 dark:text-darkMode-textMuted flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
           </svg>
           <div className="flex-1 relative">
@@ -466,11 +497,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               onChange={handleVolumeChange}
               className="volume-slider"
               style={{
-                background: `linear-gradient(to right, #c4885f 0%, #c4885f ${volume * 100}%, #f5f3f0 ${volume * 100}%, #f5f3f0 100%)`
+                // @ts-ignore - CSS custom property
+                '--volume-percent': `${volume * 100}%`
               }}
             />
           </div>
-          <span className="font-body text-xs text-charcoal-600 w-10 text-right flex-shrink-0">
+          <span className="font-body text-xs text-charcoal-600 dark:text-darkMode-textMuted w-10 text-right flex-shrink-0">
             {Math.round(volume * 100)}%
           </span>
         </div>
@@ -478,9 +510,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
       {/* Playlist */}
       {showPlaylist && tracks.length > 1 && (
-        <div className="mt-6 bg-warmCream-100 rounded-lg border border-fine border-border-light overflow-hidden">
-          <div className="p-4 border-b border-border-light">
-            <h4 className="font-display text-lg font-bold text-charcoal-900">
+        <div className="mt-6 bg-warmCream-100 dark:bg-darkMode-bgSubtle rounded-lg border border-fine border-border-light dark:border-darkMode-border overflow-hidden">
+          <div className="p-4 border-b border-border-light dark:border-darkMode-border">
+            <h4 className="font-display text-lg font-bold text-charcoal-900 dark:text-darkMode-text">
               播放清單 ({tracks.length} 首曲目)
             </h4>
           </div>
@@ -495,26 +527,26 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               >
                 <div className="flex-shrink-0 w-8 text-center">
                   {index === currentTrackIndex && isPlaying ? (
-                    <svg className="w-4 h-4 mx-auto text-ochre-500" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 mx-auto text-ochre-500 dark:text-darkMode-ochre" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z"/>
                     </svg>
                   ) : (
-                    <span className="font-body text-sm text-charcoal-500">
+                    <span className="font-body text-sm text-charcoal-500 dark:text-darkMode-textMuted">
                       {track.trackNumber || index + 1}
                     </span>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-body text-sm font-medium text-charcoal-900 truncate">
+                  <p className="font-body text-sm font-medium text-charcoal-900 dark:text-darkMode-text truncate">
                     {track.title}
                   </p>
                   {track.albumTitle && (
-                    <p className="font-body text-xs text-charcoal-600 truncate">
+                    <p className="font-body text-xs text-charcoal-600 dark:text-darkMode-textMuted truncate">
                       {track.albumTitle}
                     </p>
                   )}
                 </div>
-                <div className="flex-shrink-0 font-body text-xs text-charcoal-500">
+                <div className="flex-shrink-0 font-body text-xs text-charcoal-500 dark:text-darkMode-textMuted">
                   {track.duration}
                 </div>
               </button>
@@ -524,7 +556,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       )}
 
       {/* Keyboard Shortcuts Hint */}
-      <div className="mt-4 text-center font-body text-xs text-charcoal-500">
+      <div className="mt-4 text-center font-body text-xs text-charcoal-500 dark:text-darkMode-textFaint">
         鍵盤快捷鍵：空格鍵 播放/暫停 | ← → 切換曲目
       </div>
     </div>
