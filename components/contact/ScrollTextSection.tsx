@@ -62,7 +62,7 @@ const ScrollTextSection: React.FC<ScrollTextSectionProps> = ({
           trigger: item,
           start: 'center center+=100',  // Corresponds to CSS calc(50% - 1lh)
           end: 'center center-=100',    // Corresponds to CSS calc(50% + 1lh)
-          scrub: 0.5,  // Increased from 0.2 for smoother transitions on mobile
+          scrub: 0.2,  // Increased from 0.2 for smoother transitions on mobile
         }
       })
       .to(item, {
