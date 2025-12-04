@@ -17,7 +17,33 @@ const BlogListPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const postsListRef = useRef<HTMLElement>(null);
+
+  const POSTS_PER_PAGE = 10;
+
+  // 從 localStorage 讀取已讀文章
+  useEffect(() => {
+    const stored = localStorage.getItem('readBlogPosts');
+    if (stored) {
+      try {
+        const parsedSet = new Set<string>(JSON.parse(stored));
+        setReadPosts(parsedSet);
+      } catch (e) {
+        console.error('Failed to parse read posts:', e);
+      }
+    }
+  }, []);
+
+  // 標記文章為已讀
+  const markAsRead = (postId: string) => {
+    const newReadPosts = new Set(readPosts);
+    newReadPosts.add(postId);
+    setReadPosts(newReadPosts);
+    localStorage.setItem('readBlogPosts', JSON.stringify(Array.from(newReadPosts)));
+  };
 
   // 監聽滾動事件，控制「返回頂部」按鈕的顯示
   useEffect(() => {
@@ -59,15 +85,40 @@ const BlogListPage: React.FC = () => {
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  // 分頁邏輯
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
   const categories: BlogCategory[] = ['all', 'professional', 'creative', 'casual'];
 
-  // 處理分類變更並滾動到 Posts List
-  const handleCategoryChange = (category: BlogCategory) => {
-    setSelectedCategory(category);
-
+  // 處理標籤點擊
+  const handleTagClick = (tag: string) => {
+    setSearchQuery(tag);
+    setCurrentPage(1);
+    // 滾動到文章列表
     setTimeout(() => {
       if (postsListRef.current) {
-        const headerOffset = 80; // sticky header 的高度 (top-20 = 5rem = 80px)
+        const headerOffset = 80;
+        const elementPosition = postsListRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  // 處理分類變更並滾動到 Posts List（帶過渡效果）
+  const handleCategoryChange = (category: BlogCategory) => {
+    setIsTransitioning(true);
+    setCurrentPage(1); // 重置到第一頁
+
+    setTimeout(() => {
+      setSelectedCategory(category);
+      setIsTransitioning(false);
+
+      if (postsListRef.current) {
+        const headerOffset = 80;
         const elementPosition = postsListRef.current.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
@@ -76,7 +127,23 @@ const BlogListPage: React.FC = () => {
           behavior: 'smooth'
         });
       }
-    }, 0);
+    }, 150);
+  };
+
+  // 處理分頁變更
+  const handlePageChange = (page: number) => {
+    setIsTransitioning(true);
+    setCurrentPage(page);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+      if (postsListRef.current) {
+        const headerOffset = 80;
+        const elementPosition = postsListRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
+    }, 150);
   };
 
   return (
@@ -164,7 +231,7 @@ const BlogListPage: React.FC = () => {
                                 text-charcoal-400 dark:text-darkMode-textFaint" />
               <input
                 type="text"
-                placeholder="搜索文章..."
+                placeholder="搜尋文章..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2
@@ -188,7 +255,7 @@ const BlogListPage: React.FC = () => {
 
           {/* Results Count */}
           {filteredPosts.length > 0 && (
-            <div className="mb-12">
+            <div className="mb-12 flex items-center justify-between flex-wrap gap-4">
               <p className="font-body text-sm text-charcoal-600 dark:text-darkMode-textMuted">
                 {searchQuery ? (
                   <>找到 <span className="font-bold text-ochre-500 dark:text-darkMode-ochre">{filteredPosts.length}</span> 篇符合「{searchQuery}」的文章</>
@@ -196,18 +263,25 @@ const BlogListPage: React.FC = () => {
                   <>顯示 <span className="font-bold text-ochre-500 dark:text-darkMode-ochre">{filteredPosts.length}</span> 篇文章</>
                 )}
               </p>
+              {totalPages > 1 && (
+                <p className="font-body text-xs text-charcoal-500 dark:text-darkMode-textFaint">
+                  第 {currentPage} / {totalPages} 頁
+                </p>
+              )}
             </div>
           )}
 
-          <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
-            {filteredPosts.map((post, index) => (
+          <div className={`space-y-1 bg-border-light dark:bg-darkMode-border transition-opacity duration-300 ${isTransitioning ? 'opacity-30' : 'opacity-100'}`}>
+            {currentPosts.map((post, index) => (
               <Link
                 key={post.id}
                 to={`/blog/${post.id}`}
-                className="group block bg-warmCream-100 dark:bg-darkMode-bgElevated
+                onClick={() => markAsRead(post.id)}
+                className={`group block bg-warmCream-100 dark:bg-darkMode-bgElevated
                            transition-all duration-500 ease-out-expo
                            hover:bg-warmCream-50 dark:hover:bg-darkMode-bg
-                           opacity-0 animate-fade-in-up"
+                           opacity-0 animate-fade-in-up
+                           ${readPosts.has(post.id) ? 'relative' : ''}`}
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
                 <div className="grid md:grid-cols-12 gap-8 md:gap-12 p-8 md:p-12 lg:p-16">
@@ -254,6 +328,17 @@ const BlogListPage: React.FC = () => {
                         精選文章
                       </div>
                     )}
+
+                    {/* Read Badge */}
+                    {readPosts.has(post.id) && (
+                      <div className="inline-block px-3 py-1 border border-fine
+                                      border-charcoal-300 dark:border-darkMode-border
+                                      font-body text-xs tracking-wide
+                                      text-charcoal-500 dark:text-darkMode-textMuted
+                                      bg-charcoal-50 dark:bg-darkMode-bg">
+                        已閱讀
+                      </div>
+                    )}
                   </div>
 
                   {/* Right: Content */}
@@ -279,16 +364,23 @@ const BlogListPage: React.FC = () => {
                     {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-3 pt-4">
                         {post.tags.slice(0, 5).map((tag) => (
-                          <span
+                          <button
                             key={tag}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleTagClick(tag);
+                            }}
                             className="font-body text-xs tracking-wide
                                        text-charcoal-600 dark:text-darkMode-textMuted
                                        px-3 py-1 border border-fine
                                        border-border-light dark:border-darkMode-border
-                                       transition-colors duration-300
+                                       transition-all duration-300
+                                       hover:bg-ochre-500 hover:text-white hover:border-ochre-500
+                                       dark:hover:bg-darkMode-ochre dark:hover:text-white dark:hover:border-darkMode-ochre
                                        group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
                             {tag}
-                          </span>
+                          </button>
                         ))}
                       </div>
                     )}
@@ -311,6 +403,93 @@ const BlogListPage: React.FC = () => {
               </Link>
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && filteredPosts.length > 0 && (
+            <div className="mt-20 flex items-center justify-center gap-2">
+              {/* Previous Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 font-body text-sm tracking-wide
+                           border border-border-light dark:border-darkMode-border
+                           transition-all duration-300
+                           ${currentPage === 1
+                             ? 'opacity-30 cursor-not-allowed'
+                             : 'hover:border-ochre-500 hover:text-ochre-500 dark:hover:border-darkMode-ochre dark:hover:text-darkMode-ochre'
+                           }`}
+              >
+                上一頁
+              </button>
+
+              {/* Page Numbers */}
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                  // 顯示邏輯：總是顯示第一頁、最後一頁、當前頁及其前後頁
+                  const showPage =
+                    page === 1 ||
+                    page === totalPages ||
+                    (page >= currentPage - 1 && page <= currentPage + 1);
+
+                  const showEllipsisBefore = page === currentPage - 1 && currentPage > 3;
+                  const showEllipsisAfter = page === currentPage + 1 && currentPage < totalPages - 2;
+
+                  if (!showPage && !showEllipsisBefore && !showEllipsisAfter) {
+                    return null;
+                  }
+
+                  if (showEllipsisBefore && page === 2) {
+                    return (
+                      <span key={`ellipsis-before`} className="px-2 py-2 text-charcoal-400 dark:text-darkMode-textFaint">
+                        ...
+                      </span>
+                    );
+                  }
+
+                  if (showEllipsisAfter && page === totalPages - 1) {
+                    return (
+                      <span key={`ellipsis-after`} className="px-2 py-2 text-charcoal-400 dark:text-darkMode-textFaint">
+                        ...
+                      </span>
+                    );
+                  }
+
+                  if (!showPage) return null;
+
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-10 h-10 font-body text-sm
+                                 border border-fine
+                                 transition-all duration-300
+                                 ${currentPage === page
+                                   ? 'bg-ochre-500 dark:bg-darkMode-ochre text-white border-ochre-500 dark:border-darkMode-ochre'
+                                   : 'border-border-light dark:border-darkMode-border text-charcoal-600 dark:text-darkMode-textMuted hover:border-ochre-500 hover:text-ochre-500 dark:hover:border-darkMode-ochre dark:hover:text-darkMode-ochre'
+                                 }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 font-body text-sm tracking-wide
+                           border border-border-light dark:border-darkMode-border
+                           transition-all duration-300
+                           ${currentPage === totalPages
+                             ? 'opacity-30 cursor-not-allowed'
+                             : 'hover:border-ochre-500 hover:text-ochre-500 dark:hover:border-darkMode-ochre dark:hover:text-darkMode-ochre'
+                           }`}
+              >
+                下一頁
+              </button>
+            </div>
+          )}
 
           {/* Empty State */}
           {filteredPosts.length === 0 && (

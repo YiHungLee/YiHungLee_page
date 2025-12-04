@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate, isPostPublished } from '../../utils/featured';
@@ -6,6 +6,66 @@ import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
+  const [readPosts, setReadPosts] = useState<Set<string>>(new Set());
+
+  // 從 localStorage 讀取已讀文章
+  useEffect(() => {
+    const stored = localStorage.getItem('readBlogPosts');
+    if (stored) {
+      try {
+        const parsedSet = new Set<string>(JSON.parse(stored));
+        setReadPosts(parsedSet);
+      } catch (e) {
+        console.error('Failed to parse read posts:', e);
+      }
+    }
+  }, []);
+
+  // 標記當前文章為已讀
+  useEffect(() => {
+    if (postId) {
+      // 從 localStorage 讀取最新的已讀列表
+      const stored = localStorage.getItem('readBlogPosts');
+      let currentReadPosts = new Set<string>();
+
+      if (stored) {
+        try {
+          currentReadPosts = new Set<string>(JSON.parse(stored));
+        } catch (e) {
+          console.error('Failed to parse read posts:', e);
+        }
+      }
+
+      // 添加當前文章
+      currentReadPosts.add(postId);
+
+      // 更新狀態和 localStorage
+      setReadPosts(currentReadPosts);
+      localStorage.setItem('readBlogPosts', JSON.stringify(Array.from(currentReadPosts)));
+    }
+  }, [postId]);
+
+  // 標記文章為已讀的函數
+  const markAsRead = (id: string) => {
+    // 從 localStorage 讀取最新的已讀列表
+    const stored = localStorage.getItem('readBlogPosts');
+    let currentReadPosts = new Set<string>();
+
+    if (stored) {
+      try {
+        currentReadPosts = new Set<string>(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to parse read posts:', e);
+      }
+    }
+
+    // 添加新文章
+    currentReadPosts.add(id);
+
+    // 更新狀態和 localStorage
+    setReadPosts(currentReadPosts);
+    localStorage.setItem('readBlogPosts', JSON.stringify(Array.from(currentReadPosts)));
+  };
 
   const post = BLOG_POSTS.find(p => p.id === postId);
 
@@ -64,7 +124,9 @@ const BlogPostPage: React.FC = () => {
             <div className="opacity-0 animate-fade-in-up stagger-1">
               <p className="font-body text-xs tracking-widest uppercase
                             text-charcoal-600 dark:text-darkMode-textMuted">
-                {post.category === 'professional' ? '專業分享' : '創意探索'}
+                {post.category === 'professional' ? '專業分享' :
+                 post.category === 'creative' ? '創意探索' :
+                 '心情隨筆'}
               </p>
             </div>
 
@@ -174,16 +236,28 @@ const BlogPostPage: React.FC = () => {
                     <Link
                       key={relatedPost.id}
                       to={`/blog/${relatedPost.id}`}
+                      onClick={() => markAsRead(relatedPost.id)}
                       className="group block bg-warmCream-50 dark:bg-darkMode-bg
                                  p-8 md:p-12
                                  transition-all duration-500 ease-out-expo
                                  hover:bg-warmCream-200 dark:hover:bg-darkMode-bgElevated">
                       <div className="grid md:grid-cols-12 gap-6">
-                        <div className="md:col-span-3">
+                        <div className="md:col-span-3 space-y-3">
                           <p className="font-body text-xs tracking-wide
                                         text-charcoal-500 dark:text-darkMode-textFaint">
                             {formatDate(relatedPost.date)}
                           </p>
+
+                          {/* Read Badge */}
+                          {readPosts.has(relatedPost.id) && (
+                            <div className="inline-block px-3 py-1 border border-fine
+                                            border-charcoal-300 dark:border-darkMode-border
+                                            font-body text-xs tracking-wide
+                                            text-charcoal-500 dark:text-darkMode-textMuted
+                                            bg-charcoal-50 dark:bg-darkMode-bgElevated">
+                              已閱讀
+                            </div>
+                          )}
                         </div>
                         <div className="md:col-span-9 space-y-3">
                           <h3 className="font-display text-2xl md:text-3xl font-bold
