@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
-import { formatDate } from '../../utils/featured';
+import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 
 const BlogPostPage: React.FC = () => {
@@ -9,7 +9,8 @@ const BlogPostPage: React.FC = () => {
 
   const post = BLOG_POSTS.find(p => p.id === postId);
 
-  if (!post) {
+  // 檢查文章是否存在且已發布（日期早於或等於今天）
+  if (!post || !isPostPublished(post.date)) {
     return (
       <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg
                       flex items-center justify-center transition-colors duration-500">
@@ -30,9 +31,9 @@ const BlogPostPage: React.FC = () => {
     );
   }
 
-  // Get related posts (same category, excluding current)
+  // Get related posts (same category, excluding current, only published)
   const relatedPosts = BLOG_POSTS
-    .filter(p => p.category === post.category && p.id !== post.id)
+    .filter(p => p.category === post.category && p.id !== post.id && isPostPublished(p.date))
     .slice(0, 2);
 
   return (

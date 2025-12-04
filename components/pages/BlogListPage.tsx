@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
-import { formatDate } from '../../utils/featured';
+import { formatDate, getPublishedPosts } from '../../utils/featured';
 
 type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
 
@@ -13,12 +13,14 @@ const categoryLabels: Record<BlogCategory, string> = {
 };
 
 const BlogListPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('professional');
+  const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('all');
   const postsListRef = useRef<HTMLElement>(null);
 
+  // 先過濾掉未來日期的文章，再依據分類過濾
+  const publishedPosts = getPublishedPosts(BLOG_POSTS);
   const filteredPosts = selectedCategory === 'all'
-    ? BLOG_POSTS
-    : BLOG_POSTS.filter(post => post.category === selectedCategory);
+    ? publishedPosts
+    : publishedPosts.filter(post => post.category === selectedCategory);
 
   const categories: BlogCategory[] = ['all', 'professional', 'creative', 'casual'];
 
