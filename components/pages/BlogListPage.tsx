@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate, getPublishedPosts } from '../../utils/featured';
+import { Search, ArrowUp } from 'lucide-react';
 
 type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
 
@@ -14,13 +15,49 @@ const categoryLabels: Record<BlogCategory, string> = {
 
 const BlogListPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const postsListRef = useRef<HTMLElement>(null);
 
-  // 先過濾掉未來日期的文章，再依據分類過濾
+  // 監聽滾動事件，控制「返回頂部」按鈕的顯示
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 先過濾掉未來日期的文章
   const publishedPosts = getPublishedPosts(BLOG_POSTS);
-  const filteredPosts = selectedCategory === 'all'
+
+  // 計算每個分類的文章數量
+  const categoryCounts: Record<BlogCategory, number> = {
+    all: publishedPosts.length,
+    professional: publishedPosts.filter(p => p.category === 'professional').length,
+    creative: publishedPosts.filter(p => p.category === 'creative').length,
+    casual: publishedPosts.filter(p => p.category === 'casual').length,
+  };
+
+  // 依據分類過濾
+  const categoryFilteredPosts = selectedCategory === 'all'
     ? publishedPosts
     : publishedPosts.filter(post => post.category === selectedCategory);
+
+  // 依據搜索關鍵字過濾（搜索標題、摘要、標籤）
+  const filteredPosts = categoryFilteredPosts
+    .filter(post => {
+      if (!searchQuery.trim()) return true;
+
+      const query = searchQuery.toLowerCase();
+      const titleMatch = post.title.toLowerCase().includes(query);
+      const summaryMatch = post.summary.toLowerCase().includes(query);
+      const tagsMatch = post.tags.some(tag => tag.toLowerCase().includes(query));
+
+      return titleMatch || summaryMatch || tagsMatch;
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const categories: BlogCategory[] = ['all', 'professional', 'creative', 'casual'];
 
@@ -87,35 +124,60 @@ const BlogListPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Category Filter */}
+      {/* Category Filter & Search */}
       <section className="sticky top-20 z-30 bg-warmCream-50/95 dark:bg-darkMode-bg/95
                           backdrop-blur-md border-b border-fine
                           border-border-light dark:border-darkMode-borderLight
                           transition-colors duration-500">
 
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
-          <div className="flex flex-wrap gap-4 md:gap-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`relative font-body text-sm md:text-base tracking-wide
-                           transition-all duration-300 pb-2
-                           ${selectedCategory === category
-                             ? 'text-ochre-500 dark:text-darkMode-ochre'
-                             : 'text-charcoal-600 dark:text-darkMode-textMuted hover:text-ochre-500 dark:hover:text-darkMode-ochre'
-                           }`}
-              >
-                {categoryLabels[category]}
+            {/* Category Tabs */}
+            <div className="flex flex-wrap gap-4 md:gap-6">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`relative font-body text-sm md:text-base tracking-wide
+                             transition-all duration-300 pb-2
+                             ${selectedCategory === category
+                               ? 'text-ochre-500 dark:text-darkMode-ochre'
+                               : 'text-charcoal-600 dark:text-darkMode-textMuted hover:text-ochre-500 dark:hover:text-darkMode-ochre'
+                             }`}
+                >
+                  {categoryLabels[category]}
+                  <span className="ml-1.5 opacity-60">({categoryCounts[category]})</span>
 
-                {/* Active Indicator */}
-                {selectedCategory === category && (
-                  <div className="absolute bottom-0 left-0 w-full h-px
-                                  bg-ochre-500 dark:bg-darkMode-ochre"></div>
-                )}
-              </button>
-            ))}
+                  {/* Active Indicator */}
+                  {selectedCategory === category && (
+                    <div className="absolute bottom-0 left-0 w-full h-px
+                                    bg-ochre-500 dark:bg-darkMode-ochre"></div>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Search Box */}
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4
+                                text-charcoal-400 dark:text-darkMode-textFaint" />
+              <input
+                type="text"
+                placeholder="搜索文章..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2
+                          font-body text-sm
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
+                          text-charcoal-900 dark:text-darkMode-text
+                          placeholder-charcoal-400 dark:placeholder-darkMode-textFaint
+                          border border-border-light dark:border-darkMode-border
+                          rounded-none
+                          transition-colors duration-300
+                          focus:outline-none focus:border-ochre-500 dark:focus:border-darkMode-ochre"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -123,6 +185,19 @@ const BlogListPage: React.FC = () => {
       {/* Posts List */}
       <section ref={postsListRef} className="relative py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+          {/* Results Count */}
+          {filteredPosts.length > 0 && (
+            <div className="mb-12">
+              <p className="font-body text-sm text-charcoal-600 dark:text-darkMode-textMuted">
+                {searchQuery ? (
+                  <>找到 <span className="font-bold text-ochre-500 dark:text-darkMode-ochre">{filteredPosts.length}</span> 篇符合「{searchQuery}」的文章</>
+                ) : (
+                  <>顯示 <span className="font-bold text-ochre-500 dark:text-darkMode-ochre">{filteredPosts.length}</span> 篇文章</>
+                )}
+              </p>
+            </div>
+          )}
 
           <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
             {filteredPosts.map((post, index) => (
@@ -152,7 +227,7 @@ const BlogListPage: React.FC = () => {
                       <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                       <p className="font-body text-xs tracking-widest uppercase
                                     text-charcoal-600 dark:text-darkMode-textMuted">
-                        {post.category === 'professional' ? '專業分享' : '創意探索'}
+                        {categoryLabels[post.category as BlogCategory]}
                       </p>
                     </div>
 
@@ -239,10 +314,47 @@ const BlogListPage: React.FC = () => {
 
           {/* Empty State */}
           {filteredPosts.length === 0 && (
-            <div className="text-center py-20">
-              <p className="font-body text-lg text-charcoal-600 dark:text-darkMode-textMuted">
-                此分類暫無文章
-              </p>
+            <div className="text-center py-32 space-y-8">
+              <div className="space-y-4">
+                <p className="font-display text-3xl md:text-4xl font-bold
+                              text-charcoal-900 dark:text-darkMode-text">
+                  {searchQuery ? '找不到相關文章' : '此分類暫無文章'}
+                </p>
+                <p className="font-body text-base text-charcoal-600 dark:text-darkMode-textMuted max-w-md mx-auto">
+                  {searchQuery ? (
+                    <>試試搜索其他關鍵字，或查看所有文章</>
+                  ) : (
+                    <>敬請期待更多精彩內容</>
+                  )}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap justify-center gap-4">
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="font-body text-sm tracking-wide uppercase px-6 py-3
+                              text-ochre-500 dark:text-darkMode-ochre
+                              border border-ochre-500 dark:border-darkMode-ochre
+                              transition-all duration-300
+                              hover:bg-ochre-500 hover:text-white dark:hover:bg-darkMode-ochre">
+                    清除搜索
+                  </button>
+                )}
+                {selectedCategory !== 'all' && (
+                  <button
+                    onClick={() => handleCategoryChange('all')}
+                    className="font-body text-sm tracking-wide uppercase px-6 py-3
+                              text-charcoal-600 dark:text-darkMode-textMuted
+                              border border-border-light dark:border-darkMode-border
+                              transition-all duration-300
+                              hover:border-ochre-500 hover:text-ochre-500
+                              dark:hover:border-darkMode-ochre dark:hover:text-darkMode-ochre">
+                    查看所有文章
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -265,6 +377,24 @@ const BlogListPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-8 right-8 z-40
+                    w-12 h-12 rounded-full
+                    bg-ochre-500 dark:bg-darkMode-ochre
+                    text-white
+                    shadow-lg
+                    transition-all duration-300
+                    hover:scale-110 hover:shadow-xl
+                    opacity-0 animate-fade-in"
+          aria-label="返回頂部"
+        >
+          <ArrowUp className="w-5 h-5 mx-auto" />
+        </button>
+      )}
     </div>
   );
 };
