@@ -62,18 +62,17 @@ const ScrollTextSection: React.FC<ScrollTextSectionProps> = ({
           trigger: item,
           start: 'center center+=100',  // Corresponds to CSS calc(50% - 1lh)
           end: 'center center-=100',    // Corresponds to CSS calc(50% + 1lh)
-          scrub: 0.2,
+          scrub: 0.5,  // Increased from 0.2 for smoother transitions on mobile
         }
       })
       .to(item, {
         opacity: 1,
-        filter: isLast ? 'brightness(1)' : 'brightness(1.2)',
-        ease: 'none'
+        // Removed brightness filter to prevent visual 'jump' on mobile
+        ease: 'power1.inOut'  // Smoother easing instead of 'none'
       }, 0)
       .to(item, {
         opacity: isLast ? 1 : 0.2,
-        filter: 'brightness(1)',
-        ease: 'none'
+        ease: 'power1.inOut'
       });
     });
   };
