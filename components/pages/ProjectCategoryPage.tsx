@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory, MusicTrack } from '../../types';
@@ -8,6 +8,17 @@ const categoryLabels: Record<ProjectCategory, string> = {
   academic: '學術研究',
   coding: '程式開發',
   music: '音樂創作',
+};
+
+// 解析年份字串，取得數字用於排序
+const parseYear = (year: string | number): number => {
+  if (typeof year === 'number') return year;
+  // 處理如 "2024" 或 "2024-2025" 等格式，取最後的年份
+  const matches = year.match(/\d{4}/g);
+  if (matches && matches.length > 0) {
+    return parseInt(matches[matches.length - 1], 10);
+  }
+  return 0;
 };
 
 const categoryDescriptions: Record<ProjectCategory, string> = {
@@ -52,9 +63,12 @@ const ProjectCategoryPage: React.FC = () => {
     );
   }
 
-  const categoryProjects = PORTFOLIO_ITEMS.filter(
-    (item) => item.category === currentCategory
-  );
+  // 篩選並依年份由近到遠排序
+  const categoryProjects = useMemo(() => {
+    return PORTFOLIO_ITEMS
+      .filter((item) => item.category === currentCategory)
+      .sort((a, b) => parseYear(b.year) - parseYear(a.year));
+  }, [currentCategory]);
 
   // Collect all music tracks for global player (music category only)
   const allMusicTracks: MusicTrack[] = currentCategory === 'music'

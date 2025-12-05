@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory } from '../../types';
@@ -9,7 +9,22 @@ const categoryLabels: Record<ProjectCategory, string> = {
   music: '音樂創作',
 };
 
+// 解析年份字串，取得數字用於排序
+const parseYear = (year: string | number): number => {
+  if (typeof year === 'number') return year;
+  // 處理如 "2024" 或 "2024-2025" 等格式，取最後的年份
+  const matches = year.match(/\d{4}/g);
+  if (matches && matches.length > 0) {
+    return parseInt(matches[matches.length - 1], 10);
+  }
+  return 0;
+};
+
 const ProjectsPage: React.FC = () => {
+  // 依年份由近到遠排序
+  const sortedProjects = useMemo(() => {
+    return [...PORTFOLIO_ITEMS].sort((a, b) => parseYear(b.year) - parseYear(a.year));
+  }, []);
   const categories: Array<{ key: ProjectCategory | 'all'; label: string; path: string }> = [
     { key: 'all', label: '全部作品', path: '/projects' },
     { key: 'academic', label: '學術研究', path: '/projects/academic' },
@@ -93,7 +108,7 @@ const ProjectsPage: React.FC = () => {
 
           {/* Projects Grid */}
           <div className="space-y-1 bg-border-light dark:bg-darkMode-border">
-            {PORTFOLIO_ITEMS.map((project, index) => (
+            {sortedProjects.map((project, index) => (
               <Link
                 key={project.id}
                 to={`/projects/${project.category}/${project.id}`}
