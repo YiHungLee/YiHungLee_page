@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronUp } from 'lucide-react';
 import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS, MUSIC_EXPERIENCES, ACADEMIC_EXPERIENCES } from '../../constants';
 import { AcademicImage } from '../../types';
 import InteractiveAvatar from '../InteractiveAvatar';
@@ -128,11 +129,29 @@ const AboutPage: React.FC = () => {
     exp.images.map(img => getImageUrl(img))
   );
 
+  // Scroll state for back-to-top button
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Handle scroll events for back-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
 
       {/* ========== HERO SECTION ========== */}
-      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 lg:pt-48 lg:pb-40
+      <section id="hero" className="relative pt-32 pb-24 md:pt-40 md:pb-32 lg:pt-48 lg:pb-40
                           bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500 subtle-texture">
 
@@ -198,7 +217,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ========== EDUCATION SECTION ========== */}
-      <section className="relative py-16 md:py-24 lg:py-32">
+      <section id="education" className="relative py-16 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           <div className="mb-12 md:mb-16">
@@ -245,7 +264,7 @@ const AboutPage: React.FC = () => {
 
 
       {/* ========== EXPERIENCE SECTION (TABBED) ========== */}
-      <section className="relative py-16 md:py-24 lg:py-32">
+      <section id="experience" className="relative py-16 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           <div className="mb-12 md:mb-16">
@@ -499,7 +518,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ========== AWARDS SECTION ========== */}
-      <section className="relative py-16 md:py-24 lg:py-32
+      <section id="awards" className="relative py-16 md:py-24 lg:py-32
                           bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -546,7 +565,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ========== TRAINING SECTION ========== */}
-      <section className="relative py-16 md:py-24 lg:py-32
+      <section id="training" className="relative py-16 md:py-24 lg:py-32
                           bg-warmCream-100 dark:bg-darkMode-bgElevated
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -586,7 +605,7 @@ const AboutPage: React.FC = () => {
 
       {/* ========== OTHER SKILLS SECTION ========== */}
       {OTHER_SKILLS.length > 0 && (
-        <section className="relative py-16 md:py-24 lg:py-32">
+        <section id="skills" className="relative py-16 md:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-6 md:px-12">
 
             <div className="mb-12 md:mb-16">
@@ -633,6 +652,29 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
       )}
+
+      {/* ========== BACK TO TOP BUTTON ========== */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed right-6 bottom-6 z-40
+                    w-12 h-12 rounded-full
+                    bg-warmCream-100 dark:bg-darkMode-bgElevated
+                    border border-border-light dark:border-darkMode-border
+                    shadow-lg
+                    flex items-center justify-center
+                    transition-all duration-300
+                    hover:bg-ochre-500 hover:border-ochre-500
+                    dark:hover:bg-darkMode-ochre dark:hover:border-darkMode-ochre
+                    hover:text-warmCream-50 dark:hover:text-darkMode-bg
+                    ${showBackToTop
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 translate-y-4 pointer-events-none'
+                    }`}
+        aria-label="回到頂端"
+      >
+        <ChevronUp className="w-5 h-5 text-charcoal-600 dark:text-darkMode-textMuted
+                              group-hover:text-warmCream-50" />
+      </button>
 
       {/* Lightbox */}
       {lightboxOpen && (

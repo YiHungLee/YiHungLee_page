@@ -86,7 +86,7 @@ export const HeroNew: React.FC = () => {
             {/* Call to Action */}
             <div className="flex flex-wrap gap-6 pt-8">
               <a
-                href="#identity"
+                href="#/about"
                 className="group inline-block px-8 py-4 border border-fine
                            border-charcoal-900 dark:border-darkMode-text
                            text-charcoal-900 dark:text-darkMode-text
@@ -94,7 +94,7 @@ export const HeroNew: React.FC = () => {
                            transition-all duration-400 ease-out-expo
                            hover:bg-charcoal-900 dark:hover:bg-darkMode-text
                            hover:text-warmCream-50 dark:hover:text-darkMode-bg">
-                探索更多
+                關於我
               </a>
 
               <a
