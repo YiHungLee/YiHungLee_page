@@ -89,6 +89,20 @@ export interface MusicExperienceItem {
   images: string[];
 }
 
+// ===== 學術經歷圖片介面 =====
+export interface AcademicImage {
+  url: string;
+  caption?: string;  // 人物姓名或圖片說明
+}
+
+// ===== 學術經歷項目介面 =====
+export interface AcademicExperienceItem {
+  date: string;
+  title: string;
+  images: (string | AcademicImage)[];  // 支援純字串或帶註解的物件
+  portfolioLink?: string;  // 連結到作品集的 ID
+}
+
 // ===== 音樂曲目介面 =====
 export interface MusicTrack {
   id: string;               // 曲目唯一 ID

@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
-import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS, MUSIC_EXPERIENCES } from '../../constants';
+import { Link } from 'react-router-dom';
+import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS, MUSIC_EXPERIENCES, ACADEMIC_EXPERIENCES } from '../../constants';
+import { AcademicImage } from '../../types';
 import InteractiveAvatar from '../InteractiveAvatar';
+
+// Helper function to get image URL from string or AcademicImage
+const getImageUrl = (image: string | AcademicImage): string => {
+  return typeof image === 'string' ? image : image.url;
+};
+
+// Helper function to get image caption from AcademicImage
+const getImageCaption = (image: string | AcademicImage): string | undefined => {
+  return typeof image === 'string' ? undefined : image.caption;
+};
 
 // Lightbox Component for photo viewing
 const Lightbox: React.FC<{
@@ -73,7 +85,19 @@ const Lightbox: React.FC<{
 };
 
 const AboutPage: React.FC = () => {
-  const [experienceTab, setExperienceTab] = useState<'work' | 'music'>('work');
+  const [experienceTab, setExperienceTab] = useState<'work' | 'academic' | 'music'>(() => {
+    const saved = localStorage.getItem('aboutPage_experienceTab');
+    if (saved === 'work' || saved === 'academic' || saved === 'music') {
+      return saved;
+    }
+    return 'work';
+  });
+
+  // Save tab selection to localStorage
+  const handleTabChange = (tab: 'work' | 'academic' | 'music') => {
+    setExperienceTab(tab);
+    localStorage.setItem('aboutPage_experienceTab', tab);
+  };
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -98,8 +122,11 @@ const AboutPage: React.FC = () => {
     setLightboxIndex((prev) => (prev + 1) % lightboxImages.length);
   };
 
-  // Collect all music images for gallery navigation
+  // Collect all images for gallery navigation
   const allMusicImages = MUSIC_EXPERIENCES.flatMap(exp => exp.images);
+  const allAcademicImageUrls = ACADEMIC_EXPERIENCES.flatMap(exp =>
+    exp.images.map(img => getImageUrl(img))
+  );
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
@@ -215,6 +242,262 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
+
+
+      {/* ========== EXPERIENCE SECTION (TABBED) ========== */}
+      <section className="relative py-16 md:py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+          <div className="mb-12 md:mb-16">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold
+                           text-charcoal-900 dark:text-darkMode-text
+                           tracking-tight mb-4">
+              經歷
+            </h2>
+            <div className="h-px w-12 bg-ochre-500 dark:bg-darkMode-ochre"></div>
+
+            {/* Tab Buttons */}
+            <div className="flex gap-6 md:gap-8 mt-8 overflow-x-auto pb-2">
+              <button
+                onClick={() => handleTabChange('work')}
+                className={`font-body text-sm tracking-wide uppercase pb-2 border-b-2 transition-all duration-300 whitespace-nowrap
+                           ${experienceTab === 'work'
+                             ? 'text-charcoal-900 dark:text-darkMode-text border-ochre-500 dark:border-darkMode-ochre'
+                             : 'text-charcoal-500 dark:text-darkMode-textFaint border-transparent hover:text-charcoal-700 dark:hover:text-darkMode-textMuted'
+                           }`}
+              >
+                工作經歷
+              </button>
+              <button
+                onClick={() => handleTabChange('academic')}
+                className={`font-body text-sm tracking-wide uppercase pb-2 border-b-2 transition-all duration-300 whitespace-nowrap
+                           ${experienceTab === 'academic'
+                             ? 'text-charcoal-900 dark:text-darkMode-text border-ochre-500 dark:border-darkMode-ochre'
+                             : 'text-charcoal-500 dark:text-darkMode-textFaint border-transparent hover:text-charcoal-700 dark:hover:text-darkMode-textMuted'
+                           }`}
+              >
+                學術經歷
+              </button>
+              <button
+                onClick={() => handleTabChange('music')}
+                className={`font-body text-sm tracking-wide uppercase pb-2 border-b-2 transition-all duration-300 whitespace-nowrap
+                           ${experienceTab === 'music'
+                             ? 'text-charcoal-900 dark:text-darkMode-text border-ochre-500 dark:border-darkMode-ochre'
+                             : 'text-charcoal-500 dark:text-darkMode-textFaint border-transparent hover:text-charcoal-700 dark:hover:text-darkMode-textMuted'
+                           }`}
+              >
+                音樂經歷
+              </button>
+            </div>
+          </div>
+
+          {/* Work Experience Tab */}
+          <div className={`transition-opacity duration-300 ${experienceTab === 'work' ? 'opacity-100' : 'opacity-0 hidden'}`}>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-[3px] md:left-[calc(25%-1px)] top-0 bottom-0 w-px
+                              bg-border-light dark:bg-darkMode-border"></div>
+
+              <div className="space-y-0">
+                {EXPERIENCE.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative grid grid-cols-12 gap-4 md:gap-6 pb-8 md:pb-10
+                               last:pb-0"
+                  >
+                    {/* Date Column */}
+                    <div className="col-span-12 md:col-span-3 pl-8 md:pl-0 md:text-right md:pr-8">
+                      <p className="font-body text-sm
+                                    text-charcoal-500 dark:text-darkMode-textFaint">
+                        {item.year}
+                      </p>
+                    </div>
+
+                    {/* Timeline dot */}
+                    <div className="absolute left-0 md:left-[calc(25%-4px)] top-1 w-2 h-2 rounded-full
+                                    bg-ochre-500 dark:bg-darkMode-ochre"></div>
+
+                    {/* Content Column */}
+                    <div className="col-span-12 md:col-span-9 pl-8 md:pl-8 -mt-6 md:mt-0">
+                      <h3 className="font-display text-lg md:text-xl font-semibold
+                                     text-charcoal-900 dark:text-darkMode-text">
+                        {item.title}
+                      </h3>
+                      {item.description && (
+                        <p className="font-body text-sm md:text-base
+                                      text-charcoal-600 dark:text-darkMode-textMuted mt-1">
+                          {item.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Academic Experience Tab */}
+          <div className={`transition-opacity duration-300 ${experienceTab === 'academic' ? 'opacity-100' : 'opacity-0 hidden'}`}>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-[3px] md:left-[calc(25%-1px)] top-0 bottom-0 w-px
+                              bg-border-light dark:bg-darkMode-border"></div>
+
+              <div className="space-y-0">
+                {ACADEMIC_EXPERIENCES.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative grid grid-cols-12 gap-4 md:gap-6 pb-8 md:pb-10
+                               last:pb-0"
+                  >
+                    {/* Date Column */}
+                    <div className="col-span-12 md:col-span-3 pl-8 md:pl-0 md:text-right md:pr-8">
+                      <p className="font-body text-sm
+                                    text-charcoal-500 dark:text-darkMode-textFaint">
+                        {item.date}
+                      </p>
+                    </div>
+
+                    {/* Timeline dot */}
+                    <div className="absolute left-0 md:left-[calc(25%-4px)] top-1 w-2 h-2 rounded-full
+                                    bg-ochre-500 dark:bg-darkMode-ochre"></div>
+
+                    {/* Content Column */}
+                    <div className="col-span-12 md:col-span-9 pl-8 md:pl-8 -mt-6 md:mt-0">
+                      <h3 className="font-display text-lg md:text-xl font-semibold
+                                     text-charcoal-900 dark:text-darkMode-text">
+                        {item.title}
+                      </h3>
+
+                      {/* Photo Thumbnails */}
+                      {item.images.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-3">
+                          {item.images.map((image, imgIndex) => {
+                            const imageUrl = getImageUrl(image);
+                            const caption = getImageCaption(image);
+                            return (
+                              <div key={imgIndex} className="flex flex-col items-center">
+                                <button
+                                  onClick={() => openLightbox(allAcademicImageUrls, allAcademicImageUrls.indexOf(imageUrl))}
+                                  className="group relative w-20 h-20 md:w-28 md:h-28 rounded-lg overflow-hidden
+                                             border border-border-light dark:border-darkMode-border
+                                             transition-all duration-300
+                                             hover:border-ochre-500 dark:hover:border-darkMode-ochre
+                                             hover:shadow-lg"
+                                >
+                                  <img
+                                    src={`/${imageUrl}`}
+                                    alt={caption || item.title}
+                                    className="w-full h-full object-cover
+                                               transition-transform duration-500
+                                               group-hover:scale-110"
+                                  />
+                                  <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/20
+                                                  transition-colors duration-300"></div>
+                                </button>
+                                {caption && (
+                                  <p className="mt-1.5 font-body text-xs text-center
+                                                text-charcoal-500 dark:text-darkMode-textFaint
+                                                max-w-[5rem] md:max-w-[7rem] leading-tight whitespace-pre-line">
+                                    {caption}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {/* Portfolio Link Button */}
+                      {item.portfolioLink && (
+                        <Link
+                          to={`/projects/${item.portfolioLink}`}
+                          className="inline-block mt-4 font-body text-sm
+                                     text-ochre-600 dark:text-darkMode-ochre
+                                     border border-ochre-500 dark:border-darkMode-ochre
+                                     px-4 py-2 rounded
+                                     hover:bg-ochre-500 hover:text-warmCream-50
+                                     dark:hover:bg-darkMode-ochre dark:hover:text-darkMode-bg
+                                     transition-all duration-300"
+                        >
+                          查看論文
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Music Experience Tab */}
+          <div className={`transition-opacity duration-300 ${experienceTab === 'music' ? 'opacity-100' : 'opacity-0 hidden'}`}>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-[3px] md:left-[calc(25%-1px)] top-0 bottom-0 w-px
+                              bg-border-light dark:bg-darkMode-border"></div>
+
+              <div className="space-y-0">
+                {MUSIC_EXPERIENCES.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative grid grid-cols-12 gap-4 md:gap-6 pb-8 md:pb-10
+                               last:pb-0"
+                  >
+                    {/* Date Column */}
+                    <div className="col-span-12 md:col-span-3 pl-8 md:pl-0 md:text-right md:pr-8">
+                      <p className="font-body text-sm
+                                    text-charcoal-500 dark:text-darkMode-textFaint">
+                        {item.date}
+                      </p>
+                    </div>
+
+                    {/* Timeline dot */}
+                    <div className="absolute left-0 md:left-[calc(25%-4px)] top-1 w-2 h-2 rounded-full
+                                    bg-ochre-500 dark:bg-darkMode-ochre"></div>
+
+                    {/* Content Column */}
+                    <div className="col-span-12 md:col-span-9 pl-8 md:pl-8 -mt-6 md:mt-0">
+                      <h3 className="font-display text-lg md:text-xl font-semibold
+                                     text-charcoal-900 dark:text-darkMode-text">
+                        {item.title}
+                      </h3>
+
+                      {/* Photo Thumbnails */}
+                      {item.images.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-3">
+                          {item.images.map((image, imgIndex) => (
+                            <button
+                              key={imgIndex}
+                              onClick={() => openLightbox(allMusicImages, allMusicImages.indexOf(image))}
+                              className="group relative w-20 h-20 md:w-28 md:h-28 rounded-lg overflow-hidden
+                                         border border-border-light dark:border-darkMode-border
+                                         transition-all duration-300
+                                         hover:border-ochre-500 dark:hover:border-darkMode-ochre
+                                         hover:shadow-lg"
+                            >
+                              <img
+                                src={`/${image}`}
+                                alt={item.title}
+                                className="w-full h-full object-cover
+                                           transition-transform duration-500
+                                           group-hover:scale-110"
+                              />
+                              <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/20
+                                              transition-colors duration-300"></div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ========== AWARDS SECTION ========== */}
       <section className="relative py-16 md:py-24 lg:py-32
                           bg-warmCream-100 dark:bg-darkMode-bgElevated
@@ -258,144 +541,6 @@ const AboutPage: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========== EXPERIENCE SECTION (TABBED) ========== */}
-      <section className="relative py-16 md:py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-
-          <div className="mb-12 md:mb-16">
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold
-                           text-charcoal-900 dark:text-darkMode-text
-                           tracking-tight mb-4">
-              經歷
-            </h2>
-            <div className="h-px w-12 bg-ochre-500 dark:bg-darkMode-ochre"></div>
-
-            {/* Tab Buttons */}
-            <div className="flex gap-8 mt-8">
-              <button
-                onClick={() => setExperienceTab('work')}
-                className={`font-body text-sm tracking-wide uppercase pb-2 border-b-2 transition-all duration-300
-                           ${experienceTab === 'work'
-                             ? 'text-charcoal-900 dark:text-darkMode-text border-ochre-500 dark:border-darkMode-ochre'
-                             : 'text-charcoal-500 dark:text-darkMode-textFaint border-transparent hover:text-charcoal-700 dark:hover:text-darkMode-textMuted'
-                           }`}
-              >
-                工作經歷
-              </button>
-              <button
-                onClick={() => setExperienceTab('music')}
-                className={`font-body text-sm tracking-wide uppercase pb-2 border-b-2 transition-all duration-300
-                           ${experienceTab === 'music'
-                             ? 'text-charcoal-900 dark:text-darkMode-text border-ochre-500 dark:border-darkMode-ochre'
-                             : 'text-charcoal-500 dark:text-darkMode-textFaint border-transparent hover:text-charcoal-700 dark:hover:text-darkMode-textMuted'
-                           }`}
-              >
-                音樂經歷
-              </button>
-            </div>
-          </div>
-
-          {/* Work Experience Tab */}
-          <div className={`transition-opacity duration-300 ${experienceTab === 'work' ? 'opacity-100' : 'opacity-0 hidden'}`}>
-            <div className="space-y-px bg-border-light dark:bg-darkMode-border">
-              {EXPERIENCE.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-warmCream-100 dark:bg-darkMode-bgElevated p-6 md:p-8 lg:p-10
-                             transition-colors duration-500">
-                  <div className="grid md:grid-cols-12 gap-4 md:gap-6">
-                    <div className="md:col-span-3">
-                      <p className="font-body text-sm
-                                    text-charcoal-500 dark:text-darkMode-textFaint">
-                        {item.year}
-                      </p>
-                    </div>
-                    <div className="md:col-span-9">
-                      <h3 className="font-display text-xl md:text-2xl font-semibold
-                                     text-charcoal-900 dark:text-darkMode-text">
-                        {item.title}
-                      </h3>
-                      {item.description && (
-                        <p className="font-body text-base
-                                      text-charcoal-600 dark:text-darkMode-textMuted mt-2">
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Music Experience Tab */}
-          <div className={`transition-opacity duration-300 ${experienceTab === 'music' ? 'opacity-100' : 'opacity-0 hidden'}`}>
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-0 md:left-[calc(25%-1px)] top-0 bottom-0 w-px
-                              bg-border-light dark:bg-darkMode-border hidden md:block"></div>
-
-              <div className="space-y-8 md:space-y-0">
-                {MUSIC_EXPERIENCES.map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative md:grid md:grid-cols-12 md:gap-6 pb-8 md:pb-12
-                               last:pb-0"
-                  >
-                    {/* Date Column */}
-                    <div className="md:col-span-3 mb-3 md:mb-0 md:text-right md:pr-8">
-                      <p className="font-body text-sm
-                                    text-charcoal-500 dark:text-darkMode-textFaint">
-                        {item.date}
-                      </p>
-                    </div>
-
-                    {/* Timeline dot */}
-                    <div className="absolute left-[-4px] md:left-[calc(25%-4px)] top-1 w-2 h-2 rounded-full
-                                    bg-ochre-500 dark:bg-darkMode-ochre hidden md:block"></div>
-
-                    {/* Content Column */}
-                    <div className="md:col-span-9 md:pl-8">
-                      <h3 className="font-display text-lg md:text-xl font-semibold
-                                     text-charcoal-900 dark:text-darkMode-text mb-3">
-                        {item.title}
-                      </h3>
-
-                      {/* Photo Thumbnails */}
-                      {item.images.length > 0 && (
-                        <div className="flex flex-wrap gap-3 mt-3">
-                          {item.images.map((image, imgIndex) => (
-                            <button
-                              key={imgIndex}
-                              onClick={() => openLightbox(allMusicImages, allMusicImages.indexOf(image))}
-                              className="group relative w-24 h-24 md:w-28 md:h-28 rounded-lg overflow-hidden
-                                         border border-border-light dark:border-darkMode-border
-                                         transition-all duration-300
-                                         hover:border-ochre-500 dark:hover:border-darkMode-ochre
-                                         hover:shadow-lg"
-                            >
-                              <img
-                                src={`/${image}`}
-                                alt={item.title}
-                                className="w-full h-full object-cover
-                                           transition-transform duration-500
-                                           group-hover:scale-110"
-                              />
-                              <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/20
-                                              transition-colors duration-300"></div>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
