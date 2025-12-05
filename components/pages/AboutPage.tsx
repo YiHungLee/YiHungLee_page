@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { ChevronUp } from 'lucide-react';
 import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS, MUSIC_EXPERIENCES, ACADEMIC_EXPERIENCES } from '../../constants';
 import { AcademicImage } from '../../types';
@@ -429,8 +428,10 @@ const AboutPage: React.FC = () => {
 
                       {/* Portfolio Link Button */}
                       {item.portfolioLink && (
-                        <Link
-                          to={`/projects/${item.portfolioLink}`}
+                        <a
+                          href={item.portfolioLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-block mt-4 font-body text-sm
                                      text-ochre-600 dark:text-darkMode-ochre
                                      border border-ochre-500 dark:border-darkMode-ochre
@@ -440,7 +441,7 @@ const AboutPage: React.FC = () => {
                                      transition-all duration-300"
                         >
                           查看論文
-                        </Link>
+                        </a>
                       )}
                     </div>
                   </div>
