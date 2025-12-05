@@ -82,6 +82,13 @@ export interface TrainingItem {
   details?: string;
 }
 
+// ===== 音樂經歷項目介面 =====
+export interface MusicExperienceItem {
+  date: string;
+  title: string;
+  images: string[];
+}
+
 // ===== 音樂曲目介面 =====
 export interface MusicTrack {
   id: string;               // 曲目唯一 ID

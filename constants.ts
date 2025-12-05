@@ -1,4 +1,4 @@
-import { ExperienceItem, SkillItem, TrainingItem } from './types';
+import { ExperienceItem, SkillItem, TrainingItem, MusicExperienceItem } from './types';
 
 // 從 virtual module 重新 export（透過 contentLoader）
 export { BLOG_POSTS, PORTFOLIO_ITEMS } from './utils/contentLoader';
@@ -193,4 +193,58 @@ export const TRAININGS: TrainingItem[] = [
 export const OTHER_SKILLS: SkillItem[] = [
   { category: "多媒體製作", skills: ["影片剪輯 (Sony Vegas)", "網站設計 (基礎 HTML, CSS, JS)", "混音、錄音等音訊處理能力 (Reason, Cubase)"] },
   { category: "AI應用", skills:["AI輔助程式設計", "AI工具應用（如RAG、Model Local Hosting等）"]}
+];
+
+// ===== 音樂經歷 =====
+export const MUSIC_EXPERIENCES: MusicExperienceItem[] = [
+  {
+    date: "2024",
+    title: "暫緩演出，持續進行純音樂創作",
+    images: []
+  },
+  {
+    date: "2023-11-15",
+    title: "臺灣遊戲治療年會暨國際研討會開場演出",
+    images: ["assets/2023-11-05 18-57-11.jpeg"]
+  },
+  {
+    date: "2023-06-05",
+    title: "《結》-洪恩毅畢業專場 特別來賓",
+    images: ["assets/2023-06-05 20-19-27.jpeg"]
+  },
+  {
+    date: "2022-11-18",
+    title: "心諮系系內演出",
+    images: ["assets/2022-11-18 18-32-52.jpeg"]
+  },
+  {
+    date: "2021-2023",
+    title: "《朔樂團》成團與活躍",
+    images: ["assets/2022-04-16 03-29-34.jpeg", "assets/2022-04-16 03-29-35.jpeg"]
+  },
+  {
+    date: "2022-03-18",
+    title: "《北市大好聲音》校園歌唱大賽 16強",
+    images: ["assets/2022-03-18 18-19-13.jpeg"]
+  },
+  {
+    date: "2022-01-28",
+    title: "《北市大心諮營》營隊結束演出",
+    images: ["assets/2022-01-28 16-58-07.jpeg"]
+  },
+  {
+    date: "2021-11-26",
+    title: "心諮系系內演出",
+    images: ["assets/2021-11-26 00-11-31.jpeg"]
+  },
+  {
+    date: "2021-03-15",
+    title: "北市大吉他社社內演出",
+    images: ["assets/2021-03-15 21-17-08.jpeg"]
+  },
+  {
+    date: "2020-10-17",
+    title: "《三系聯合宿營-英雄心攻略》晚會演出",
+    images: ["assets/2020-10-17 19-45-17.jpeg"]
+  }
 ];
