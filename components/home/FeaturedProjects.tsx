@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getFeaturedProjects } from '../../utils/featured';
+import { getFeaturedProjects, getProjectsByCategory } from '../../utils/featured';
 import { ProjectCategory, PortfolioItem } from '../../types';
 
 const categoryConfig = {
@@ -133,17 +133,25 @@ export const FeaturedProjects: React.FC = () => {
                     </div>
 
                     {/* View Category Link */}
-                    <Link
-                      to={`/projects/${category}`}
-                      className={`group font-body text-xs tracking-[0.15em] uppercase
-                                 transition-opacity duration-300 hover:opacity-60
-                                 ${category === 'academic' ? 'text-ochre-500 dark:text-darkMode-ochre' : ''}
-                                 ${category === 'coding' ? 'text-sage-500 dark:text-darkMode-sage' : ''}
-                                 ${category === 'music' ? 'text-rust-500 dark:text-darkMode-rust' : ''}
-                                 flex items-center gap-2`}>
-                      <span className="editorial-underline">更多{config.label}</span>
-                      <span className="transform transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </Link>
+                    <div className="flex items-center gap-4">
+                      {/* Total Count */}
+                      <span className="font-body text-xs tracking-wide
+                                       text-charcoal-500 dark:text-darkMode-textMuted">
+                        共 {getProjectsByCategory(category).length} 件作品
+                      </span>
+
+                      <Link
+                        to={`/projects/${category}`}
+                        className={`group font-body text-xs tracking-[0.15em] uppercase
+                                   transition-opacity duration-300 hover:opacity-60
+                                   ${category === 'academic' ? 'text-ochre-500 dark:text-darkMode-ochre' : ''}
+                                   ${category === 'coding' ? 'text-sage-500 dark:text-darkMode-sage' : ''}
+                                   ${category === 'music' ? 'text-rust-500 dark:text-darkMode-rust' : ''}
+                                   flex items-center gap-2`}>
+                        <span className="editorial-underline">更多{config.label}</span>
+                        <span className="transform transition-transform duration-300 group-hover:translate-x-1">→</span>
+                      </Link>
+                    </div>
                   </div>
 
                   {/* Category Divider */}
