@@ -73,7 +73,7 @@ export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
     date: "2024-12-07",
     title: "2024團體與個別心理治療年度研討會",
     images: ["assets/about/2024-12-07.webp", "assets/about/2024-12-07-02.webp"],
-    portfolioLink: "#/projects/academic/2024-12-07T00:00:00.000Z"
+    portfolioLink: "/projects/academic/2024-12-07T00:00:00.000Z"
   },
   {
     date: "2024-07-28",
@@ -106,7 +106,7 @@ export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
     date: "2023-09-12",
     title: "臺北市立大學心理諮商學系111學年度壁報論文發表會",
     images: ["assets/about/2023-09-12.webp"],
-    portfolioLink: "#/projects/academic/resilience-scale-2022"
+    portfolioLink: "/projects/academic/resilience-scale-2022"
   }
 ];
 

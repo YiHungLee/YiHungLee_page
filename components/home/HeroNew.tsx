@@ -86,7 +86,7 @@ export const HeroNew: React.FC = () => {
             {/* Call to Action */}
             <div className="flex flex-wrap gap-6 pt-8">
               <a
-                href="#/about"
+                href="/about"
                 className="group inline-block px-8 py-4 border border-fine
                            border-charcoal-900 dark:border-darkMode-text
                            text-charcoal-900 dark:text-darkMode-text
@@ -98,7 +98,7 @@ export const HeroNew: React.FC = () => {
               </a>
 
               <a
-                href="#/contact"
+                href="/contact"
                 className="inline-block px-8 py-4
                            text-ochre-500 dark:text-darkMode-ochre
                            font-body text-sm tracking-wide uppercase

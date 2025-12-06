@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/layout/ThemeProvider';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { Navigation } from './components/Navigation';
@@ -17,7 +17,7 @@ import BlogPostPage from './components/pages/BlogPostPage';
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <ThemeProvider>
         <div className="min-h-screen font-body
@@ -46,7 +46,7 @@ const App: React.FC = () => {
           <Footer />
         </div>
       </ThemeProvider>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
