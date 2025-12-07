@@ -31,6 +31,12 @@ export function markdownPlugin(): Plugin {
             const filePath = path.join(dir, file);
             const raw = fs.readFileSync(filePath, 'utf-8');
             const { data, content } = matter(raw);
+            // 確保 id 保持為字串（gray-matter 會將日期格式的字串轉為 Date 物件）
+            if (data.id instanceof Date) {
+              data.id = data.id.toISOString().split('T')[0];
+            } else if (typeof data.id !== 'string') {
+              data.id = String(data.id);
+            }
             return { ...data, content };
           });
         };
