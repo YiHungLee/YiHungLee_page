@@ -45,7 +45,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({
       }}
     >
       <img
-        src={isSmiling ? "/assets/yihung_smile_transparent.png" : "/assets/yihung_transparent.png"}
+        src={isSmiling ? "/assets/yihung_smile_transparent.webp" : "/assets/yihung_transparent.webp"}
         alt="李奕宏 Q版頭像"
         className={`w-full h-full object-contain transition-opacity duration-300
                    ${isSmiling ? 'animate-gentle-bounce' : ''}`}

@@ -12,7 +12,7 @@ techStack:
   - TypeScript
   - SQLCipher
 githubUrl: https://github.com/counselearning/TheraNotes
-imageUrl: /assets/file-20251203194236.png
+imageUrl: /assets/file-20251203194236.webp
 tags:
   - 專業工具
   - 個人紀錄管理

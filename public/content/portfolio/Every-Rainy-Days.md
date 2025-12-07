@@ -6,7 +6,7 @@ title: Every Rainy Days
 year: 2021
 description: "生活中的聲音加上下雨天的心情。開車聽、讀書聽咖啡廳。"
 featured: True
-albumCover: /assets/file-20251206002245.png
+albumCover: /assets/file-20251206002245.webp
 tracks:
   - id: Every Rainy Days
     title: Every Rainy Days
@@ -17,7 +17,7 @@ tracks:
 tools:
   - Reason
   - Audacity
-imageUrl: /assets/file-20251206002245.png
+imageUrl: /assets/file-20251206002245.webp
 tags:
   - 環境音樂
   - 療癒

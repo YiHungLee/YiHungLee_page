@@ -6,7 +6,7 @@ title: Leave With No Message
 year: 2025
 description: 使用 Cubase 製作的Lo-fi音樂，音樂以柔和的鋼琴或木吉他為核心製作的聲音內容。平穩但是帶一點點小憂鬱
 featured: true
-albumCover: /assets/file-20251130105544.png
+albumCover: /assets/file-20251130105544.webp
 tracks:
   - id: leave-with-no-message-1
     title: Leave With No Message - Part 1
@@ -25,7 +25,7 @@ tracks:
     trackNumber: 3
 tools:
   - Cubase
-imageUrl: /assets/file-20251130105544.png
+imageUrl: /assets/file-20251130105544.webp
 tags:
   - 作業用BGM
   - Lo-fi

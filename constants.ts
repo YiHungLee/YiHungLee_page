@@ -85,7 +85,7 @@ export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
     title: "2024心理劇學會年度研討會",
     images: [
       { url: "assets/about/2024-01-28.webp", caption: "Pictured with Antonina Garcia, EdD" },
-      { url: "assets/about/2024-01-28 17-36-05.jpeg", caption: "Pictured with \nDr. Maeda Jun" }
+      { url: "assets/about/2024-01-28 17-36-05.webp", caption: "Pictured with \nDr. Maeda Jun" }
     ]
   },
   {
@@ -120,46 +120,46 @@ export const MUSIC_EXPERIENCES: MusicExperienceItem[] = [
   {
     date: "2023-11-15",
     title: "臺灣遊戲治療年會暨國際研討會開場演出",
-    images: ["assets/2023-11-05 18-57-11.jpeg"]
+    images: ["assets/2023-11-05 18-57-11.webp"]
   },
   {
     date: "2023-06-05",
     title: "《結》-洪恩毅畢業專場 特別來賓",
-    images: ["assets/2023-06-05 20-19-27.jpeg"]
+    images: ["assets/2023-06-05 20-19-27.webp"]
   },
   {
     date: "2022-11-18",
     title: "臺北市立大學心諮系 系內演出",
-    images: ["assets/2022-11-18 18-32-52.jpeg"]
+    images: ["assets/2022-11-18 18-32-52.webp"]
   },
   {
     date: "2021-2023",
     title: "《朔樂團》成團與活躍",
-    images: ["assets/2022-04-16 03-29-34.jpeg", "assets/2022-04-16 03-29-35.jpeg"]
+    images: ["assets/2022-04-16 03-29-34.webp", "assets/2022-04-16 03-29-35.webp"]
   },
   {
     date: "2022-03-18",
     title: "《北市大好聲音》校園歌唱大賽 16強",
-    images: ["assets/2022-03-18 18-19-13.jpeg"]
+    images: ["assets/2022-03-18 18-19-13.webp"]
   },
   {
     date: "2022-01-28",
     title: "《臺北市立大學心諮營》營隊閉幕演出",
-    images: ["assets/2022-01-28 16-58-07.jpeg"]
+    images: ["assets/2022-01-28 16-58-07.webp"]
   },
   {
     date: "2021-11-26",
     title: "臺北市立大學心諮系 系內演出",
-    images: ["assets/2021-11-26 00-11-31.jpeg"]
+    images: ["assets/2021-11-26 00-11-31.webp"]
   },
   {
     date: "2021-03-15",
     title: "臺北市立大學吉他社社內演出",
-    images: ["assets/2021-03-15 21-17-08.jpeg"]
+    images: ["assets/2021-03-15 21-17-08.webp"]
   },
   {
     date: "2020-10-17",
     title: "《三系聯合宿營-英雄心攻略》晚會演出",
-    images: ["assets/2020-10-17 19-45-17.jpeg"]
+    images: ["assets/2020-10-17 19-45-17.webp"]
   }
 ];
