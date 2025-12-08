@@ -84,8 +84,8 @@ export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
     date: "2024-01-28",
     title: "2024心理劇學會年度研討會",
     images: [
-      { url: "assets/about/2024-01-28.webp", caption: "Pictured with Antonina Garcia, EdD" },
-      { url: "assets/about/2024-01-28 17-36-05.webp", caption: "Pictured with \nDr. Maeda Jun" }
+      { url: "assets/about/2024-01-28.webp", caption: "Pictured with \nDr. Maeda Jun" },
+      { url: "assets/about/2024-01-28 17-36-05.webp", caption: "Pictured with Antonina Garcia, EdD" }
     ]
   },
   {
