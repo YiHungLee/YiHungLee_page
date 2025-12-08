@@ -1,20 +1,17 @@
 ---
-# 必填欄位
-id: my-blog-post-slug               # 檔案名稱與此一致（kebab-case）
+id: my-blog-post-slug
 title: 文章標題
-date: 2024-03-15                    # 格式：YYYY-MM-DD
-category: professional              # professional | creative | casual
+date: 2024-03-15
+category: professional
 summary: 這是文章的簡短摘要，會顯示在文章列表頁面。
-tags:                               # 標籤列表
+tags:
   - 標籤一
   - 標籤二
   - 標籤三
-
-# 選填欄位
-featured: true                      # 是否為精選文章（預設：false）
-readTime: 8                         # 預估閱讀時間（分鐘）
+featured: false
+readTime: 8
 ---
-# 重要註記
+ # 重要註記
 * ID欄位要和檔名一致
 * DATE 格式為 YYYY-MM-DD
 * Category選項有三：professional | creative | casual
