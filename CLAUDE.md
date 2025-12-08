@@ -71,8 +71,8 @@ Single Page Application with state-based routing:
 
 ## Key Files
 
-- `vite.config.ts` - Dev server config (port 3000, host 0.0.0.0), path alias `@` to root, Gemini API key setup
-- `.env.local` - Contains `GEMINI_API_KEY` placeholder (configured in vite.config.ts but not currently used in app)
+- `vite.config.ts` - Dev server config (port 3000, host 0.0.0.0), path alias `@` to root
+- `.env.local` - Contains environment variables (e.g., `VITE_WORKER_URL` for contact form)
 - `index.html` - TailwindCSS CDN config with custom theme colors, Google Fonts (Noto Sans/Serif TC), importmap for React 19
 - `tsconfig.json` - TypeScript config with path alias support
 
