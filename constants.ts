@@ -73,7 +73,7 @@ export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
     date: "2024-12-07",
     title: "2024團體與個別心理治療年度研討會",
     images: ["assets/about/2024-12-07.webp", "assets/about/2024-12-07-02.webp"],
-    portfolioLink: "/projects/academic/2024-12-07T00:00:00.000Z"
+    portfolioLink: "/projects/academic/2024-12-07"
   },
   {
     date: "2024-07-28",
