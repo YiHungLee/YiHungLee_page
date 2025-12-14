@@ -101,6 +101,7 @@ export interface AcademicExperienceItem {
   title: string;
   images: (string | AcademicImage)[];  // 支援純字串或帶註解的物件
   portfolioLink?: string;  // 連結到作品集的 ID
+  credentialUrl?: string;  // 外部認證連結（如 Credly）
 }
 
 // ===== 音樂曲目介面 =====

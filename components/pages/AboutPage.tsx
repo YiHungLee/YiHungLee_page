@@ -443,6 +443,24 @@ const AboutPage: React.FC = () => {
                           查看論文
                         </a>
                       )}
+
+                      {/* Credential Link Button */}
+                      {item.credentialUrl && (
+                        <a
+                          href={item.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block mt-4 ml-2 font-body text-sm
+                                     text-ochre-600 dark:text-darkMode-ochre
+                                     border border-ochre-500 dark:border-darkMode-ochre
+                                     px-4 py-2 rounded
+                                     hover:bg-ochre-500 hover:text-warmCream-50
+                                     dark:hover:bg-darkMode-ochre dark:hover:text-darkMode-bg
+                                     transition-all duration-300"
+                        >
+                          查看認證
+                        </a>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -52,6 +52,12 @@ export const OTHER_SKILLS: SkillItem[] = [
 // ===== 學術經歷 =====
 export const ACADEMIC_EXPERIENCES: AcademicExperienceItem[] = [
   {
+    date: "2025-12-13",
+    title: "ChatGPT教師基礎課程認證",
+    images: ["assets/about/2025-12-15-06-52-53.webp"],
+    credentialUrl: "https://www.credly.com/badges/63157b22-19b0-4769-b549-a317f4d5aeb5/public_url"
+  },
+  {
     date: "2025-09-13",
     title: "Google 認證AI教育者",
     images: ["assets/about/2025-09-13.webp"]
