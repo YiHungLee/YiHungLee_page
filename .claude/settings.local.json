@@ -9,7 +9,8 @@
       "Bash(for file in \"components\\Navigation.tsx\" \"components\\Footer.tsx\" \"components\\home\\HeroNew.tsx\" \"components\\home\\FeaturedProjects.tsx\" \"components\\home\\LatestPosts.tsx\" \"components\\home\\IdentityGateway.tsx\" \"components\\pages\\HomePage.tsx\" \"components\\pages\\AboutPage.tsx\" \"components\\pages\\ContactPage.tsx\" \"components\\pages\\ProjectsPage.tsx\" \"components\\pages\\ProjectCategoryPage.tsx\" \"components\\pages\\BlogListPage.tsx\" \"components\\pages\\BlogPostPage.tsx\")",
       "Bash(done)",
       "Bash(xxd:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:developers.google.com)"
     ],
     "deny": [],
     "ask": []
