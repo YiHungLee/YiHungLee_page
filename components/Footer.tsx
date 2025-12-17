@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Rss } from 'lucide-react';
 import { PROFILE } from '../constants';
 
 export const Footer: React.FC = () => {
@@ -106,6 +107,21 @@ export const Footer: React.FC = () => {
                   </a>
                 </div>
               </div>
+            </div>
+
+            {/* RSS Feed */}
+            <div className="space-y-6">
+              <a
+                href="/feed.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-body text-sm
+                           text-charcoal-700 dark:text-darkMode-textMuted
+                           transition-opacity duration-300 hover:opacity-60"
+              >
+                <Rss size={16} className="text-ochre-500 dark:text-darkMode-ochre" />
+                <span className="editorial-underline">rss</span>
+              </a>
             </div>
           </div>
         </div>

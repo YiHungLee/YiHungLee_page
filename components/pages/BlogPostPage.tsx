@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
+import UtterancesComments from '../shared/UtterancesComments';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -214,6 +215,18 @@ const BlogPostPage: React.FC = () => {
           </div>
         </div>
       </article>
+
+      {/* Comments Section */}
+      <section className="relative py-12 md:py-20">
+        <div className="max-w-4xl mx-auto px-6 md:px-12">
+          <div className="h-px w-full bg-border-light dark:bg-darkMode-border mb-12"></div>
+          <h3 className="font-display text-2xl font-bold mb-8
+                         text-charcoal-900 dark:text-darkMode-text">
+            留言討論
+          </h3>
+          <UtterancesComments />
+        </div>
+      </section>
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
