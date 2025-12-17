@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '../layout/ThemeContext';
 
 interface UtterancesCommentsProps {
@@ -20,6 +21,12 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const utterancesLoaded = useRef(false);
   const { mode } = useTheme();
+  const location = useLocation();
+
+  // 儲存當前頁面路徑，以便 OAuth 回調後能返回
+  useEffect(() => {
+    sessionStorage.setItem('utterances-return-path', location.pathname);
+  }, [location.pathname]);
 
   // Initial load - only once
   useEffect(() => {

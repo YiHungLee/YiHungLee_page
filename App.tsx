@@ -4,6 +4,7 @@ import { ThemeProvider } from './components/layout/ThemeProvider';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
+import { UtterancesCallback } from './components/shared/UtterancesCallback';
 
 // Pages
 import HomePage from './components/pages/HomePage';
@@ -19,6 +20,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <UtterancesCallback />
       <ThemeProvider>
         <div className="min-h-screen font-body
                         bg-warmCream-50 dark:bg-darkMode-bg
