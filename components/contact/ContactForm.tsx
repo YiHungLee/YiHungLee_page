@@ -119,7 +119,7 @@ const ContactForm: React.FC = () => {
 
           <p className="font-body text-lg md:text-xl text-charcoal-600 dark:text-darkMode-textMuted
                     text-center max-w-2xl leading-relaxed">
-        演講邀約｜課程邀請｜找我家教
+        演講邀約｜課程邀請｜心輔所備考協助
       </p>
         </div>
 
@@ -199,7 +199,7 @@ const ContactForm: React.FC = () => {
             >
               <option value="speech">演講邀約</option>
               <option value="course">課程邀請</option>
-              <option value="tutoring">找我家教</option>
+              <option value="tutoring">心輔所備考協助</option>
               <option value="other">其他</option>
             </select>
           </div>

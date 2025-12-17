@@ -13,7 +13,7 @@ const TransitionSection: React.FC = () => {
       <p className="font-body text-lg md:text-xl
                     text-charcoal-600 dark:text-darkMode-textMuted
                     text-center max-w-2xl leading-relaxed">
-        演講邀約｜課程邀請｜找我家教
+        演講邀約｜課程邀請｜心輔所備考協助
       </p>
     </section>
   );
