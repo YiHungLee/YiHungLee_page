@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../layout/ThemeContext';
 
 interface UtterancesCommentsProps {
@@ -18,13 +18,12 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
   label = 'blog-comment',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const utterancesLoaded = useRef(false);
   const { mode } = useTheme();
 
-  const loadUtterances = useCallback(() => {
-    if (!containerRef.current) return;
-
-    // Clear existing content
-    containerRef.current.innerHTML = '';
+  // Initial load - only once
+  useEffect(() => {
+    if (!containerRef.current || utterancesLoaded.current) return;
 
     const script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
@@ -36,14 +35,10 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
     script.async = true;
 
     containerRef.current.appendChild(script);
-  }, [repo, issueTerm, label, mode]);
+    utterancesLoaded.current = true;
+  }, [repo, issueTerm, label]); // mode not included - only load once
 
-  // Initial load
-  useEffect(() => {
-    loadUtterances();
-  }, [loadUtterances]);
-
-  // Update theme via postMessage when mode changes
+  // Update theme via postMessage when mode changes (without reloading)
   useEffect(() => {
     const frame = document.querySelector<HTMLIFrameElement>('.utterances-frame');
     if (frame?.contentWindow) {
