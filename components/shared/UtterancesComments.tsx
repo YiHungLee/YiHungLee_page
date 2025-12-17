@@ -19,7 +19,6 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
   label = 'blog-comment',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const utterancesLoaded = useRef(false);
   const { mode } = useTheme();
   const location = useLocation();
 
@@ -28,9 +27,12 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
     sessionStorage.setItem('utterances-return-path', location.pathname);
   }, [location.pathname]);
 
-  // Initial load - only once
+  // 當路徑變化時重新載入 Utterances
   useEffect(() => {
-    if (!containerRef.current || utterancesLoaded.current) return;
+    if (!containerRef.current) return;
+
+    // 清除現有內容
+    containerRef.current.innerHTML = '';
 
     const script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
@@ -42,8 +44,7 @@ const UtterancesComments: React.FC<UtterancesCommentsProps> = ({
     script.async = true;
 
     containerRef.current.appendChild(script);
-    utterancesLoaded.current = true;
-  }, [repo, issueTerm, label]); // mode not included - only load once
+  }, [repo, issueTerm, label, location.pathname]); // 加入 location.pathname 作為依賴
 
   // Update theme via postMessage when mode changes (without reloading)
   useEffect(() => {
