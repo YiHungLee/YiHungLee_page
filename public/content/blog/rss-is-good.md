@@ -40,7 +40,7 @@ https://yi-hung-lee.work/feed.xml
 
 等等設定的時候會用到。
 
-## Android 用戶的設定方式
+## Android 使用者的設定方式
 
 Android 上有很多 RSS 閱讀器可以選，我推薦兩個比較常見的。
 
@@ -50,7 +50,7 @@ Android 上有很多 RSS 閱讀器可以選，我推薦兩個比較常見的。
 
 兩個都可以設定自動更新頻率，比如說每小時檢查一次有沒有新文章。
 
-## iPhone 用戶的設定方式
+## iPhone 使用者的設定方式
 
 iOS 上的 RSS 閱讀器同樣選擇很多。
 
