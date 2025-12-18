@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { Feed } from 'feed';
 import { fileURLToPath } from 'url';
+import { marked, Renderer } from 'marked';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,6 +11,69 @@ const __dirname = path.dirname(__filename);
 const SITE_URL = 'https://yi-hung-lee.work';
 const BLOG_DIR = path.resolve(__dirname, '../public/content/blog');
 const OUTPUT_PATH = path.resolve(__dirname, '../dist/feed.xml');
+
+// 設定 marked 渲染器，處理圖片和連結路徑
+const renderer = new Renderer();
+
+// 正規化 assets 路徑為完整 URL
+const normalizeAssetPath = (href: string): string => {
+  if (href.startsWith('http://') || href.startsWith('https://')) {
+    return href;
+  }
+  if (href.startsWith('assets/')) {
+    return `${SITE_URL}/${href}`;
+  }
+  if (href.startsWith('/assets/')) {
+    return `${SITE_URL}${href}`;
+  }
+  if (href.startsWith('/')) {
+    return `${SITE_URL}${href}`;
+  }
+  return href;
+};
+
+// 自訂圖片渲染器
+renderer.image = ({ href, title, text }) => {
+  const normalizedHref = normalizeAssetPath(href);
+  const titleAttr = title ? ` title="${title}"` : '';
+  const altAttr = text || '';
+  return `<img src="${normalizedHref}" alt="${altAttr}"${titleAttr} />`;
+};
+
+// 自訂連結渲染器
+renderer.link = ({ href, title, text }) => {
+  let finalHref = href;
+
+  // 轉換 Obsidian 格式的 blog 連結
+  if (href.match(/^content\/blog\/(.+)\.md$/)) {
+    const postId = href.replace(/^content\/blog\//, '').replace(/\.md$/, '');
+    finalHref = `${SITE_URL}/blog/${postId}`;
+  }
+  // 轉換 Obsidian 格式的 portfolio 連結
+  else if (href.match(/^content\/portfolio\/(.+)\.md$/)) {
+    const projectId = href.replace(/^content\/portfolio\//, '').replace(/\.md$/, '');
+    finalHref = `${SITE_URL}/projects/${projectId}`;
+  }
+  // 處理相對路徑連結
+  else if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:')) {
+    finalHref = normalizeAssetPath(href);
+  }
+
+  const titleAttr = title ? ` title="${title}"` : '';
+  return `<a href="${finalHref}"${titleAttr}>${text}</a>`;
+};
+
+// 配置 marked 選項
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+});
+marked.use({ renderer });
+
+// 將 Markdown 轉換為 HTML
+function markdownToHtml(content: string): string {
+  return marked(content) as string;
+}
 
 interface BlogPostData {
   id: string;
@@ -88,7 +152,7 @@ function generateRSS(): void {
       id: postUrl,
       link: postUrl,
       description: post.summary,
-      content: post.content,
+      content: markdownToHtml(post.content),
       author: [{
         name: '李奕宏',
         link: SITE_URL,
