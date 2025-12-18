@@ -3,7 +3,7 @@ id: rss-is-good
 title: 不想錯過更新？用 RSS 訂閱我的部落格吧
 date: 2025-12-19
 category: creative
-summary: 這是文章的簡短摘要，會顯示在文章列表頁面。
+summary: 超傳統技術RSS，打破資訊壁壘，脫離演算法束縛
 tags:
   - 工具
   - 知識分享
