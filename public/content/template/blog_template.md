@@ -1,7 +1,7 @@
 ---
 id: my-blog-post-slug
 title: 文章標題
-date: 2024-03-15
+date: 2025-12-20
 category: professional
 summary: 這是文章的簡短摘要，會顯示在文章列表頁面。
 tags:
