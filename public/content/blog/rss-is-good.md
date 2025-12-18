@@ -54,7 +54,7 @@ Android 上有很多 RSS 閱讀器可以選，我推薦兩個比較常見的。
 
 iOS 上的 RSS 閱讀器同樣選擇很多。
 
-**Feedly** 一樣有 iOS 版本，操作方式跟 Android 幾乎一樣。從 App Store 下載安裝，註冊或登入後，點左上角的「+」圖示，搜尋欄位直接貼上 `https://yi-hung-lee.work/feed.xml`，找到之後訂閱就完成了。Feedly 的好處是跨裝置同步，如果你電腦上也用 Feedly，手機上標記已讀的文章在電腦上也會同步。
+**Feedly** 一樣有 iOS 版本，操作方式跟 Android 幾乎一樣。從 App Store 下載安裝，註冊或登入後，點左上角的「+」圖示，搜尋欄位直接貼上 `https://yi-hung-lee.work/`，找到之後訂閱就完成了。Feedly 的好處是跨裝置同步，如果你電腦上也用 Feedly，手機上標記已讀的文章在電腦上也會同步。
 
 如果你想要更原生的 iOS 體驗，可以試試 **NetNewsWire**。這也是一個開源專案，完全免費沒有內購。介面很 Apple 風格，支援 iCloud 同步，你可以在 iPhone、iPad、Mac 之間共用訂閱清單。安裝後點右上角的「+」，選「Add Web Feed」，貼上我的網址就完成訂閱了。
 
