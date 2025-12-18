@@ -87,12 +87,32 @@ interface BlogPostData {
   readTime?: number;
 }
 
-function isPostPublished(dateString: string): boolean {
-  const postDate = new Date(dateString);
-  const today = new Date();
-  postDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-  return postDate.getTime() <= today.getTime();
+function isPostPublished(dateInput: string | Date): boolean {
+  // 使用台灣時區 (UTC+8) 進行日期比較
+  const taiwanOffsetMs = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+  // 處理 gray-matter 可能回傳 Date 物件的情況
+  let postDateMs: number;
+  if (dateInput instanceof Date) {
+    // gray-matter 將 YAML 日期解析為 UTC 午夜的 Date 物件
+    postDateMs = dateInput.getTime();
+  } else {
+    // 字串格式 "YYYY-MM-DD"，解析為 UTC 午夜
+    postDateMs = new Date(dateInput + 'T00:00:00Z').getTime();
+  }
+
+  // 取得台灣時區的今天午夜 (UTC 時間)
+  const now = new Date();
+  const taiwanNowMs = now.getTime() + taiwanOffsetMs;
+  const taiwanDate = new Date(taiwanNowMs);
+  const todayTaiwanMidnightUTC = Date.UTC(
+    taiwanDate.getUTCFullYear(),
+    taiwanDate.getUTCMonth(),
+    taiwanDate.getUTCDate()
+  );
+
+  // 比較：文章日期 <= 台灣今天午夜
+  return postDateMs <= todayTaiwanMidnightUTC;
 }
 
 function loadBlogPosts(): BlogPostData[] {
