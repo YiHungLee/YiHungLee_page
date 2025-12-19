@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    # 每天台灣時間 12:01 自動部署（UTC 04:01）
-    - cron: '1 4 * * *'
+    # 每天台灣時間 00:01 自動部署（UTC 16:01）
+    - cron: '1 16 * * *'
   workflow_dispatch:
 
 jobs:
