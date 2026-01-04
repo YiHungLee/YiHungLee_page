@@ -12,7 +12,7 @@ export const HeroNew: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center
+    <section className="hidden md:flex relative min-h-screen items-center
                         bg-warmCream-100 dark:bg-darkMode-bg
                         transition-colors duration-500 subtle-texture overflow-hidden">
 

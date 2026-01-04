@@ -15,16 +15,20 @@ import ProjectCategoryPage from './components/pages/ProjectCategoryPage';
 import ProjectDetailPage from './components/pages/ProjectDetailPage';
 import BlogListPage from './components/pages/BlogListPage';
 import BlogPostPage from './components/pages/BlogPostPage';
-import LinksPage from './components/pages/LinksPage';
 
 // Layout wrapper for pages with Navigation and Footer
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const MainLayout: React.FC<{
+  children: React.ReactNode;
+  hideNavigationOnMobile?: boolean;
+}> = ({ children, hideNavigationOnMobile = false }) => {
   return (
     <div className="min-h-screen font-body
                     bg-warmCream-50 dark:bg-darkMode-bg
                     text-charcoal-900 dark:text-darkMode-text
                     transition-colors duration-400">
-      <Navigation />
+      <div className={hideNavigationOnMobile ? 'hidden md:block' : ''}>
+        <Navigation />
+      </div>
       <main>{children}</main>
       <Footer />
     </div>
@@ -50,15 +54,8 @@ const App: React.FC = () => {
       <UtterancesCallback />
       <ThemeProvider>
         <Routes>
-          {/* Standalone routes (no Navigation/Footer) */}
-          <Route path="/links" element={
-            <StandaloneLayout>
-              <LinksPage />
-            </StandaloneLayout>
-          } />
-
           {/* Main routes with Navigation and Footer */}
-          <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+          <Route path="/" element={<MainLayout hideNavigationOnMobile><HomePage /></MainLayout>} />
           <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
           <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
 

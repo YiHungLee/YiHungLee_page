@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Envelope, LinkedinLogo, Sun, Moon, User, Briefcase, ArrowRight, Article } from '@phosphor-icons/react';
+import { Envelope, LinkedinLogo, Sun, Moon, User, Briefcase, ArrowDown, Article } from '@phosphor-icons/react';
 import { useTheme } from '../layout/ThemeContext';
 import { getLatestPosts } from '../../utils/featured';
 import { PROFILE } from '../../constants';
@@ -43,7 +43,7 @@ const CornerDecoration: React.FC<{ position: 'top-left' | 'top-right' | 'bottom-
   );
 };
 
-const LinksPage: React.FC = () => {
+export const MobileHero: React.FC = () => {
   const { mode, setMode } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const [isSmiling, setIsSmiling] = useState(false);
@@ -65,6 +65,10 @@ const LinksPage: React.FC = () => {
     setMode(mode === 'light' ? 'dark' : 'light');
   };
 
+  const scrollToIdentity = () => {
+    document.getElementById('identity')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const socialLinks = [
     { label: 'Email', href: `mailto:${PROFILE.email}`, icon: Envelope },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/yi-hung-lee', icon: LinkedinLogo },
@@ -76,7 +80,7 @@ const LinksPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden
+    <div className="flex flex-col relative overflow-hidden h-full
                     bg-warmCream-50 dark:bg-darkMode-bg
                     transition-colors duration-500">
 
@@ -298,10 +302,6 @@ const LinksPage: React.FC = () => {
                                           group-hover:text-ochre-600 dark:group-hover:text-darkMode-ochre
                                           transition-colors duration-300" weight="regular" />
                   </div>
-                  <ArrowRight className="w-4 h-4 text-charcoal-300 dark:text-darkMode-textMuted
-                                         transform transition-all duration-300
-                                         group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre
-                                         group-hover:translate-x-1" weight="bold" />
                 </div>
                 <span className="font-body text-sm font-medium
                                  text-charcoal-800 dark:text-darkMode-text">
@@ -416,24 +416,24 @@ const LinksPage: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer - Scroll to explore more */}
       <footer className={`py-5 text-center relative z-10
                          transition-all duration-700 delay-400 ease-out
                          ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-        <Link
-          to="/"
+        <button
+          onClick={scrollToIdentity}
           className="inline-flex items-center gap-1.5
                      font-body text-xs tracking-wide
                      text-charcoal-400 dark:text-darkMode-textMuted
                      hover:text-ochre-500 dark:hover:text-darkMode-ochre
                      transition-colors duration-300"
         >
-          <span>瀏覽完整網站</span>
-          <ArrowRight className="w-3 h-3" weight="bold" />
-        </Link>
+          <span>繼續探索網站</span>
+          <ArrowDown className="w-3 h-3 animate-bounce" weight="bold" />
+        </button>
       </footer>
     </div>
   );
 };
 
-export default LinksPage;
+export default MobileHero;
