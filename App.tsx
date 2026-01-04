@@ -15,6 +15,33 @@ import ProjectCategoryPage from './components/pages/ProjectCategoryPage';
 import ProjectDetailPage from './components/pages/ProjectDetailPage';
 import BlogListPage from './components/pages/BlogListPage';
 import BlogPostPage from './components/pages/BlogPostPage';
+import LinksPage from './components/pages/LinksPage';
+
+// Layout wrapper for pages with Navigation and Footer
+const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="min-h-screen font-body
+                    bg-warmCream-50 dark:bg-darkMode-bg
+                    text-charcoal-900 dark:text-darkMode-text
+                    transition-colors duration-400">
+      <Navigation />
+      <main>{children}</main>
+      <Footer />
+    </div>
+  );
+};
+
+// Standalone layout for pages without Navigation/Footer (e.g., Links page)
+const StandaloneLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="min-h-screen font-body
+                    bg-warmCream-50 dark:bg-darkMode-bg
+                    text-charcoal-900 dark:text-darkMode-text
+                    transition-colors duration-400">
+      {children}
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   return (
@@ -22,31 +49,28 @@ const App: React.FC = () => {
       <ScrollToTop />
       <UtterancesCallback />
       <ThemeProvider>
-        <div className="min-h-screen font-body
-                        bg-warmCream-50 dark:bg-darkMode-bg
-                        text-charcoal-900 dark:text-darkMode-text
-                        transition-colors duration-400">
-          <Navigation />
+        <Routes>
+          {/* Standalone routes (no Navigation/Footer) */}
+          <Route path="/links" element={
+            <StandaloneLayout>
+              <LinksPage />
+            </StandaloneLayout>
+          } />
 
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+          {/* Main routes with Navigation and Footer */}
+          <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+          <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
+          <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
 
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/projects/:category/:projectId" element={<ProjectDetailPage />} />
-              <Route path="/projects/:category" element={<ProjectCategoryPage />} />
+          <Route path="/projects" element={<MainLayout><ProjectsPage /></MainLayout>} />
+          <Route path="/projects/:category/:projectId" element={<MainLayout><ProjectDetailPage /></MainLayout>} />
+          <Route path="/projects/:category" element={<MainLayout><ProjectCategoryPage /></MainLayout>} />
 
-              <Route path="/blog" element={<BlogListPage />} />
-              <Route path="/blog/:postId" element={<BlogPostPage />} />
+          <Route path="/blog" element={<MainLayout><BlogListPage /></MainLayout>} />
+          <Route path="/blog/:postId" element={<MainLayout><BlogPostPage /></MainLayout>} />
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-
-          <Footer />
-        </div>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   );

@@ -106,7 +106,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <section className="py-32 md:py-40 bg-warmCream-100 dark:bg-darkMode-bg transition-colors duration-500">
+    <section id="contact-form" className="py-32 md:py-40 bg-warmCream-100 dark:bg-darkMode-bg transition-colors duration-500">
       <div className="max-w-3xl mx-auto px-6 md:px-12">
 
         {/* Form Header */}
