@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Envelope, LinkedinLogo, Sun, Moon, User, Briefcase, ArrowDown, Article } from '@phosphor-icons/react';
+import { Envelope, LinkedinLogo, Sun, Moon, User, Briefcase, ArrowDown, Article, TextAa } from '@phosphor-icons/react';
 import { useTheme } from '../layout/ThemeContext';
 import { getLatestPosts } from '../../utils/featured';
 import { PROFILE } from '../../constants';
@@ -43,10 +43,30 @@ const CornerDecoration: React.FC<{ position: 'top-left' | 'top-right' | 'bottom-
   );
 };
 
+type FontSize = 'default' | 'large' | 'xlarge';
+
+const fontSizeLabels: Record<FontSize, string> = {
+  default: '預設',
+  large: '大',
+  xlarge: '超大',
+};
+
+const FONT_SIZE_STORAGE_KEY = 'mobile-hero-font-size';
+
 export const MobileHero: React.FC = () => {
   const { mode, setMode } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const [isSmiling, setIsSmiling] = useState(false);
+  const [fontSize, setFontSize] = useState<FontSize>(() => {
+    // Initialize from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+      if (saved === 'default' || saved === 'large' || saved === 'xlarge') {
+        return saved;
+      }
+    }
+    return 'default';
+  });
 
   const latestPost = getLatestPosts(1)[0];
 
@@ -54,6 +74,11 @@ export const MobileHero: React.FC = () => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Save font size to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem(FONT_SIZE_STORAGE_KEY, fontSize);
+  }, [fontSize]);
 
   const handleAvatarClick = () => {
     if (isSmiling) return;
@@ -63,6 +88,45 @@ export const MobileHero: React.FC = () => {
 
   const toggleTheme = () => {
     setMode(mode === 'light' ? 'dark' : 'light');
+  };
+
+  const cycleFontSize = () => {
+    setFontSize((current) => {
+      if (current === 'default') return 'large';
+      if (current === 'large') return 'xlarge';
+      return 'default';
+    });
+  };
+
+  // Font size classes for different elements
+  const fontSizeClasses = {
+    default: {
+      name: 'text-2xl',
+      title: 'text-xs',
+      intro: 'text-sm',
+      label: 'text-[10px]',
+      cardLabel: 'text-sm',
+      button: 'text-sm py-3.5',
+      buttonPrimary: 'text-sm py-4',
+    },
+    large: {
+      name: 'text-3xl',
+      title: 'text-sm',
+      intro: 'text-base',
+      label: 'text-xs',
+      cardLabel: 'text-base',
+      button: 'text-base py-4',
+      buttonPrimary: 'text-base py-5',
+    },
+    xlarge: {
+      name: 'text-4xl',
+      title: 'text-base',
+      intro: 'text-lg',
+      label: 'text-sm',
+      cardLabel: 'text-lg',
+      button: 'text-lg py-5',
+      buttonPrimary: 'text-lg py-6',
+    },
   };
 
   const scrollToIdentity = () => {
@@ -122,9 +186,27 @@ export const MobileHero: React.FC = () => {
       <div className="absolute bottom-1/3 left-0 w-16 h-px bg-gradient-to-r from-sage-300/30 to-transparent dark:from-darkMode-sage/15 animate-breathe" style={{ animationDelay: '2s' }} />
 
       {/* Header */}
-      <header className={`flex items-center justify-end px-6 py-4 relative z-10
+      <header className={`flex items-center justify-end gap-2 px-6 py-4 relative z-10
                          transition-all duration-700 ease-out
                          ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        {/* Font Size Toggle */}
+        <button
+          onClick={cycleFontSize}
+          className="flex items-center gap-2 px-3 py-1.5
+                     rounded-full
+                     border border-charcoal-200 dark:border-darkMode-border
+                     bg-warmCream-50 dark:bg-darkMode-bgElevated
+                     text-charcoal-700 dark:text-darkMode-text
+                     font-body text-xs font-medium
+                     transition-all duration-300
+                     hover:scale-105 hover:border-ochre-400 dark:hover:border-darkMode-ochre"
+          aria-label={`字體大小：${fontSizeLabels[fontSize]}`}
+        >
+          <TextAa className="w-3.5 h-3.5" weight="regular" />
+          <span>{fontSizeLabels[fontSize]}</span>
+        </button>
+
+        {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
           className="flex items-center gap-2 px-3 py-1.5
@@ -203,16 +285,18 @@ export const MobileHero: React.FC = () => {
             {/* Editorial name treatment */}
             <div className="mt-5 text-center space-y-2">
               {/* Small label above name */}
-              <span className="inline-block font-body text-[10px] tracking-[0.25em] uppercase
-                               text-ochre-500/80 dark:text-darkMode-ochre/70">
+              <span className={`inline-block font-body tracking-[0.25em] uppercase
+                               text-ochre-500/80 dark:text-darkMode-ochre/70
+                               transition-all duration-300 ${fontSizeClasses[fontSize].label}`}>
                 Psychology | Technology
               </span>
 
               {/* Name with decorative lines */}
               <div className="flex items-center justify-center gap-3">
                 <div className="w-6 h-px bg-gradient-to-r from-transparent to-ochre-400/50 dark:to-darkMode-ochre/35" />
-                <h1 className="font-display text-2xl font-bold tracking-tight
-                               text-charcoal-900 dark:text-darkMode-text">
+                <h1 className={`font-display font-bold tracking-tight
+                               text-charcoal-900 dark:text-darkMode-text
+                               transition-all duration-300 ${fontSizeClasses[fontSize].name}`}>
                   {PROFILE.name}
                 </h1>
                 <div className="w-6 h-px bg-gradient-to-l from-transparent to-ochre-400/50 dark:to-darkMode-ochre/35" />
@@ -223,16 +307,17 @@ export const MobileHero: React.FC = () => {
                               border border-charcoal-200/50 dark:border-darkMode-border/70
                               rounded-full">
                 <div className="w-1 h-1 rounded-full bg-ochre-500 dark:bg-darkMode-ochre" />
-                <span className="font-body text-xs text-charcoal-600 dark:text-darkMode-textMuted">
+                <span className={`font-body text-charcoal-600 dark:text-darkMode-textMuted
+                                 transition-all duration-300 ${fontSizeClasses[fontSize].title}`}>
                   {PROFILE.title}
                 </span>
               </div>
             </div>
 
             {/* Self introduction */}
-            <p className="mt-4 font-body text-center text-sm leading-relaxed
+            <p className={`mt-4 font-body text-center leading-relaxed
                           text-charcoal-500 dark:text-darkMode-textMuted
-                          max-w-xs px-2">
+                          max-w-xs px-2 transition-all duration-300 ${fontSizeClasses[fontSize].intro}`}>
               我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。
             </p>
           </div>
@@ -303,8 +388,9 @@ export const MobileHero: React.FC = () => {
                                           transition-colors duration-300" weight="regular" />
                   </div>
                 </div>
-                <span className="font-body text-sm font-medium
-                                 text-charcoal-800 dark:text-darkMode-text">
+                <span className={`font-body font-medium
+                                 text-charcoal-800 dark:text-darkMode-text
+                                 transition-all duration-300 ${fontSizeClasses[fontSize].cardLabel}`}>
                   {card.label}
                 </span>
               </Link>
@@ -350,10 +436,10 @@ export const MobileHero: React.FC = () => {
                         最新文章
                       </span>
                     </div>
-                    <p className="font-body text-sm font-medium truncate
+                    <p className={`font-body font-medium truncate
                                   text-charcoal-800 dark:text-darkMode-text
                                   group-hover:text-charcoal-900 dark:group-hover:text-white
-                                  transition-colors duration-300">
+                                  transition-all duration-300 ${fontSizeClasses[fontSize].cardLabel}`}>
                       {latestPost.title}
                     </p>
                   </div>
@@ -375,16 +461,17 @@ export const MobileHero: React.FC = () => {
           {/* Blog Button - Full Width */}
           <Link
             to="/blog"
-            className={`group flex items-center justify-center gap-2 w-full py-3.5
+            className={`group flex items-center justify-center gap-2 w-full
                        bg-warmCream-100/70 dark:bg-darkMode-bgElevated/70
                        backdrop-blur-sm
                        border border-charcoal-100 dark:border-darkMode-border
                        rounded-xl
-                       font-body text-sm font-medium
+                       font-body font-medium
                        text-charcoal-700 dark:text-darkMode-text
                        transition-all duration-700 delay-250 ease-out
                        hover:border-charcoal-300 dark:hover:border-darkMode-textMuted
                        hover:shadow-md hover:-translate-y-0.5
+                       ${fontSizeClasses[fontSize].button}
                        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             <Article className="w-4 h-4 group-hover:text-ochre-500 dark:group-hover:text-darkMode-ochre transition-colors" weight="regular" />
@@ -400,14 +487,15 @@ export const MobileHero: React.FC = () => {
           {/* Contact Button - Primary CTA */}
           <Link
             to="/contact#contact-form"
-            className={`group flex items-center justify-center gap-2 w-full py-4
+            className={`group flex items-center justify-center gap-2 w-full
                        bg-charcoal-900 dark:bg-darkMode-text
                        rounded-xl
-                       font-body text-sm font-medium
+                       font-body font-medium
                        text-warmCream-50 dark:text-darkMode-bg
                        transition-all duration-700 delay-350 ease-out
                        hover:bg-ochre-600 dark:hover:bg-ochre-500
                        hover:shadow-xl hover:-translate-y-0.5
+                       ${fontSizeClasses[fontSize].buttonPrimary}
                        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             <Envelope className="w-4 h-4" weight="regular" />
