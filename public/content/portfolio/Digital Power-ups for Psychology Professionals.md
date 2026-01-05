@@ -7,7 +7,7 @@ year: 2026
 description: 我所撰寫的書籍，這是一本提升助人工作者行政效率的應用工具書。可在許多電子書通路購買或至國家圖書館館內借閱。
 featured: true
 venue:
-imageUrl: /assets/file-2026-01-05-20-55-18.webp
+imageUrl: https://yi-hung-lee.work/assets/file-20260105210317.webp
 tags:
   - 書籍
   - 工具
