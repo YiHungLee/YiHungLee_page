@@ -145,7 +145,7 @@ id: project-id
 title: 作品標題
 description: 作品描述
 category: academic  # academic | coding | music
-type: research      # research | workshop | tool | app | composition
+type: research      # research | publication | tool | app | composition
 date: 2025-12-06
 featured: true
 technologies: [React, TypeScript]
@@ -201,7 +201,7 @@ Key types defined in `types.ts`:
 | `ThemeMode` | `'light' \| 'dark'` |
 | `PageType` | `'professional' \| 'creative'` |
 | `ProjectCategory` | `'academic' \| 'coding' \| 'music'` |
-| `ProjectType` | `'research' \| 'workshop' \| 'tool' \| 'app' \| 'composition'` |
+| `ProjectType` | `'research' \| 'publication' \| 'tool' \| 'app' \| 'composition'` |
 | `BlogPost` | Blog post structure (id, title, date, content, tags, etc.) |
 | `PortfolioItem` | Portfolio item structure |
 | `ExperienceItem` | Work/award/education experience |

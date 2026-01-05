@@ -28,7 +28,7 @@ const categoryDescriptions: Record<ProjectCategory, string> = {
 };
 
 const categoryIntros: Record<ProjectCategory, string> = {
-  academic: '透過嚴謹的研究方法，探索心理學的理論與應用。從量表編製到實證研究，每一步都是對人性理解的深化。',
+  academic: '我所撰寫的學術研究與書籍、出版品。',
   coding: '結合心理專業與技術能力，開發服務助人工作者的實用工具。讓科技成為心理工作的助力，而非阻礙。',
   music: '用聲音表達情感，用旋律敘說故事。音樂創作是我探索內在世界的另一種語言，也是與他人連結的橋樑。',
 };
@@ -201,6 +201,7 @@ const ProjectCategoryPage: React.FC = () => {
                       <p className="font-body text-xs tracking-wide
                                     text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.type === 'research' && '研究'}
+                        {project.type === 'publication' && '著作'}
                         {project.type === 'tool' && '工具開發'}
                         {project.type === 'composition' && '音樂創作'}
                       </p>

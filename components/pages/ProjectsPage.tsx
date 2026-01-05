@@ -148,6 +148,7 @@ const ProjectsPage: React.FC = () => {
                       <p className="font-body text-xs tracking-wide
                                     text-charcoal-600 dark:text-darkMode-textMuted">
                         {project.type === 'research' && '研究'}
+                        {project.type === 'publication' && '著作'}
                         {project.type === 'tool' && '工具開發'}
                         {project.type === 'composition' && '音樂創作'}
                       </p>

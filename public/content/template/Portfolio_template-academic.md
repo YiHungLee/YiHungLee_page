@@ -15,7 +15,7 @@ tags:
 ---
 # 重要註記
 * ID欄位要和檔名一致
-* Type：research | workshop
+* Type：research(研究論文) | publication(出版品)
 * Category：固定為 academic
 * tags為標籤列表，無特別限制
 * Featured：True或是false，代表是否為精選文章

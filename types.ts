@@ -12,7 +12,7 @@ export interface ThemeContextType {
 export type ProjectCategory = 'academic' | 'coding' | 'music';
 export type ProjectType =
   | 'research'      // 學術研究
-  | 'workshop'      // 講座工作坊
+  | 'publication'   // 著作
   | 'tool'          // 專業工具
   | 'app'           // 應用程式
   | 'composition';  // 音樂創作
