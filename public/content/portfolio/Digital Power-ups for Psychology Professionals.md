@@ -41,7 +41,7 @@ award:
 ### 免費閱讀
 
 **國家圖書館 館內閱覽**
-[詳見說明: https://www.ncl.edu.tw/information_237_7272.html](https://www.ncl.edu.tw/information_237_7272.html)
+[詳見說明](https://www.ncl.edu.tw/information_237_7272.html)
 
 
 
