@@ -38,9 +38,11 @@ award:
 4. [Amazon (Kindle Edition)](https://www.amazon.com/dp/B0GCRGSJBM)
 
 
-### 借閱
+### 免費閱讀
 
-國家圖書館
+**國家圖書館 館內閱覽**
+[詳見說明: https://www.ncl.edu.tw/information_237_7272.html](https://www.ncl.edu.tw/information_237_7272.html)
+
 
 
 
