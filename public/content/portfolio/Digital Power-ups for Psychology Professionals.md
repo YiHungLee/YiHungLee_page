@@ -33,7 +33,7 @@ award:
 ### 購買通路
 
 1. 讀墨Readmoo
-2. Pubu電子書城
+2. [Pubu電子書城](https://www.pubu.com.tw/ebook/641274)
 3. Kobo電子書商店
 4. [Amazon (Kindle Edition)](https://www.amazon.com/dp/B0GCRGSJBM)
 
