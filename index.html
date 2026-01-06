@@ -8,7 +8,10 @@
     <!-- Favicon - Google/Bing 搜尋結果圖示 -->
     <!-- Google 要求最小 48x48 像素，必須是 48 的倍數 -->
 
-    <!-- 主要 favicon：適用於 Google 搜尋和現代瀏覽器 -->
+    <!-- SVG favicon：現代瀏覽器優先使用 -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- 主要 favicon：適用於 Google 搜尋和舊版瀏覽器 -->
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
 
     <!-- PNG 格式：提供各種尺寸給不同裝置和搜尋引擎 -->
@@ -21,6 +24,7 @@
 
     <!-- Apple Touch Icon：iOS 裝置書籤圖示 -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="李奕宏" />
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest" />
