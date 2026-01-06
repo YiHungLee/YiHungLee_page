@@ -5,6 +5,74 @@ import { useTheme } from '../layout/ThemeContext';
 import { getLatestPosts } from '../../utils/featured';
 import { PROFILE } from '../../constants';
 
+// Featured Book Card Component - Same style as Latest Blog Post
+const FeaturedBookCard: React.FC<{
+  isVisible: boolean;
+  cardLabelClass: string;
+}> = ({ isVisible, cardLabelClass }) => {
+  const bookUrl = '/projects/academic/Digital%20Power-ups%20for%20Psychology%20Professionals';
+
+  return (
+    <Link
+      to={bookUrl}
+      className={`group relative block
+                 transition-all duration-700 delay-175 ease-out
+                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+    >
+      {/* Editorial border frame */}
+      <div className="absolute inset-0 rounded-xl border border-ochre-200/50 dark:border-darkMode-ochre/25
+                      group-hover:border-ochre-400/70 dark:group-hover:border-darkMode-ochre/50
+                      transition-colors duration-300" />
+
+      {/* Inner content with offset */}
+      <div className="relative m-[1px] p-4 rounded-[11px]
+                      bg-gradient-to-br from-warmCream-50 to-warmCream-100/80
+                      dark:from-darkMode-bg dark:to-darkMode-bgElevated/80">
+
+        {/* Corner accent */}
+        <div className="absolute top-2 right-2 w-5 h-5">
+          <svg viewBox="0 0 20 20" className="w-full h-full">
+            <path
+              d="M20 0 L20 6 M14 0 L20 0"
+              stroke="currentColor"
+              strokeWidth="0.75"
+              className="text-ochre-400/50 dark:text-darkMode-ochre/35"
+            />
+          </svg>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex-1 min-w-0 pr-4">
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-0.5 h-3 bg-ochre-500 dark:bg-darkMode-ochre rounded-full" />
+              <span className="font-body text-xs font-medium tracking-wide uppercase
+                               text-ochre-600 dark:text-darkMode-ochre">
+                出版書籍
+              </span>
+            </div>
+            <p className={`font-body font-medium truncate
+                          text-charcoal-800 dark:text-darkMode-text
+                          group-hover:text-charcoal-900 dark:group-hover:text-white
+                          transition-all duration-300 ${cardLabelClass}`}>
+              《心理人數位外掛》 - 電子書
+            </p>
+          </div>
+
+          <div className="flex-shrink-0 px-4 py-2
+                          bg-charcoal-900 dark:bg-darkMode-text
+                          text-warmCream-50 dark:text-darkMode-bg
+                          rounded-lg font-body text-xs font-medium
+                          transition-all duration-300
+                          group-hover:bg-ochre-600 dark:group-hover:bg-ochre-500
+                          group-hover:scale-105 group-hover:shadow-md">
+            了解更多
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 // Decorative SVG Components
 const CornerDecoration: React.FC<{ position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'; className?: string }> = ({ position, className = '' }) => {
   const rotations = {
@@ -396,6 +464,12 @@ export const MobileHero: React.FC = () => {
               </Link>
             ))}
           </div>
+
+          {/* Featured Book Card - Above Latest Blog Post */}
+          <FeaturedBookCard
+            isVisible={isVisible}
+            cardLabelClass={fontSizeClasses[fontSize].cardLabel}
+          />
 
           {/* Featured Blog Post - Editorial Card */}
           {latestPost && (
