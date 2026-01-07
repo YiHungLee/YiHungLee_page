@@ -34,7 +34,7 @@ award:
 
 1. 讀墨Readmoo
 2. [Pubu電子書城](https://www.pubu.com.tw/ebook/641274)
-3. Kobo電子書商店
+3. [Kobo電子書商店](https://www.kobo.com/tw/zh/ebook/yBVl5v-jETufCqL33MwpqA?sId=296ed9e1-c42f-4739-9d11-48a547e22356&ssId=A4frI8KzzmBqieVA4i0Kw&cPos=1)
 4. [Amazon (Kindle Edition)](https://www.amazon.com/dp/B0GCRGSJBM)
 
 
