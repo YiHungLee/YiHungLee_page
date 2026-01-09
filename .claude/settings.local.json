@@ -10,7 +10,9 @@
       "Bash(done)",
       "Bash(xxd:*)",
       "Bash(cat:*)",
-      "WebFetch(domain:developers.google.com)"
+      "WebFetch(domain:developers.google.com)",
+      "Bash(powershell -Command \"Get-ChildItem ''d:\\\\li-yi-hong---counseling-portfolio\\\\public'' -Filter ''favicon*'' | Select-Object Name, Length\")",
+      "Bash(powershell:*)"
     ],
     "deny": [],
     "ask": []
