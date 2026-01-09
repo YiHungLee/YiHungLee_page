@@ -53,8 +53,56 @@
     <meta name="twitter:image" content="https://yi-hung-lee.work/assets/yihung_transparent.webp">
     <!-- SEO_META_END -->
 
-    <!-- JSON-LD 結構化資料（預渲染時會被替換） -->
-    <!-- JSON_LD_PLACEHOLDER -->
+    <!-- JSON-LD 結構化資料 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://yi-hung-lee.work/#website",
+          "url": "https://yi-hung-lee.work/",
+          "name": "李奕宏 Yi-hung Lee",
+          "description": "李奕宏，臺北市立大學心理與諮商研究所。專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。",
+          "publisher": {
+            "@id": "https://yi-hung-lee.work/#person"
+          },
+          "inLanguage": "zh-TW"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://yi-hung-lee.work/#person",
+          "name": "李奕宏",
+          "alternateName": "Yi-Hung Lee",
+          "url": "https://yi-hung-lee.work/",
+          "image": "https://yi-hung-lee.work/assets/yihung_transparent.webp",
+          "description": "全職實習心理師，臺北市立大學心理與諮商研究所。專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。",
+          "email": "mailto:lee2952000@gmail.com",
+          "jobTitle": "全職實習諮商心理師",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "世新大學諮商中心"
+          },
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "臺北市立大學",
+            "department": "心理與諮商研究所"
+          },
+          "knowsAbout": ["心理諮商", "諮商心理學", "心理劇", "完形治療", "音樂創作", "程式開發"],
+          "sameAs": []
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://yi-hung-lee.work/#profilepage",
+          "url": "https://yi-hung-lee.work/about",
+          "name": "關於李奕宏",
+          "mainEntity": {
+            "@id": "https://yi-hung-lee.work/#person"
+          }
+        }
+      ]
+    }
+    </script>
 
     <meta name="robots" content="index, follow">
 

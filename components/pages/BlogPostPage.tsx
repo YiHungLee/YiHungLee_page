@@ -4,6 +4,7 @@ import { BLOG_POSTS } from '../../constants';
 import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 import UtterancesComments from '../shared/UtterancesComments';
+import { StructuredData } from '../shared/StructuredData';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -99,6 +100,16 @@ const BlogPostPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* 結構化資料 */}
+      <StructuredData type="article" data={post} />
+      <StructuredData
+        type="breadcrumb"
+        breadcrumbs={[
+          { name: '首頁', url: '/' },
+          { name: 'Blog', url: '/blog' },
+          { name: post.title, url: `/blog/${post.id}` },
+        ]}
+      />
 
       {/* Hero Section */}
       <article className="relative pt-40 pb-20 md:pt-48 md:pb-32

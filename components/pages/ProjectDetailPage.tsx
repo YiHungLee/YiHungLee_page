@@ -4,6 +4,7 @@ import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory } from '../../types';
 import MusicPlayer from '../music/MusicPlayer';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
+import { StructuredData } from '../shared/StructuredData';
 
 const categoryLabels: Record<ProjectCategory, string> = {
   academic: '學術研究',
@@ -40,6 +41,17 @@ const ProjectDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* 結構化資料 */}
+      <StructuredData type="portfolio" data={project} />
+      <StructuredData
+        type="breadcrumb"
+        breadcrumbs={[
+          { name: '首頁', url: '/' },
+          { name: '作品', url: '/projects' },
+          { name: categoryLabels[category as ProjectCategory], url: `/projects/${category}` },
+          { name: project.title, url: `/projects/${category}/${project.id}` },
+        ]}
+      />
 
       {/* Hero Section */}
       <article className="relative pt-40 pb-20 md:pt-48 md:pb-32
