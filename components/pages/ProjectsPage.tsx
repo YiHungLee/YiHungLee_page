@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory } from '../../types';
+import { StructuredData } from '../shared/StructuredData';
 
 const categoryLabels: Record<ProjectCategory, string> = {
   academic: '學術研究',
@@ -25,6 +26,19 @@ const ProjectsPage: React.FC = () => {
   const sortedProjects = useMemo(() => {
     return [...PORTFOLIO_ITEMS].sort((a, b) => parseYear(b.year) - parseYear(a.year));
   }, []);
+
+  // 準備結構化資料
+  const portfolioListData = useMemo(() => ({
+    name: '作品集',
+    description: '李奕宏的作品集：學術研究、程式開發與音樂創作',
+    url: '/projects',
+    items: sortedProjects.map((project) => ({
+      id: project.id,
+      title: project.title,
+      url: `/projects/${project.category}/${project.id}`,
+    })),
+  }), [sortedProjects]);
+
   const categories: Array<{ key: ProjectCategory | 'all'; label: string; path: string }> = [
     { key: 'all', label: '全部作品', path: '/projects' },
     { key: 'academic', label: '學術研究', path: '/projects/academic' },
@@ -34,6 +48,8 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* Structured Data */}
+      <StructuredData type="portfolioList" listData={portfolioListData} />
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40

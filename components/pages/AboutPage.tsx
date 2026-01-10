@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronUp } from 'lucide-react';
 import { PROFILE, EXPERIENCE, EDUCATION, AWARDS, TRAININGS, OTHER_SKILLS, MUSIC_EXPERIENCES, ACADEMIC_EXPERIENCES } from '../../constants';
 import { AcademicImage } from '../../types';
 import InteractiveAvatar from '../InteractiveAvatar';
+import { StructuredData } from '../shared/StructuredData';
 
 // Helper function to get image URL from string or AcademicImage
 const getImageUrl = (image: string | AcademicImage): string => {
@@ -128,6 +129,43 @@ const AboutPage: React.FC = () => {
     exp.images.map(img => getImageUrl(img))
   );
 
+  // 準備 About 頁面結構化資料
+  const aboutData = useMemo(() => ({
+    credentials: [
+      // 專業認證
+      {
+        name: 'ChatGPT教師基礎課程認證',
+        credentialCategory: 'certificate' as const,
+        dateReceived: '2025-12-13',
+        credentialUrl: 'https://www.credly.com/badges/63157b22-19b0-4769-b549-a317f4d5aeb5/public_url',
+      },
+      {
+        name: 'Google 認證AI教育者',
+        credentialCategory: 'certificate' as const,
+        dateReceived: '2025-09-13',
+      },
+      // 學歷
+      {
+        name: '臺北市立大學 心理與諮商學系碩士班（諮商組）',
+        credentialCategory: 'degree' as const,
+        recognizedBy: '臺北市立大學',
+      },
+      {
+        name: '臺北市立大學 心理與諮商學系',
+        credentialCategory: 'degree' as const,
+        dateReceived: '2023',
+        recognizedBy: '臺北市立大學',
+      },
+    ],
+    organizations: [
+      {
+        name: '臺北市立大學',
+        type: 'EducationalOrganization' as const,
+        url: 'https://www.utaipei.edu.tw/',
+      },
+    ],
+  }), []);
+
   // Scroll state for back-to-top button
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -148,6 +186,8 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* Structured Data */}
+      <StructuredData type="about" data={aboutData} />
 
       {/* ========== HERO SECTION ========== */}
       <section id="hero" className="relative pt-32 pb-24 md:pt-40 md:pb-32 lg:pt-48 lg:pb-40

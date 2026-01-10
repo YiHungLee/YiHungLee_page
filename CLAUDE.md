@@ -76,6 +76,7 @@ npm run preview  # Preview production build
 │   │   └── MusicPlayer.tsx         # Audio player (multi-track support)
 │   └── shared/
 │       ├── MarkdownRenderer.tsx    # Custom Markdown renderer
+│       ├── StructuredData.tsx      # JSON-LD structured data for SEO
 │       ├── UtterancesComments.tsx  # Utterances comment system
 │       └── UtterancesCallback.tsx  # Utterances callback handler
 ├── plugins/
@@ -190,7 +191,26 @@ Theme preference is stored in `localStorage` and managed by `ThemeProvider.tsx`.
 - **Music Player:** Multi-track audio player with Cloudflare R2 storage
 - **Responsive Design:** Mobile-first with responsive navigation
 - **Smooth Animations:** Fade-in, slide, and floating effects
-- **SEO:** Meta tags, sitemap.xml, robots.txt
+- **SEO:** Meta tags, sitemap.xml, robots.txt, structured data (JSON-LD)
+
+## Structured Data (JSON-LD)
+
+The site uses Schema.org structured data for SEO, managed by `components/shared/StructuredData.tsx`.
+
+### Static Schema (index.html)
+- **WebSite** - Site metadata
+- **Person** - Author information
+- **ProfilePage** - About page reference
+
+### Dynamic Schema (StructuredData component)
+| Type | Page | Description |
+|------|------|-------------|
+| `article` | BlogPostPage | BlogPosting schema for blog posts |
+| `portfolio` | ProjectDetailPage | MusicComposition / SoftwareApplication / ScholarlyArticle |
+| `breadcrumb` | BlogPostPage, ProjectDetailPage | BreadcrumbList navigation |
+| `blogList` | BlogListPage | CollectionPage + ItemList for blog listing |
+| `portfolioList` | ProjectsPage, ProjectCategoryPage | CollectionPage + ItemList for portfolio |
+| `about` | AboutPage | Person + EducationalOccupationalCredential + Organization |
 
 ## TypeScript Types
 

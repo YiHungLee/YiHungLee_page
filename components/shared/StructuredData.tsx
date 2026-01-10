@@ -8,10 +8,46 @@ const AUTHOR = {
   name: '李奕宏',
 };
 
+// 清單頁面的資料結構
+interface ListItem {
+  id: string;
+  title: string;
+  url: string;
+}
+
+// 學歷/認證資料結構
+interface CredentialData {
+  name: string;
+  credentialCategory: 'degree' | 'certificate';
+  dateReceived?: string;
+  credentialUrl?: string;
+  recognizedBy?: string;
+}
+
+// 組織資料結構
+interface OrganizationData {
+  name: string;
+  type: 'EducationalOrganization' | 'Organization';
+  url?: string;
+}
+
+// About 頁面資料結構
+interface AboutPageData {
+  credentials: CredentialData[];
+  organizations: OrganizationData[];
+}
+
 interface StructuredDataProps {
-  type: 'article' | 'portfolio' | 'breadcrumb';
-  data?: BlogPost | PortfolioItem;
+  type: 'article' | 'portfolio' | 'breadcrumb' | 'blogList' | 'portfolioList' | 'about';
+  data?: BlogPost | PortfolioItem | AboutPageData;
   breadcrumbs?: Array<{ name: string; url: string }>;
+  // 清單頁面用
+  listData?: {
+    name: string;
+    description: string;
+    url: string;
+    items: ListItem[];
+  };
 }
 
 // 生成 BlogPosting schema
@@ -111,6 +147,76 @@ function generateBreadcrumbSchema(
   };
 }
 
+// 生成 CollectionPage + ItemList schema（清單頁面用）
+function generateCollectionPageSchema(listData: {
+  name: string;
+  description: string;
+  url: string;
+  items: ListItem[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${BASE_URL}${listData.url}#collectionpage`,
+    name: listData.name,
+    description: listData.description,
+    url: `${BASE_URL}${listData.url}`,
+    inLanguage: 'zh-TW',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${BASE_URL}/#website`,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: listData.items.length,
+      itemListElement: listData.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        url: `${BASE_URL}${item.url}`,
+      })),
+    },
+  };
+}
+
+// 生成 About 頁面 schema（Person + Credentials + Organization）
+function generateAboutSchema(data: AboutPageData) {
+  const credentialSchemas = data.credentials.map((cred) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: cred.name,
+    credentialCategory: cred.credentialCategory === 'degree' ? 'degree' : 'certificate',
+    ...(cred.dateReceived && { dateReceived: cred.dateReceived }),
+    ...(cred.credentialUrl && { url: cred.credentialUrl }),
+    ...(cred.recognizedBy && {
+      recognizedBy: {
+        '@type': 'Organization',
+        name: cred.recognizedBy,
+      },
+    }),
+  }));
+
+  const organizationSchemas = data.organizations.map((org) => ({
+    '@type': org.type,
+    name: org.name,
+    ...(org.url && { url: org.url }),
+  }));
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${BASE_URL}/about#profilepage`,
+    mainEntity: {
+      '@type': 'Person',
+      '@id': `${BASE_URL}/#person`,
+      name: '李奕宏',
+      alternateName: 'Yi-Hung Lee',
+      jobTitle: '全職實習諮商心理師',
+      hasCredential: credentialSchemas,
+      alumniOf: organizationSchemas.filter((org) => org['@type'] === 'EducationalOrganization'),
+    },
+  };
+}
+
 // 根據作品類型取得 Schema.org 類型
 function getSchemaType(type: string): string {
   switch (type) {
@@ -143,7 +249,7 @@ function getCategoryLabel(category: string): string {
   }
 }
 
-export function StructuredData({ type, data, breadcrumbs }: StructuredDataProps) {
+export function StructuredData({ type, data, breadcrumbs, listData }: StructuredDataProps) {
   useEffect(() => {
     // 確保在瀏覽器環境中執行
     if (typeof document === 'undefined' || !document.head) return;
@@ -156,6 +262,10 @@ export function StructuredData({ type, data, breadcrumbs }: StructuredDataProps)
       schema = generatePortfolioSchema(data as PortfolioItem);
     } else if (type === 'breadcrumb' && breadcrumbs) {
       schema = generateBreadcrumbSchema(breadcrumbs);
+    } else if ((type === 'blogList' || type === 'portfolioList') && listData) {
+      schema = generateCollectionPageSchema(listData);
+    } else if (type === 'about' && data && 'credentials' in data) {
+      schema = generateAboutSchema(data as AboutPageData);
     }
 
     if (!schema) return;

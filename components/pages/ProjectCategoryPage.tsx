@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { PORTFOLIO_ITEMS } from '../../constants';
 import { ProjectCategory, MusicTrack } from '../../types';
 import MusicPlayer from '../music/MusicPlayer';
+import { StructuredData } from '../shared/StructuredData';
 
 const categoryLabels: Record<ProjectCategory, string> = {
   academic: '學術研究',
@@ -70,6 +71,21 @@ const ProjectCategoryPage: React.FC = () => {
       .sort((a, b) => parseYear(b.year) - parseYear(a.year));
   }, [currentCategory]);
 
+  // 準備結構化資料
+  const categoryListData = useMemo(() => {
+    if (!currentCategory) return null;
+    return {
+      name: categoryLabels[currentCategory],
+      description: categoryIntros[currentCategory],
+      url: `/projects/${currentCategory}`,
+      items: categoryProjects.map((project) => ({
+        id: project.id,
+        title: project.title,
+        url: `/projects/${project.category}/${project.id}`,
+      })),
+    };
+  }, [currentCategory, categoryProjects]);
+
   // Collect all music tracks for global player (music category only)
   const allMusicTracks: MusicTrack[] = currentCategory === 'music'
     ? categoryProjects
@@ -97,6 +113,10 @@ const ProjectCategoryPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* Structured Data */}
+      {categoryListData && (
+        <StructuredData type="portfolioList" listData={categoryListData} />
+      )}
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40

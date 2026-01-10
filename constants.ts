@@ -32,7 +32,7 @@ export const AWARDS: ExperienceItem[] = [
 
 export const EDUCATION: ExperienceItem[] = [
   { year: "就讀中", title: "臺北市立大學 心理與諮商學系碩士班 (諮商組)", type: "education" },
-  { year: "畢業", title: "臺北市立大學 心理與諮商學系", type: "education" },
+  { year: "畢業（2023）", title: "臺北市立大學 心理與諮商學系", type: "education" },
 ];
 
 export const TRAININGS: TrainingItem[] = [

@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { BLOG_POSTS } from '../../constants';
 import { formatDate, getPublishedPosts } from '../../utils/featured';
 import { Search, ArrowUp } from 'lucide-react';
+import { StructuredData } from '../shared/StructuredData';
 
 type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
 
@@ -57,6 +58,18 @@ const BlogListPage: React.FC = () => {
 
   // 先過濾掉未來日期的文章
   const publishedPosts = getPublishedPosts(BLOG_POSTS);
+
+  // 準備結構化資料
+  const blogListData = useMemo(() => ({
+    name: '文章',
+    description: '李奕宏的部落格文章：專業分享、創意探索與心情隨筆',
+    url: '/blog',
+    items: publishedPosts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      url: `/blog/${post.id}`,
+    })),
+  }), [publishedPosts]);
 
   // 計算每個分類的文章數量
   const categoryCounts: Record<BlogCategory, number> = {
@@ -148,6 +161,8 @@ const BlogListPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-warmCream-50 dark:bg-darkMode-bg transition-colors duration-500">
+      {/* Structured Data */}
+      <StructuredData type="blogList" listData={blogListData} />
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-32 md:pt-48 md:pb-40
