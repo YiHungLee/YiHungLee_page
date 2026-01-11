@@ -13,19 +13,5 @@ export default defineConfig({
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      },
-      build: {
-        rollupOptions: {
-          output: {
-            manualChunks: {
-              // React 核心
-              'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-              // 圖示庫
-              'icons': ['lucide-react', '@phosphor-icons/react'],
-              // Markdown 處理
-              'markdown': ['marked', 'gray-matter'],
-            },
-          },
-        },
-      },
+      }
 });
