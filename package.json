@@ -18,12 +18,16 @@
     "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/marked": "^5.0.2",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.23",
     "feed": "^5.1.0",
     "png-to-ico": "^3.0.1",
+    "postcss": "^8.5.6",
     "sharp": "^0.34.5",
+    "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

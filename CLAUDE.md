@@ -28,8 +28,9 @@ npm run preview  # Preview production build
 | TypeScript | ~5.8.2 | Type safety |
 | Vite | 6.2.0 | Build tool |
 | React Router DOM | 7.9.6 | Client-side routing |
-| Tailwind CSS | CDN | Styling (with custom theme) |
+| Tailwind CSS | 4.x | Styling (local build with PostCSS) |
 | Lucide React | 0.554.0 | Icons |
+| Phosphor Icons | 2.1.10 | Additional icons |
 | gray-matter | 4.0.3 | Markdown frontmatter parsing |
 | marked | 17.0.1 | Markdown to HTML |
 | feed | 5.1.0 | RSS feed generation |
@@ -39,12 +40,13 @@ npm run preview  # Preview production build
 **Important:** Core files are in the root directory, not in a `src/` folder.
 
 ```
-├── App.tsx                 # Root component with React Router
+├── App.tsx                 # Root component with React Router (with code splitting)
 ├── index.tsx               # Entry point
 ├── types.ts                # TypeScript type definitions
 ├── constants.ts            # Static data (profile, experiences, etc.)
-├── styles.css              # Global styles
-├── vite.config.ts          # Vite configuration
+├── styles.css              # Global styles + Tailwind theme configuration
+├── vite.config.ts          # Vite configuration (with manualChunks)
+├── postcss.config.js       # PostCSS configuration for Tailwind
 ├── components/
 │   ├── Navigation.tsx      # Top navigation bar (responsive, dark mode toggle)
 │   ├── Footer.tsx          # Site footer with contact info
@@ -78,7 +80,8 @@ npm run preview  # Preview production build
 │       ├── MarkdownRenderer.tsx    # Custom Markdown renderer
 │       ├── StructuredData.tsx      # JSON-LD structured data for SEO
 │       ├── UtterancesComments.tsx  # Utterances comment system
-│       └── UtterancesCallback.tsx  # Utterances callback handler
+│       ├── UtterancesCallback.tsx  # Utterances callback handler
+│       └── PageLoading.tsx         # Loading indicator for lazy-loaded pages
 ├── plugins/
 │   └── vite-plugin-markdown.ts     # Custom Vite plugin for Markdown loading
 ├── utils/
@@ -192,6 +195,33 @@ Theme preference is stored in `localStorage` and managed by `ThemeProvider.tsx`.
 - **Responsive Design:** Mobile-first with responsive navigation
 - **Smooth Animations:** Fade-in, slide, and floating effects
 - **SEO:** Meta tags, sitemap.xml, robots.txt, structured data (JSON-LD)
+- **Code Splitting:** Route-based lazy loading for optimized initial load
+
+## Performance Optimization
+
+### Code Splitting Strategy
+
+Uses `React.lazy()` and `Suspense` for route-based code splitting:
+
+- **Synchronous (initial bundle):** `HomePage` - required for first paint
+- **Lazy-loaded:** All other pages (`AboutPage`, `BlogListPage`, `BlogPostPage`, `ProjectsPage`, `ProjectCategoryPage`, `ProjectDetailPage`, `ContactPage`)
+
+### Build Optimization
+
+Configured in `vite.config.ts` with `manualChunks`:
+
+| Chunk | Contents |
+|-------|----------|
+| `react-vendor` | react, react-dom, react-router-dom |
+| `icons` | lucide-react, @phosphor-icons/react |
+| `markdown` | marked, gray-matter |
+
+### Tailwind CSS
+
+Uses Tailwind CSS 4 with local build (not CDN):
+- Configuration via `@theme` directive in `styles.css`
+- PostCSS processing via `@tailwindcss/postcss`
+- Tree-shaking removes unused styles in production
 
 ## Structured Data (JSON-LD)
 
@@ -234,8 +264,10 @@ Key types defined in `types.ts`:
 
 | File | Purpose |
 |------|---------|
-| `vite.config.ts` | Dev server (port 3000), path alias `@`, custom Markdown plugin |
-| `index.html` | Tailwind CDN, Google Fonts, React 19 importmap |
+| `vite.config.ts` | Dev server (port 3000), path alias `@`, custom Markdown plugin, manualChunks |
+| `index.html` | Google Fonts, theme initialization script |
+| `styles.css` | Tailwind 4 theme configuration (`@theme` directive) + global styles |
+| `postcss.config.js` | PostCSS configuration for Tailwind CSS |
 | `.env.local` | Environment variables (`VITE_WORKER_URL` for contact form) |
 | `plugins/vite-plugin-markdown.ts` | Auto-loads Markdown content |
 | `scripts/generate-rss.ts` | Generates RSS feed during build |

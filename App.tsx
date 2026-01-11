@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/layout/ThemeProvider';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { UtterancesCallback } from './components/shared/UtterancesCallback';
+import { PageLoading } from './components/shared/PageLoading';
 
-// Pages
+// 首頁保留同步載入（首次訪問必需）
 import HomePage from './components/pages/HomePage';
-import AboutPage from './components/pages/AboutPage';
-import ContactPage from './components/pages/ContactPage';
-import ProjectsPage from './components/pages/ProjectsPage';
-import ProjectCategoryPage from './components/pages/ProjectCategoryPage';
-import ProjectDetailPage from './components/pages/ProjectDetailPage';
-import BlogListPage from './components/pages/BlogListPage';
-import BlogPostPage from './components/pages/BlogPostPage';
+
+// 其他頁面使用懶載入
+const AboutPage = lazy(() => import('./components/pages/AboutPage'));
+const ContactPage = lazy(() => import('./components/pages/ContactPage'));
+const ProjectsPage = lazy(() => import('./components/pages/ProjectsPage'));
+const ProjectCategoryPage = lazy(() => import('./components/pages/ProjectCategoryPage'));
+const ProjectDetailPage = lazy(() => import('./components/pages/ProjectDetailPage'));
+const BlogListPage = lazy(() => import('./components/pages/BlogListPage'));
+const BlogPostPage = lazy(() => import('./components/pages/BlogPostPage'));
 
 // Layout wrapper for pages with Navigation and Footer
 const MainLayout: React.FC<{
@@ -29,7 +32,11 @@ const MainLayout: React.FC<{
       <div className={hideNavigationOnMobile ? 'hidden md:block' : ''}>
         <Navigation />
       </div>
-      <main>{children}</main>
+      <main>
+        <Suspense fallback={<PageLoading />}>
+          {children}
+        </Suspense>
+      </main>
       <Footer />
     </div>
   );
