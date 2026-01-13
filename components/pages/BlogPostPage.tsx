@@ -5,6 +5,7 @@ import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 import UtterancesComments from '../shared/UtterancesComments';
 import { StructuredData } from '../shared/StructuredData';
+import EmailOctopusForm from '../shared/EmailOctopusForm';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -226,6 +227,15 @@ const BlogPostPage: React.FC = () => {
           </div>
         </div>
       </article>
+
+      {/* Email Newsletter Subscription */}
+      <section className="relative py-12 md:py-20
+                          bg-warmCream-100 dark:bg-darkMode-bgElevated
+                          transition-colors duration-500">
+        <div className="max-w-2xl mx-auto px-6 md:px-12">
+          <EmailOctopusForm />
+        </div>
+      </section>
 
       {/* Comments Section */}
       <section className="relative py-12 md:py-20">

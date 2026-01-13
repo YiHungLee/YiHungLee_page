@@ -4,7 +4,6 @@ import { BLOG_POSTS } from '../../constants';
 import { formatDate, getPublishedPosts } from '../../utils/featured';
 import { Search, ArrowUp } from 'lucide-react';
 import { StructuredData } from '../shared/StructuredData';
-import EmailOctopusForm from '../shared/EmailOctopusForm';
 
 type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
 
@@ -573,12 +572,6 @@ const BlogListPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Email Newsletter Subscription */}
-      <section className="relative py-16 md:py-24">
-        <div className="max-w-2xl mx-auto px-6 md:px-12">
-          <EmailOctopusForm />
-        </div>
-      </section>
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
