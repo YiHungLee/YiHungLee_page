@@ -68,6 +68,18 @@ const BlogListPage: React.FC = () => {
     }
   }, []);
 
+  // 處理錨點跳轉，將目標元素置中顯示
+  useEffect(() => {
+    if (window.location.hash === '#subscribe') {
+      setTimeout(() => {
+        const element = document.getElementById('subscribe');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, []);
+
   // 先過濾掉未來日期的文章
   const publishedPosts = getPublishedPosts(BLOG_POSTS);
 
@@ -568,12 +580,12 @@ const BlogListPage: React.FC = () => {
       </section>
 
       {/* Newsletter Subscription */}
-      <section id="subscribe" className="relative py-16 md:py-24
+      <section className="relative py-16 md:py-24
                           bg-warmCream-50 dark:bg-darkMode-bg
                           transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-display text-xl md:text-3xl font-bold
+            <h2 id="subscribe" className="font-display text-xl md:text-3xl font-bold
                            text-charcoal-800 dark:text-darkMode-text
                            mb-8">
               訂閱電子週報

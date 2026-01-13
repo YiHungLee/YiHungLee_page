@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getLatestPosts, formatDate } from '../../utils/featured';
+import { getLatestPosts, getPublishedPosts, formatDate } from '../../utils/featured';
+import { BLOG_POSTS } from '../../constants';
 
 export const LatestPosts: React.FC = () => {
   const posts = getLatestPosts(2);
+  const totalPostsCount = getPublishedPosts(BLOG_POSTS).length;
 
   return (
     <section className="relative py-32 md:py-40
@@ -45,7 +47,7 @@ export const LatestPosts: React.FC = () => {
                          text-ochre-500 dark:text-darkMode-ochre
                          editorial-underline
                          transition-opacity duration-300 hover:opacity-60">
-              查看所有文章
+              查看所有文章 ({totalPostsCount})
             </Link>
           </div>
         </div>

@@ -5,7 +5,6 @@ import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 import UtterancesComments from '../shared/UtterancesComments';
 import { StructuredData } from '../shared/StructuredData';
-import EmailOctopusForm from '../shared/EmailOctopusForm';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -47,6 +46,18 @@ const BlogPostPage: React.FC = () => {
       localStorage.setItem('readBlogPosts', JSON.stringify(Array.from(currentReadPosts)));
     }
   }, [postId]);
+
+  // 載入電子報訂閱表單
+  useEffect(() => {
+    const container = document.getElementById('blog-post-newsletter-form');
+    if (container && !container.querySelector('script')) {
+      const script = document.createElement('script');
+      script.src = 'https://eomail5.com/form/086d0148-f063-11f0-bd4f-31a087deddc1.js';
+      script.async = true;
+      script.setAttribute('data-form', '086d0148-f063-11f0-bd4f-31a087deddc1');
+      container.appendChild(script);
+    }
+  }, []);
 
   // 標記文章為已讀的函數
   const markAsRead = (id: string) => {
@@ -230,10 +241,15 @@ const BlogPostPage: React.FC = () => {
 
       {/* Email Newsletter Subscription */}
       <section className="relative py-12 md:py-20
-                          bg-warmCream-100 dark:bg-darkMode-bgElevated
+                          bg-warmCream-50 dark:bg-darkMode-bg
                           transition-colors duration-500">
-        <div className="max-w-2xl mx-auto px-6 md:px-12">
-          <EmailOctopusForm />
+        <div className="max-w-2xl mx-auto px-6 md:px-12 text-center">
+          <h3 className="font-display text-xl md:text-2xl font-bold
+                         text-charcoal-800 dark:text-darkMode-text
+                         mb-8">
+            訂閱電子週報
+          </h3>
+          <div id="blog-post-newsletter-form"></div>
         </div>
       </section>
 
