@@ -56,6 +56,18 @@ const BlogListPage: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 載入電子報訂閱表單
+  useEffect(() => {
+    const container = document.getElementById('newsletter-form-container');
+    if (container && !container.querySelector('script')) {
+      const script = document.createElement('script');
+      script.src = 'https://eomail5.com/form/086d0148-f063-11f0-bd4f-31a087deddc1.js';
+      script.async = true;
+      script.setAttribute('data-form', '086d0148-f063-11f0-bd4f-31a087deddc1');
+      container.appendChild(script);
+    }
+  }, []);
+
   // 先過濾掉未來日期的文章
   const publishedPosts = getPublishedPosts(BLOG_POSTS);
 
@@ -202,6 +214,7 @@ const BlogListPage: React.FC = () => {
                 有時僅是心情隨筆
               </p>
             </div>
+
           </div>
         </div>
       </section>
@@ -554,6 +567,22 @@ const BlogListPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Newsletter Subscription */}
+      <section id="subscribe" className="relative py-16 md:py-24
+                          bg-warmCream-50 dark:bg-darkMode-bg
+                          transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-display text-xl md:text-3xl font-bold
+                           text-charcoal-800 dark:text-darkMode-text
+                           mb-8">
+              訂閱電子週報
+            </h2>
+            <div id="newsletter-form-container"></div>
+          </div>
+        </div>
+      </section>
+
       {/* Bottom Quote */}
       <section className="relative py-20 md:py-32
                           bg-warmCream-100 dark:bg-darkMode-bgElevated
@@ -571,7 +600,6 @@ const BlogListPage: React.FC = () => {
           </div>
         </div>
       </section>
-
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
