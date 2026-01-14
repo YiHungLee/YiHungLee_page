@@ -1,7 +1,7 @@
 ---
 id: functional-contextualism-02
 title: 功能情境主義：一種更靈活看待行為的方式（下）
-date: 2025-01-23
+date: 2026-01-23
 category: professional
 summary: 延續上篇對功能情境主義的介紹，這篇文章會聊聊這個觀點如何影響心理治療，以及我們可以如何把這種思維方式帶進日常生活中。
 tags:
