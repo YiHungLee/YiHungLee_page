@@ -1,23 +1,20 @@
 ---
-# 必填欄位
-id: project-slug                    # 檔案名稱與此一致（kebab-case）
-category: coding                    # 固定為 coding
-type: tool                          # tool | app
+id: project-slug
+category: coding
+type: tool
 title: 專案名稱
-year: 2023-2024                     # 年份或年份區間
+year: "{{date:YYYY}}"
 description: 專案的詳細描述。說明功能、特色、技術架構等。
-
-# 選填欄位
-featured: true                      # 是否為精選作品（預設：false）
-techStack:                          # 技術棧列表
+featured: true
+techStack:
   - React
   - TypeScript
   - Node.js
   - PostgreSQL
-githubUrl: https://github.com/counselearning/TheraNotes  # GitHub 連結
-liveUrl: https://theranotes.net/demo        # Live Demo 連結
+githubUrl: https://github.com/counselearning/TheraNotes
+liveUrl: https://theranotes.net/demo
 imageUrl:
-tags:                               # 標籤列表
+tags:
   - Web開發
   - 全端
   - 工具

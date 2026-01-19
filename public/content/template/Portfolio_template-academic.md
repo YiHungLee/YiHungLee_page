@@ -3,7 +3,7 @@ id: research-project-slug
 category: academic
 type: research
 title: 研究標題
-year: 2022
+year: "{{date:YYYY}}"
 description: 研究的詳細描述。說明研究目的、方法、結果與貢獻。
 featured: true
 award:

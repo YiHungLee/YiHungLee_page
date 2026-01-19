@@ -3,7 +3,7 @@ id: music-piece-slug
 category: music
 type: composition
 title: 作品名稱
-year: 2023
+year: "{{date:YYYY}}"
 description: 作品的詳細描述。說明創作理念、風格、使用場景等。
 featured: true
 albumCover: https://example.com/album-cover.jpg
@@ -11,17 +11,17 @@ tracks:
   - id: track-1-slug
     title: 曲目1標題
     audioUrl: https://example.com/track1.mp3
-    duration: "5:32"
+    duration: 5:32
     trackNumber: 1
   - id: track-2-slug
     title: 曲目2標題
     audioUrl: https://example.com/track2.mp3
-    duration: "4:15"
+    duration: 4:15
     trackNumber: 2
   - id: track-3-slug
     title: 曲目3標題
     audioUrl: https://example.com/track3.mp3
-    duration: "3:48"
+    duration: 3:48
     trackNumber: 3
 tools:
   - Cubase
