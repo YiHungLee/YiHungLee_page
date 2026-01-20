@@ -10,26 +10,27 @@
   <!-- Google 要求：至少 48x48 像素、正方形、Googlebot-Image 可存取 -->
 
   <!-- 主要 favicon (Google/Bing 搜尋結果優先使用) -->
-  <!-- SVG 格式優先 -->
-  <link rel="icon" type="image/svg+xml" href="https://yi-hung-lee.work/favicon.svg" sizes="any" />
+  <!-- PNG 優先 + 高解析度 + 快取破壞參數：強迫搜尋引擎重新抓取 -->
+  <link rel="icon" type="image/png" sizes="192x192" href="https://yi-hung-lee.work/favicon-192x192.png?v=2" />
 
-  <!-- 備用/相容性 favicon -->
-  <!-- 使用絕對 URL 確保搜尋引擎能正確抓取 -->
-  <link rel="icon" type="image/png" sizes="48x48" href="https://yi-hung-lee.work/favicon-48x48.png" />
+  <!-- SVG 格式：現代瀏覽器使用 -->
+  <link rel="icon" type="image/svg+xml" href="https://yi-hung-lee.work/favicon.svg?v=2" sizes="any" />
 
-  <!-- 傳統 ICO 格式：舊版瀏覽器和部分搜尋引擎備用 -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <!-- 備用 48x48：符合 Google 最低要求 -->
+  <link rel="icon" type="image/png" sizes="48x48" href="https://yi-hung-lee.work/favicon-48x48.png?v=2" />
+
+  <!-- 傳統 ICO 格式：舊版瀏覽器備用 -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" sizes="48x48" />
+  <link rel="shortcut icon" href="/favicon.ico?v=2" />
 
   <!-- 其他尺寸 PNG：各種裝置使用 -->
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=2" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png?v=2" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
 
   <!-- Apple Touch Icon：iOS 裝置書籤圖示 -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
   <meta name="apple-mobile-web-app-title" content="李奕宏" />
 
   <!-- Web App Manifest -->
