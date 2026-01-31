@@ -14,15 +14,16 @@ export const PROFILE = {
   philosophy: "活在當下，投入生活。困難會存在，但我們永遠有能力去尋找更多快樂",
   heroTagline: "我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。"
 };
-// ===== 經歷（保留原有） =====
+// ===== 經歷 =====
 export const EXPERIENCE: ExperienceItem[] = [
   { year: "2025 ~", title: "國立臺北教育大學劉彥君教授 研究助理", type:"work"},
-  { year: "2024 ~ 2025", title: "好窩心理諮商所 兼職實習諮商心理師", type: "work" },
+  { year: "2025 ~ 2026", title: "世新大學諮商中心 實習諮商心理師", type:"work"},
+  { year: "2024 ~ 2025", title: "好窩心理諮商所 實習諮商心理師", type: "work" },
   { year: "2023 ~ 2025", title: "臺北市立大學劉彥君教授 研究助理", type: "work" },
   { year: "2022", title: "臺北市中正區河堤國小 特教課輔班教師", type: "work" },
   { year: "2021", title: "臺北市信義區興雅國小 實習輔導教師", type: "work" },
   { year: "2020", title: "臺北市立大學游錦雲教授 研究助理", type: "work" },
-  { year: "2020", title: "臺北市立大學心理與諮商學系 辦公室行政人員", type: "work" },
+  { year: "2020", title: "臺北市立大學心理與諮商學系 系辦公室行政助理", type: "work" },
 ];
 
 export const AWARDS: ExperienceItem[] = [
