@@ -12,11 +12,11 @@ githubUrl:
 liveUrl: https://preemie.yi-hung-lee.work/
 imageUrl:
 tags:
-  - Web開發
-  - 全端
-  - 工具
+  - 教學工具
+  - 小遊戲
 ---
 # 早產兒合併症評估模擬器
+
 [![|700x437](assets/file-20260214151830.webp)](https://preemie.yi-hung-lee.work/)
 
 【早產兒合併症評估模擬器】是一款協助護生訓練判讀常見的早產兒合併症的小遊戲，透過數位化的保溫箱情境模擬，將教科書上生硬的臨床症狀轉化為可視化的觀察體驗。
