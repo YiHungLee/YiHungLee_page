@@ -17,5 +17,48 @@ Allow: /
 User-agent: bingbot
 Allow: /
 
-# Sitemap 位置
+# ===== AI / LLM 爬蟲 =====
+# 明確歡迎主流 LLM 爬取（用於訓練 / RAG / 引用）
+
+# OpenAI（ChatGPT 搜尋與引用）
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic（Claude）
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI 訓練語料（Gemini / Vertex AI）
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl（被多數 LLM 使用）
+User-agent: CCBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# Sitemap 與 LLM 索引
 Sitemap: https://yi-hung-lee.work/sitemap.xml
