@@ -1,4 +1,5 @@
 import type { BlogPostData, PortfolioItemData, RouteInfo } from './route-collector.js';
+import { markdownToPlainText } from './body-renderer.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 const DEFAULT_IMAGE = `${SITE_URL}/assets/yihung_transparent.webp`;
@@ -80,6 +81,7 @@ export function generateBlogPostSchema(post: BlogPostData): object {
     },
     'keywords': post.tags.join(', '),
     'articleSection': categoryMap[post.category] || post.category,
+    'articleBody': markdownToPlainText(post.content),
     'wordCount': Math.round(post.content.length / 2), // 中文字數估算
     'timeRequired': `PT${post.readTime || 5}M`,
     'inLanguage': 'zh-TW',
