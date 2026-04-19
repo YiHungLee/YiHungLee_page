@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+
 /* ========== BASE STYLES ========== */
 * {
   -webkit-font-smoothing: antialiased;
@@ -810,3 +813,7 @@ button:focus-visible {
     animation-duration: 0.01ms !important;
   }
 }
+
+
+/* @tailwind utilities 放在最底端，確保 utility class（例如 .block、.flex、.hidden）能覆蓋上方的客製規則 */
+@tailwind utilities;
