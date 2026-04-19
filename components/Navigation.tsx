@@ -156,7 +156,7 @@ export const Navigation: React.FC = () => {
             <div className="space-y-4 opacity-0 animate-fade-in-up stagger-6">
               <div className="h-px w-16 bg-border-light dark:bg-darkMode-border"></div>
               <div className="font-body text-sm text-charcoal-600 dark:text-darkMode-textMuted space-y-2">
-                <p>lee2952000@gmail.com</p>
+                <p>mail@yi-hung-lee.work</p>
               </div>
             </div>
           </div>

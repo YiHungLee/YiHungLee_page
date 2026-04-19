@@ -391,7 +391,7 @@ function renderContact(): string {
   <section>
     <h2>聯絡資訊</h2>
     <ul>
-      <li>Email：<a href="mailto:lee2952000@gmail.com">lee2952000@gmail.com</a></li>
+      <li>Email：<a href="mailto:mail@yi-hung-lee.work">mail@yi-hung-lee.work</a></li>
     </ul>
   </section>
 </main>`;

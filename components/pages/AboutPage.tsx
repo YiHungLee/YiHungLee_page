@@ -480,7 +480,7 @@ const AboutPage: React.FC = () => {
                                      dark:hover:bg-darkMode-ochre dark:hover:text-darkMode-bg
                                      transition-all duration-300"
                         >
-                          查看論文
+                          查看著作
                         </a>
                       )}
 
