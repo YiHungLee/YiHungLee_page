@@ -12,7 +12,9 @@
       "Bash(cat:*)",
       "WebFetch(domain:developers.google.com)",
       "Bash(powershell -Command \"Get-ChildItem ''d:\\\\li-yi-hong---counseling-portfolio\\\\public'' -Filter ''favicon*'' | Select-Object Name, Length\")",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Read(//d/d/記得刪除_Coding/YiHungLee_page/**)",
+      "Read(//d/d/記得刪除_Coding/YiHungLee_page/.github/**)"
     ],
     "deny": [],
     "ask": []
