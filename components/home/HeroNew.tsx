@@ -163,10 +163,6 @@ export const HeroNew: React.FC = () => {
                                    font-body text-xs text-charcoal-700 dark:text-darkMode-textMuted">
                     臺北市立大學
                   </span>
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-darkMode-border
-                                   font-body text-xs text-charcoal-700 dark:text-darkMode-textMuted">
-                    世新大學
-                  </span>
                 </div>
               </div>
             </div>

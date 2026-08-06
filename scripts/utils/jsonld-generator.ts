@@ -19,10 +19,10 @@ export function generateWebsiteSchema(): object {
       '@type': 'Person',
       'name': '李奕宏',
       'alternateName': 'Yi-hung Lee',
-      'jobTitle': '實習諮商心理師',
+      'jobTitle': '研究生',
       'affiliation': {
         '@type': 'EducationalOrganization',
-        'name': '臺北市立大學心理與諮商研究所',
+        'name': '臺北市立大學心理與諮商學系',
       },
     },
   };
@@ -37,8 +37,12 @@ export function generatePersonSchema(): object {
     'alternateName': 'Yi-hung Lee',
     'url': SITE_URL,
     'image': DEFAULT_IMAGE,
-    'jobTitle': '實習諮商心理師',
+    'jobTitle': '研究生',
     'description': '臺北市立大學心理與諮商研究所碩士班學生，專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。',
+    'worksFor': {
+      '@type': 'EducationalOrganization',
+      'name': '臺北市立大學心理與諮商學系',
+    },
     'alumniOf': {
       '@type': 'EducationalOrganization',
       'name': '臺北市立大學',

@@ -47,14 +47,14 @@ function getCategoryName(category: string): string {
 function getStaticPageMeta(path: string): MetaConfig {
   const staticMeta: Record<string, MetaConfig> = {
     '/': {
-      title: '李奕宏 Yi-hung Lee | 實習諮商心理師',
+      title: '李奕宏 Yi-hung Lee | 心理與諮商學系 研究生',
       description: '李奕宏，臺北市立大學心理與諮商研究所。專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。',
       url: SITE_URL,
       image: DEFAULT_IMAGE,
       type: 'website',
     },
     '/about': {
-      title: '關於我 - 李奕宏 | 諮商心理師',
+      title: '關於我 - 李奕宏 | 心理與諮商學系 研究生',
       description: '了解李奕宏的學術背景、專業訓練與心理諮商理念。臺北市立大學心理與諮商研究所碩士班。',
       url: `${SITE_URL}/about`,
       image: DEFAULT_IMAGE,

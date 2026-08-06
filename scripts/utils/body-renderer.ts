@@ -298,8 +298,8 @@ function renderHome(): string {
   return `<main class="prerendered">
   <section>
     <h1>李奕宏 Yi-hung Lee</h1>
-    <p class="prerendered-tagline">實習諮商心理師</p>
-    <p class="prerendered-summary">我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。臺北市立大學心理與諮商研究所，目前於世新大學諮商中心全職實習。</p>
+    <p class="prerendered-tagline">研究生</p>
+    <p class="prerendered-summary">我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。目前為臺北市立大學心理與諮商學系研究生。</p>
     <nav class="prerendered-subnav" aria-label="主要導覽">
       <a href="/about">關於</a>
       <a href="/projects">作品</a>
@@ -327,8 +327,8 @@ function renderAbout(): string {
   return `<main class="prerendered">
   <header>
     <h1>關於李奕宏</h1>
-    <p class="prerendered-tagline">全職實習諮商心理師</p>
-    <p class="prerendered-summary">臺北市立大學心理與諮商研究所碩士班（諮商組），目前於世新大學諮商中心全職實習。專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。</p>
+    <p class="prerendered-tagline">研究生</p>
+    <p class="prerendered-summary">臺北市立大學心理與諮商研究所碩士班（諮商組）研究生。專注於心理諮商、心理學領域研究，同時探索科技與音樂創作。</p>
   </header>
 
   <section>
@@ -401,7 +401,7 @@ function renderBio(): string {
   return `<main class="prerendered">
   <header>
     <h1>李奕宏 Yi-hung Lee</h1>
-    <p class="prerendered-summary">實習諮商心理師 · 臺北市立大學心理與諮商研究所</p>
+    <p class="prerendered-summary">研究生 · 臺北市立大學心理與諮商研究所</p>
   </header>
   <section>
     <h2>連結</h2>

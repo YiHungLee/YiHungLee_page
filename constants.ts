@@ -7,9 +7,9 @@ export { BLOG_POSTS, PORTFOLIO_ITEMS } from './utils/contentLoader';
 export const PROFILE = {
   name: "李奕宏",
   nameEn: "Yi-Hung Lee",
-  title: "全職實習心理師",
+  title: "研究生",
   school: "臺北市立大學 心理與諮商研究所",
-  currentRole: "世新大學諮商中心 全職實習諮商心理師",
+  currentRole: "心理與諮商學系 研究生",
   email: "mail@yi-hung-lee.work",
   philosophy: "活在當下，投入生活。困難會存在，但我們永遠有能力去尋找更多快樂",
   heroTagline: "我是奕宏，喜歡探索科技、創作音樂。在學術與助人工作中發展。"

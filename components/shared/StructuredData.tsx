@@ -210,7 +210,7 @@ function generateAboutSchema(data: AboutPageData) {
       '@id': `${BASE_URL}/#person`,
       name: '李奕宏',
       alternateName: 'Yi-Hung Lee',
-      jobTitle: '全職實習諮商心理師',
+      jobTitle: '研究生',
       hasCredential: credentialSchemas,
       alumniOf: organizationSchemas.filter((org) => org['@type'] === 'EducationalOrganization'),
     },
