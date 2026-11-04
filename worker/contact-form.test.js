@@ -51,7 +51,8 @@ function makeDB({ insertFailures = [], rows = [] } = {}) {
               throw new Error(`unexpected run: ${sql}`);
             },
             async all() {
-              const [cutoff, limit] = args;
+              const [cutoff] = args;
+              const limit = Number(sql.match(/LIMIT (\d+)/)[1]);
               const results = [...table.values()]
                 .filter((r) => r.notified === 0 && r.created_at < cutoff)
                 .sort((a, b) => a.created_at.localeCompare(b.created_at))

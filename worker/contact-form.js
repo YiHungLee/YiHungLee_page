@@ -67,7 +67,7 @@ const INSERT_SQL =
 const MARK_NOTIFIED_SQL = 'UPDATE submissions SET notified = 1 WHERE id = ?1';
 const UNNOTIFIED_SQL =
   'SELECT id, created_at, name, email, category, message FROM submissions ' +
-  'WHERE notified = 0 AND created_at < ?1 ORDER BY created_at LIMIT ?2';
+  `WHERE notified = 0 AND created_at < ?1 ORDER BY created_at LIMIT ${CATCH_UP_BATCH}`;
 
 export default {
   async fetch(request, env, ctx) {
@@ -232,7 +232,7 @@ async function notifyAndCatchUp(env, record) {
   // 通知信寄得出去，順便補寄先前沒寄成功的
   try {
     const cutoff = new Date(Date.now() - CATCH_UP_MIN_AGE_MS).toISOString();
-    const { results = [] } = await env.DB.prepare(UNNOTIFIED_SQL).bind(cutoff, CATCH_UP_BATCH).all();
+    const { results = [] } = await env.DB.prepare(UNNOTIFIED_SQL).bind(cutoff).all();
     for (const row of results) {
       const late = {
         id: row.id,
