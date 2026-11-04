@@ -27,5 +27,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # 速率限制 binding（[[ratelimits]]）需要 wrangler 4.36.0 以上
+          wranglerVersion: '4.151.3'
           command: deploy
           workingDirectory: worker

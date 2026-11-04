@@ -18,6 +18,9 @@ npm run dev      # Start dev server on http://localhost:3000
 # Production
 npm run build    # vite build + RSS feed + SEO prerendering + sitemap + llms.txt
 npm run preview  # Preview production build
+
+# Tests
+npm run test:worker  # Contact form Worker tests (node:test)
 ```
 
 Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEmit` to type-check.
@@ -107,6 +110,12 @@ Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEm
 │       ├── meta-generator.ts       # Per-route SEO meta tags
 │       ├── jsonld-generator.ts     # Per-route JSON-LD schemas
 │       └── body-renderer.ts        # Prerendered HTML body for each route
+├── worker/                         # Contact form backend (Cloudflare Worker, deployed separately)
+│   ├── contact-form.js             # Validates, rate-limits, forwards to Google Apps Script
+│   ├── contact-form.test.js        # Worker tests (npm run test:worker)
+│   ├── wrangler.toml               # Worker config (rate limit binding, optional KV backup)
+│   ├── apps-script/Code.gs         # Google Apps Script source (pasted into Google, not deployed by CI)
+│   └── DEPLOYMENT.md               # Setup, monitoring, troubleshooting
 └── public/
     ├── content/
     │   ├── blog/                   # Blog post Markdown files
@@ -233,6 +242,7 @@ Theme preference is stored in `localStorage` (`theme-mode`, `theme-manually-set`
 - **llms.txt:** AI-readable site summary generated at build time
 - **Scheduled Publishing:** Future-dated posts auto-publish via daily scheduled deploy
 - **Utterances Comments:** GitHub-based commenting on blog posts
+- **Contact Form:** Form → Cloudflare Worker → Google Apps Script → Google Sheets. The Worker checks the Apps Script response body (it returns HTTP 200 even on failure), retries, and can queue failed submissions in KV. Field limits are duplicated in `ContactForm.tsx` and `worker/contact-form.js` — keep them in sync. See `worker/DEPLOYMENT.md`
 - **Newsletter:** EmailOctopus subscription form (BlogListPage, BlogPostPage)
 - **Music Player:** Multi-track audio player with Cloudflare R2 storage
 - **Responsive Design:** Mobile-first with responsive navigation

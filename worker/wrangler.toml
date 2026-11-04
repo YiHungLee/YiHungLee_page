@@ -4,21 +4,43 @@ main = "contact-form.js"
 compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
+# 部署時保留在 Cloudflare Dashboard 設定的環境變數（例如 ALLOWED_ORIGINS），避免被清空。
+# APPS_SCRIPT_URL 請設成 Secret（加密），Secret 本來就不會被部署覆蓋。
+keep_vars = true
+
 # Environment variables (set via GitHub Secrets or wrangler CLI)
 # These are NOT committed to the repository for security
 [vars]
 # APPS_SCRIPT_URL will be set as a secret
 
+# Workers Logs：保存 Worker 的日誌，可在 Dashboard → Worker → Logs 查詢送出失敗的紀錄
+[observability]
+enabled = true
+
+# 速率限制：同一個 IP 每 60 秒最多送出 5 次（需要 wrangler 4.36.0 以上）
+# namespace_id 是自訂的整數，同一個帳號內不要和其他 Worker 重複
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "7301"
+
+  [ratelimits.simple]
+  limit = 5
+  period = 60
+
+# 選用：失敗訊息暫存區 + 定期補送（建議啟用）
+# 啟用後，即使 Google Apps Script 暫時故障，訊息也會先存起來，之後自動補寫進試算表。
+# 設定步驟請見 worker/DEPLOYMENT.md「啟用失敗訊息暫存區」
+# [[kv_namespaces]]
+# binding = "SUBMISSIONS_KV"
+# id = "your-kv-namespace-id"
+#
+# [triggers]
+# crons = ["*/30 * * * *"]
+
 # Production environment
 [env.production]
 name = "yi-hung-lee-contact-form"
 route = { pattern = "contact.lee-yi-hung.com", zone_name = "lee-yi-hung.com", custom_domain = true }
-
-# Optional: KV namespace for rate limiting
-# Uncomment and configure if you want to enable rate limiting
-# [[kv_namespaces]]
-# binding = "RATE_LIMIT_KV"
-# id = "your-kv-namespace-id"
 
 # Workers limits (only available on paid plans)
 # [limits]
