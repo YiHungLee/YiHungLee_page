@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsx scripts/generate-rss.ts && tsx scripts/prerender.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-llms-txt.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:worker": "node --test worker/contact-form.test.js"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
