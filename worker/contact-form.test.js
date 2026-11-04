@@ -4,50 +4,82 @@ import assert from 'node:assert/strict';
 import worker from './contact-form.js';
 
 const SITE = 'https://yi-hung-lee.work';
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/test/exec';
+const NOTIFY_TO = 'owner@example.com';
 
 let ipCounter = 0;
-let fetchCalls;
-let appsScriptReplies;
 let logs;
-const realFetch = globalThis.fetch;
 const realConsole = { info: console.info, warn: console.warn, error: console.error };
 
 beforeEach(() => {
-  fetchCalls = [];
-  appsScriptReplies = [];
   logs = [];
-  globalThis.fetch = async (url, init) => {
-    fetchCalls.push({ url, body: JSON.parse(init.body) });
-    const reply = appsScriptReplies.shift() ?? { status: 200, body: { result: 'success' } };
-    if (reply.throw) throw reply.throw;
-    const text = typeof reply.body === 'string' ? reply.body : JSON.stringify(reply.body);
-    return new Response(text, { status: reply.status ?? 200 });
-  };
   for (const level of Object.keys(realConsole)) {
     console[level] = (line) => logs.push(JSON.parse(line));
   }
 });
 
 afterEach(() => {
-  globalThis.fetch = realFetch;
   Object.assign(console, realConsole);
 });
 
-function makeKV() {
-  const store = new Map();
+/** 模擬 D1：只實作 Worker 用到的三種 SQL。failures 可以讓前幾次呼叫丟出錯誤 */
+function makeDB({ insertFailures = [], rows = [] } = {}) {
+  const table = new Map(rows.map((r) => [r.id, { notified: 0, ...r }]));
+  const failures = [...insertFailures];
+  const calls = { insert: 0 };
   return {
-    store,
-    async put(key, value) { store.set(key, value); },
-    async get(key, type) {
-      const value = store.get(key);
-      if (value === undefined) return null;
-      return type === 'json' ? JSON.parse(value) : value;
+    table,
+    calls,
+    prepare(sql) {
+      return {
+        bind(...args) {
+          return {
+            async run() {
+              if (sql.startsWith('INSERT')) {
+                calls.insert++;
+                const failure = failures.shift();
+                if (failure) throw new Error(failure);
+                const [id, created_at, name, email, category, message] = args;
+                if (table.has(id)) return { meta: { changes: 0 } };
+                table.set(id, { id, created_at, name, email, category, message, notified: 0 });
+                return { meta: { changes: 1 } };
+              }
+              if (sql.startsWith('UPDATE')) {
+                const row = table.get(args[0]);
+                if (row) row.notified = 1;
+                return { meta: { changes: row ? 1 : 0 } };
+              }
+              throw new Error(`unexpected run: ${sql}`);
+            },
+            async all() {
+              const [cutoff, limit] = args;
+              const results = [...table.values()]
+                .filter((r) => r.notified === 0 && r.created_at < cutoff)
+                .sort((a, b) => a.created_at.localeCompare(b.created_at))
+                .slice(0, limit);
+              return { results };
+            },
+          };
+        },
+      };
     },
-    async delete(key) { store.delete(key); },
-    async list({ prefix = '', limit = 1000 } = {}) {
-      const keys = [...store.keys()].filter((k) => k.startsWith(prefix)).slice(0, limit);
-      return { keys: keys.map((name) => ({ name })) };
+  };
+}
+
+/** 模擬寄信綁定。failTimes：前幾次呼叫丟出錯誤 */
+function makeEmail({ failTimes = 0 } = {}) {
+  const sent = [];
+  let failuresLeft = failTimes;
+  return {
+    sent,
+    async send(message) {
+      if (failuresLeft > 0) {
+        failuresLeft--;
+        const err = new Error('send failed');
+        err.code = 'E_TEST';
+        throw err;
+      }
+      sent.push(message);
+      return { messageId: `msg-${sent.length}` };
     },
   };
 }
@@ -57,7 +89,11 @@ function makeCtx() {
   return { pending, waitUntil: (p) => pending.push(p), flush: () => Promise.all(pending) };
 }
 
-function submit(body, { env = {}, origin = SITE, ip, ctx = makeCtx() } = {}) {
+function makeEnv(overrides = {}) {
+  return { DB: makeDB(), EMAIL: makeEmail(), NOTIFY_TO, ...overrides };
+}
+
+function submit(body, { env = makeEnv(), origin = SITE, ip, ctx = makeCtx() } = {}) {
   const headers = { 'Content-Type': 'application/json', 'CF-Connecting-IP': ip ?? `10.0.0.${++ipCounter}` };
   if (origin) headers.Origin = origin;
   const request = new Request('https://worker.example/', {
@@ -65,7 +101,7 @@ function submit(body, { env = {}, origin = SITE, ip, ctx = makeCtx() } = {}) {
     headers,
     body: typeof body === 'string' ? body : JSON.stringify(body),
   });
-  return worker.fetch(request, { APPS_SCRIPT_URL, ...env }, ctx);
+  return worker.fetch(request, env, ctx);
 }
 
 const validForm = (overrides = {}) => ({
@@ -76,6 +112,188 @@ const validForm = (overrides = {}) => ({
   submissionId: `test-${Math.random().toString(36).slice(2, 12)}`,
   ...overrides,
 });
+
+// ---------- 正常流程 ----------
+
+test('送出成功：存進資料庫、寄出通知、標記已通知', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  const form = validForm();
+  const res = await submit(form, { env, ctx });
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { success: true, id: form.submissionId });
+
+  const row = env.DB.table.get(form.submissionId);
+  assert.equal(row.message, form.message);
+  assert.equal(row.category, 'speech');
+
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 1);
+  const mail = env.EMAIL.sent[0];
+  assert.equal(mail.to, NOTIFY_TO);
+  assert.equal(mail.from.email, 'contact-form@yi-hung-lee.work');
+  assert.deepEqual(mail.replyTo, { email: 'test@example.com', name: '測試者' });
+  assert.equal(mail.subject, '[網站聯絡表單] 演講邀約｜測試者');
+  assert.ok(mail.text.includes(form.message));
+  assert.equal(row.notified, 1);
+});
+
+test('通知信時間以台灣時間顯示', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  await submit(validForm(), { env, ctx });
+  await ctx.flush();
+  assert.match(env.EMAIL.sent[0].text, /時間：\d{4}-\d{2}-\d{2} \d{2}:\d{2}（台灣時間）/);
+});
+
+test('NOTIFY_FROM 可以覆寫寄件地址', async () => {
+  const env = makeEnv({ NOTIFY_FROM: 'hello@yi-hung-lee.work' });
+  const ctx = makeCtx();
+  await submit(validForm(), { env, ctx });
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent[0].from.email, 'hello@yi-hung-lee.work');
+});
+
+test('姓名中的換行不會進到信件主旨', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  await submit(validForm({ name: '王\r\nBcc: evil@example.com' }), { env, ctx });
+  await ctx.flush();
+  assert.ok(!/[\r\n]/.test(env.EMAIL.sent[0].subject));
+  assert.ok(!/[\r\n]/.test(env.EMAIL.sent[0].replyTo.name));
+});
+
+test('格式特殊的 Email 不設成回覆地址，但仍寄出通知', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  await submit(validForm({ email: 'a"b<c>@example.com' }), { env, ctx });
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 1);
+  assert.equal(env.EMAIL.sent[0].replyTo, undefined);
+});
+
+// ---------- 其中一邊失敗 ----------
+
+test('資料庫暫時失敗會重試一次', async () => {
+  const env = makeEnv({ DB: makeDB({ insertFailures: ['D1 DB reset because its code was updated.'] }) });
+  const ctx = makeCtx();
+  const res = await submit(validForm(), { env, ctx });
+  assert.equal(res.status, 200);
+  assert.equal(env.DB.calls.insert, 2);
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 1, '重試成功的新訊息仍要寄通知');
+});
+
+test('資料庫額度用完時不重試，改由 Email 保住訊息', async () => {
+  const quota = "Your account has exceeded D1's free tier daily row write limit.";
+  const env = makeEnv({ DB: makeDB({ insertFailures: [quota] }) });
+  const form = validForm();
+  const res = await submit(form, { env });
+  assert.equal(res.status, 200);
+  assert.equal(env.DB.calls.insert, 1);
+  assert.equal(env.EMAIL.sent.length, 1);
+  assert.ok(env.EMAIL.sent[0].text.includes('沒有存進資料庫'));
+  assert.ok(env.EMAIL.sent[0].text.includes(form.message));
+  assert.ok(logs.some((l) => l.event === 'submission_emailed_only'));
+});
+
+test('沒有設定資料庫時，仍可靠 Email 送達', async () => {
+  const env = makeEnv({ DB: undefined });
+  const res = await submit(validForm(), { env });
+  assert.equal(res.status, 200);
+  assert.equal(env.EMAIL.sent.length, 1);
+});
+
+test('寄信失敗時重試一次', async () => {
+  const env = makeEnv({ EMAIL: makeEmail({ failTimes: 1 }) });
+  const ctx = makeCtx();
+  const form = validForm();
+  await submit(form, { env, ctx });
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 1);
+  assert.equal(env.DB.table.get(form.submissionId).notified, 1);
+});
+
+test('通知信寄不出去時，訊息仍算送出成功，並保持「未通知」等待補寄', async () => {
+  const env = makeEnv({ EMAIL: makeEmail({ failTimes: 99 }) });
+  const ctx = makeCtx();
+  const form = validForm();
+  const res = await submit(form, { env, ctx });
+  assert.equal(res.status, 200);
+  await ctx.flush();
+  assert.equal(env.DB.table.get(form.submissionId).notified, 0);
+  assert.ok(logs.some((l) => l.event === 'notify_failed'));
+});
+
+test('下一則訊息寄信成功時，會補寄先前沒寄出的通知', async () => {
+  const old = {
+    id: 'old-00000001',
+    created_at: '2026-01-01T00:00:00.000Z',
+    name: '舊訪客',
+    email: 'old@example.com',
+    category: 'course',
+    message: '之前通知信沒寄出去的訊息內容',
+  };
+  const env = makeEnv({ DB: makeDB({ rows: [old] }) });
+  const ctx = makeCtx();
+  await submit(validForm(), { env, ctx });
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 2);
+  assert.ok(env.EMAIL.sent[1].text.includes('補寄'));
+  assert.ok(env.EMAIL.sent[1].text.includes('之前通知信沒寄出去的訊息內容'));
+  assert.equal(env.DB.table.get('old-00000001').notified, 1);
+});
+
+test('資料庫和 Email 都失敗時回報錯誤，完整內容寫進日誌', async () => {
+  const env = makeEnv({
+    DB: makeDB({ insertFailures: ['boom', 'boom'] }),
+    EMAIL: makeEmail({ failTimes: 99 }),
+  });
+  const form = validForm();
+  const res = await submit(form, { env });
+  assert.equal(res.status, 502);
+  const notSaved = logs.find((l) => l.event === 'submission_not_saved');
+  assert.ok(notSaved);
+  assert.equal(notSaved.record.message, form.message);
+});
+
+test('Email 沒有設定收件信箱時視為未設定', async () => {
+  const env = makeEnv({ NOTIFY_TO: '', DB: undefined });
+  const res = await submit(validForm(), { env });
+  assert.equal(res.status, 502);
+  assert.ok(logs.some((l) => l.event === 'submission_not_saved' && l.reason === 'email_not_configured'));
+});
+
+// ---------- 重複送出 ----------
+
+test('同一個 submissionId 重送時不會重複寫入或重複寄信', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  const form = validForm();
+  await submit(form, { env, ctx });
+  const res = await submit(form, { env, ctx });
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).duplicate, true);
+  await ctx.flush();
+  assert.equal(env.DB.table.size, 1);
+  assert.equal(env.EMAIL.sent.length, 1);
+});
+
+test('資料庫已有同一個 ID（例如 Worker 重啟後重送）時也不重複寄信', async () => {
+  const form = validForm();
+  const env = makeEnv({
+    DB: makeDB({
+      rows: [{ id: form.submissionId, created_at: '2026-11-01T00:00:00.000Z', name: 'x', email: 'x@y.co', category: 'other', message: '已經存過的訊息內容', notified: 1 }],
+    }),
+  });
+  const ctx = makeCtx();
+  const res = await submit(form, { env, ctx });
+  assert.equal((await res.json()).duplicate, true);
+  await ctx.flush();
+  assert.equal(env.EMAIL.sent.length, 0);
+});
+
+// ---------- 驗證與防濫用 ----------
 
 test('CORS 預檢：允許網站本身的來源', async () => {
   const res = await worker.fetch(
@@ -88,128 +306,27 @@ test('CORS 預檢：允許網站本身的來源', async () => {
 });
 
 test('拒絕其他網站的來源', async () => {
-  const res = await submit(validForm(), { origin: 'https://evil.example' });
+  const env = makeEnv();
+  const res = await submit(validForm(), { env, origin: 'https://evil.example' });
   assert.equal(res.status, 403);
-  assert.equal(fetchCalls.length, 0);
+  assert.equal(env.DB.table.size, 0);
 });
 
 test('ALLOWED_ORIGINS 可以追加允許的來源', async () => {
   const res = await submit(validForm(), {
     origin: 'https://preview.example.pages.dev',
-    env: { ALLOWED_ORIGINS: 'https://preview.example.pages.dev' },
+    env: makeEnv({ ALLOWED_ORIGINS: 'https://preview.example.pages.dev' }),
   });
   assert.equal(res.status, 200);
 });
 
-test('Apps Script 回報成功時才回傳成功，並帶上 submissionId', async () => {
-  const form = validForm();
-  const res = await submit(form);
-  assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), { success: true, id: form.submissionId });
-  assert.equal(fetchCalls.length, 1);
-  assert.equal(fetchCalls[0].url, APPS_SCRIPT_URL);
-  assert.equal(fetchCalls[0].body.submissionId, form.submissionId);
-  assert.equal(fetchCalls[0].body.name, '測試者');
-});
-
-test('Apps Script 回 HTTP 200 但內容是 error 時，不可以當成成功', async () => {
-  appsScriptReplies = [
-    { status: 200, body: { result: 'error', error: {} } },
-    { status: 200, body: { result: 'error', error: {} } },
-  ];
-  const res = await submit(validForm());
-  assert.equal(res.status, 502);
-  assert.equal(fetchCalls.length, 2, '應該重試一次');
-  const notSaved = logs.find((l) => l.event === 'submission_not_saved');
-  assert.ok(notSaved, '沒有暫存區時要把完整內容寫進日誌');
-  assert.equal(notSaved.record.message, validForm().message);
-});
-
-test('Apps Script 回傳 HTML（例如錯誤頁）時視為失敗', async () => {
-  appsScriptReplies = [
-    { status: 200, body: '<html>Error</html>' },
-    { status: 200, body: '<html>Error</html>' },
-  ];
-  const res = await submit(validForm());
-  assert.equal(res.status, 502);
-});
-
-test('第一次失敗、第二次成功時回傳成功', async () => {
-  appsScriptReplies = [{ status: 503, body: 'unavailable' }, { status: 200, body: { result: 'success' } }];
-  const res = await submit(validForm());
-  assert.equal(res.status, 200);
-  assert.equal(fetchCalls.length, 2);
-});
-
-test('網路錯誤也會重試', async () => {
-  appsScriptReplies = [{ throw: new TypeError('fetch failed') }, { status: 200, body: { result: 'success' } }];
-  const res = await submit(validForm());
-  assert.equal(res.status, 200);
-});
-
-test('有暫存區時，Apps Script 失敗的訊息會被存起來並回報已收到', async () => {
-  appsScriptReplies = [{ status: 500 }, { status: 500 }];
-  const kv = makeKV();
-  const form = validForm();
-  const res = await submit(form, { env: { SUBMISSIONS_KV: kv } });
-  assert.equal(res.status, 202);
-  assert.deepEqual(await res.json(), { success: true, id: form.submissionId, queued: true });
-  const saved = JSON.parse(kv.store.get(`pending:${form.submissionId}`));
-  assert.equal(saved.record.message, form.message);
-});
-
-test('沒有設定 APPS_SCRIPT_URL 但有暫存區時，訊息仍會被保存', async () => {
-  const kv = makeKV();
-  const res = await submit(validForm(), { env: { APPS_SCRIPT_URL: '', SUBMISSIONS_KV: kv } });
-  assert.equal(res.status, 202);
-  assert.equal(kv.store.size, 1);
-  assert.equal(fetchCalls.length, 0);
-});
-
-test('排程會補送暫存區的訊息，成功後刪除', async () => {
-  const kv = makeKV();
-  const record = { submissionId: 'queued-0001', name: 'A', email: 'a@b.co', category: 'other', message: '暫存中的訊息內容！！' };
-  await kv.put('pending:queued-0001', JSON.stringify({ record }));
-  const ctx = makeCtx();
-  await worker.scheduled({}, { APPS_SCRIPT_URL, SUBMISSIONS_KV: kv }, ctx);
-  await ctx.flush();
-  assert.equal(fetchCalls.length, 1);
-  assert.equal(fetchCalls[0].body.submissionId, 'queued-0001');
-  assert.equal(kv.store.size, 0);
-});
-
-test('補送仍失敗時保留訊息，並停止處理後面的訊息', async () => {
-  const kv = makeKV();
-  for (const id of ['queued-a001', 'queued-a002']) {
-    const record = { submissionId: id, name: 'A', email: 'a@b.co', category: 'other', message: '暫存中的訊息內容！！' };
-    await kv.put(`pending:${id}`, JSON.stringify({ record }));
-  }
-  appsScriptReplies = [{ status: 200, body: { result: 'error' } }];
-  const ctx = makeCtx();
-  await worker.scheduled({}, { APPS_SCRIPT_URL, SUBMISSIONS_KV: kv }, ctx);
-  await ctx.flush();
-  assert.equal(fetchCalls.length, 1);
-  assert.equal(kv.store.size, 2);
-});
-
-test('新訊息送出成功後，會順便補送暫存區的訊息', async () => {
-  const kv = makeKV();
-  const record = { submissionId: 'queued-b001', name: 'A', email: 'a@b.co', category: 'other', message: '暫存中的訊息內容！！' };
-  await kv.put('pending:queued-b001', JSON.stringify({ record }));
-  const ctx = makeCtx();
-  const res = await submit(validForm(), { env: { SUBMISSIONS_KV: kv }, ctx });
-  assert.equal(res.status, 200);
-  await ctx.flush();
-  assert.equal(fetchCalls.length, 2);
-  assert.equal(kv.store.size, 0);
-});
-
 test('欄位驗證失敗時回傳 400 與各欄位的錯誤', async () => {
-  const res = await submit(validForm({ name: '  ', email: 'not-an-email', message: '太短' }));
+  const env = makeEnv();
+  const res = await submit(validForm({ name: '  ', email: 'not-an-email', message: '太短' }), { env });
   assert.equal(res.status, 400);
   const body = await res.json();
   assert.deepEqual(Object.keys(body.fields).sort(), ['email', 'message', 'name']);
-  assert.equal(fetchCalls.length, 0);
+  assert.equal(env.DB.table.size, 0);
 });
 
 test('訊息過長時拒絕', async () => {
@@ -223,35 +340,27 @@ test('非 JSON 內容回傳 400，而不是 500', async () => {
 });
 
 test('不明的類別會被改成 other', async () => {
-  await submit(validForm({ category: 'hack' }));
-  assert.equal(fetchCalls[0].body.category, 'other');
+  const env = makeEnv();
+  const form = validForm({ category: 'constructor' });
+  await submit(form, { env });
+  assert.equal(env.DB.table.get(form.submissionId).category, 'other');
 });
 
-test('= + - @ 開頭的內容會加上單引號，避免試算表當成公式', async () => {
-  await submit(validForm({ name: '=HYPERLINK("x")', message: '-- 這是一則測試訊息內容' }));
-  assert.equal(fetchCalls[0].body.name, `'=HYPERLINK("x")`);
-  assert.equal(fetchCalls[0].body.message, `'-- 這是一則測試訊息內容`);
-});
-
-test('蜜罐欄位有填時假裝成功，但不轉送', async () => {
-  const res = await submit(validForm({ _gotcha: 'http://spam.example' }));
+test('蜜罐欄位有填時假裝成功，但不儲存也不寄信', async () => {
+  const env = makeEnv();
+  const ctx = makeCtx();
+  const res = await submit(validForm({ _gotcha: 'http://spam.example' }), { env, ctx });
   assert.equal(res.status, 200);
-  assert.equal(fetchCalls.length, 0);
-});
-
-test('同一個 submissionId 重送時不會重複寫入', async () => {
-  const form = validForm();
-  await submit(form);
-  const res = await submit(form);
-  assert.equal(res.status, 200);
-  assert.equal((await res.json()).duplicate, true);
-  assert.equal(fetchCalls.length, 1);
+  await ctx.flush();
+  assert.equal(env.DB.table.size, 0);
+  assert.equal(env.EMAIL.sent.length, 0);
 });
 
 test('同一個 IP 一分鐘內第 6 次送出會被限制', async () => {
+  const env = makeEnv();
   const statuses = [];
   for (let i = 0; i < 6; i++) {
-    const res = await submit(validForm(), { ip: '192.0.2.99' });
+    const res = await submit(validForm(), { env, ip: '192.0.2.99' });
     statuses.push(res.status);
   }
   assert.deepEqual(statuses, [200, 200, 200, 200, 200, 429]);
@@ -260,18 +369,18 @@ test('同一個 IP 一分鐘內第 6 次送出會被限制', async () => {
 test('有 RATE_LIMITER binding 時使用它', async () => {
   const keys = [];
   const RATE_LIMITER = { limit: async ({ key }) => (keys.push(key), { success: false }) };
-  const res = await submit(validForm(), { env: { RATE_LIMITER }, ip: '192.0.2.50' });
+  const res = await submit(validForm(), { env: makeEnv({ RATE_LIMITER }), ip: '192.0.2.50' });
   assert.equal(res.status, 429);
   assert.deepEqual(keys, ['contact:192.0.2.50']);
 });
 
 test('健康檢查端點', async () => {
-  const res = await worker.fetch(new Request('https://worker.example/health'), { APPS_SCRIPT_URL }, makeCtx());
+  const res = await worker.fetch(new Request('https://worker.example/health'), makeEnv(), makeCtx());
   assert.equal(res.status, 200);
   assert.deepEqual(await res.json(), {
     ok: true,
-    appsScriptConfigured: true,
-    backupConfigured: false,
+    databaseConfigured: true,
+    emailConfigured: true,
     rateLimiterConfigured: false,
   });
 });

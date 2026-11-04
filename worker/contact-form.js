@@ -1,15 +1,15 @@
 /**
  * Cloudflare Worker：聯絡表單後端
  *
- * 流程：網站表單 → 本 Worker（驗證、防濫用）→ Google Apps Script → Google 試算表
+ * 流程：網站表單 → 本 Worker（驗證、防濫用）→ ① D1 資料庫 ＋ ② Email 通知
  *
  * 可靠性設計：
- * - 檢查 Apps Script 回傳的內容，而不只看 HTTP 狀態碼
- *   （Apps Script 寫入失敗時仍回 HTTP 200，內容是 {"result":"error"}）
- * - 轉送有逾時限制，失敗會自動重試一次
- * - 選用 SUBMISSIONS_KV：轉送失敗時把訊息暫存起來，之後自動補送，不會遺失
- * - 選用 RATE_LIMITER：限制同一個 IP 的送出頻率（沒設定時改用記憶體內的簡易限制）
- * - 每筆送出都帶 submissionId，重試時可以辨識重複資料
+ * - 資料庫和 Email 是兩份獨立的紀錄，任一成功就算訊息已保存
+ *   （例如帳號的 D1 每日額度被其他專案用完時，仍會收到 Email）
+ * - 兩者都失敗時回報錯誤，並把完整內容寫進 Worker 日誌作為最後備份
+ * - 已存進資料庫但通知信沒寄出的訊息，會在下一次成功寄信時補寄
+ * - 每筆送出都帶 submissionId，重送不會重複寫入
+ * - RATE_LIMITER：限制同一個 IP 的送出頻率（沒設定時改用記憶體內的簡易限制）
  *
  * 設定方式請見 worker/DEPLOYMENT.md
  */
@@ -33,28 +33,41 @@ const LIMITS = {
   bodyBytes: 32 * 1024,
 };
 
-const CATEGORIES = ['speech', 'course', 'tutoring', 'other'];
+const CATEGORY_LABELS = {
+  speech: '演講邀約',
+  course: '課程邀請',
+  tutoring: '心輔所備考協助',
+  other: '其他',
+};
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// 設為通知信「回覆地址」前，用較嚴格的格式再檢查一次
+const REPLY_TO_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const SUBMISSION_ID_RE = /^[A-Za-z0-9-]{8,64}$/;
 
-// 轉送到 Apps Script
-const FORWARD_TIMEOUT_MS = 12000;
-const FORWARD_ATTEMPTS = 2;
-const RETRY_DELAY_MS = 1000;
+// 通知信的寄件地址（必須是已啟用 Email Routing 的網域）；可用環境變數 NOTIFY_FROM 覆寫
+const DEFAULT_NOTIFY_FROM = 'contact-form@yi-hung-lee.work';
+
+const RETRY_DELAY_MS = 500;
+// 補寄通知：只處理建立超過 2 分鐘的訊息（避免和正在寄送中的重疊），每次最多 5 筆
+const CATCH_UP_MIN_AGE_MS = 2 * 60 * 1000;
+const CATCH_UP_BATCH = 5;
 
 // 速率限制（沒有 RATE_LIMITER binding 時的備援設定）
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 60 * 1000;
 
-// 暫存區（SUBMISSIONS_KV）
-const PENDING_PREFIX = 'pending:';
-const DRAIN_BATCH_ON_REQUEST = 5;
-const DRAIN_BATCH_ON_CRON = 15;
-
 // 同一個 isolate 內的短期記憶（Worker 重啟後會清空，只是盡力而為）
 const memoryHits = new Map();
 const completedIds = new Map();
 const COMPLETED_TTL_MS = 10 * 60 * 1000;
+
+const INSERT_SQL =
+  'INSERT INTO submissions (id, created_at, name, email, category, message) ' +
+  'VALUES (?1, ?2, ?3, ?4, ?5, ?6) ON CONFLICT(id) DO NOTHING';
+const MARK_NOTIFIED_SQL = 'UPDATE submissions SET notified = 1 WHERE id = ?1';
+const UNNOTIFIED_SQL =
+  'SELECT id, created_at, name, email, category, message FROM submissions ' +
+  'WHERE notified = 0 AND created_at < ?1 ORDER BY created_at LIMIT ?2';
 
 export default {
   async fetch(request, env, ctx) {
@@ -71,8 +84,8 @@ export default {
         return json(
           {
             ok: true,
-            appsScriptConfigured: Boolean(env.APPS_SCRIPT_URL),
-            backupConfigured: Boolean(env.SUBMISSIONS_KV),
+            databaseConfigured: Boolean(env.DB),
+            emailConfigured: Boolean(env.EMAIL && env.NOTIFY_TO),
             rateLimiterConfigured: Boolean(env.RATE_LIMITER),
           },
           200,
@@ -89,11 +102,6 @@ export default {
       log('error', 'unhandled_error', { error: errorMessage(err) });
       return json({ error: '伺服器發生錯誤，請稍後再試，或直接寄信給我。' }, 500, cors);
     }
-  },
-
-  // Cron Trigger：定期補送暫存區裡的訊息（需在 wrangler.toml 設定 [triggers]）
-  async scheduled(controller, env, ctx) {
-    ctx.waitUntil(drainPending(env, DRAIN_BATCH_ON_CRON, 'cron'));
   },
 };
 
@@ -143,158 +151,162 @@ async function handleSubmit(request, env, ctx, cors) {
     return json({ success: true, id, duplicate: true }, 200, cors);
   }
 
-  const record = {
-    submissionId: id,
-    ...validation.value,
-    timestamp: new Date().toISOString(),
-    source: 'portfolio-website',
-    ip,
-    userAgent: (request.headers.get('User-Agent') || 'unknown').slice(0, 300),
-  };
+  const record = { id, createdAt: new Date().toISOString(), ...validation.value };
 
-  if (!env.APPS_SCRIPT_URL) {
-    log('error', 'apps_script_url_missing', { id });
-    return await fallback(env, record, 'APPS_SCRIPT_URL not configured', cors);
+  // ① 先存進資料庫
+  const saved = await saveToDatabase(env, record);
+
+  if (saved.ok && saved.duplicate) {
+    markCompleted(id);
+    log('info', 'duplicate_ignored', { id });
+    return json({ success: true, id, duplicate: true }, 200, cors);
   }
 
-  const result = await forwardToAppsScript(env.APPS_SCRIPT_URL, record, FORWARD_ATTEMPTS);
-  if (result.ok) {
+  if (saved.ok) {
     markCompleted(id);
-    log('info', 'submission_delivered', { id, attempts: result.attempts });
-    // Apps Script 正常運作，順便補送先前暫存的訊息
-    if (env.SUBMISSIONS_KV) {
-      ctx.waitUntil(drainPending(env, DRAIN_BATCH_ON_REQUEST, 'request'));
-    }
+    log('info', 'submission_saved', { id });
+    // ② 通知信在背景寄出，訪客不用等；寄不出去時訊息仍在資料庫，之後會補寄
+    ctx.waitUntil(notifyAndCatchUp(env, record));
     return json({ success: true, id }, 200, cors);
   }
 
-  log('error', 'apps_script_failed', {
-    id,
-    reason: result.reason,
-    detail: result.detail,
-    attempts: result.attempts,
-  });
-  return await fallback(env, record, result.reason, cors);
-}
-
-/**
- * Apps Script 轉送失敗時的處理：
- * 有 SUBMISSIONS_KV 就暫存起來稍後補送（對訪客而言已送出成功）；
- * 沒有的話回報錯誤，並把完整內容寫進 Worker 日誌，作為最後的備份。
- */
-async function fallback(env, record, reason, cors) {
-  if (env.SUBMISSIONS_KV) {
-    try {
-      await env.SUBMISSIONS_KV.put(
-        PENDING_PREFIX + record.submissionId,
-        JSON.stringify({ record, reason, queuedAt: new Date().toISOString() })
-      );
-      markCompleted(record.submissionId);
-      log('warn', 'submission_queued', { id: record.submissionId, reason });
-      return json({ success: true, id: record.submissionId, queued: true }, 202, cors);
-    } catch (err) {
-      log('error', 'queue_failed', { id: record.submissionId, error: errorMessage(err) });
-    }
+  // 資料庫寫不進去：改靠 Email 保住這則訊息
+  log('error', 'database_failed', { id, reason: saved.reason });
+  const mailed = await sendNotification(env, record, { databaseFailed: true });
+  if (mailed.ok) {
+    markCompleted(id);
+    log('warn', 'submission_emailed_only', { id });
+    return json({ success: true, id }, 200, cors);
   }
 
-  log('error', 'submission_not_saved', { record });
+  log('error', 'submission_not_saved', { reason: mailed.reason, record });
   return json(
-    {
-      error: '目前無法送出訊息，請稍後再試，或直接寄信給我。',
-      id: record.submissionId,
-    },
+    { error: '目前無法送出訊息，請稍後再試，或直接寄信給我。', id },
     502,
     cors
   );
 }
 
-async function forwardToAppsScript(appsScriptUrl, record, attempts) {
-  let result;
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    result = await forwardOnce(appsScriptUrl, record);
-    result.attempts = attempt;
-    if (result.ok || !result.retryable || attempt === attempts) break;
-    await sleep(RETRY_DELAY_MS * attempt);
+// ---------- 資料庫 ----------
+
+async function saveToDatabase(env, record) {
+  if (!env.DB) return { ok: false, reason: 'database_not_configured' };
+
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const result = await env.DB.prepare(INSERT_SQL)
+        .bind(record.id, record.createdAt, record.name, record.email, record.category, record.message)
+        .run();
+      // 第一次就沒有寫入 = 這個 ID 之前已經存過。
+      // 重試時沒有寫入，可能是第一次其實成功了，視為新訊息處理（寧可多寄一封通知）
+      const duplicate = attempt === 1 && result.meta && result.meta.changes === 0;
+      return { ok: true, duplicate };
+    } catch (err) {
+      const reason = errorMessage(err);
+      // 額度用完之類的錯誤，重試也沒用
+      if (attempt === 2 || /exceeded/i.test(reason)) return { ok: false, reason };
+      await sleep(RETRY_DELAY_MS);
+    }
   }
-  return result;
 }
 
-async function forwardOnce(appsScriptUrl, record) {
-  let response;
+async function markNotified(env, id) {
   try {
-    response = await fetch(appsScriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(toSheetPayload(record)),
-      redirect: 'follow',
-      signal: AbortSignal.timeout(FORWARD_TIMEOUT_MS),
-    });
+    await env.DB.prepare(MARK_NOTIFIED_SQL).bind(id).run();
   } catch (err) {
-    const timedOut = err && (err.name === 'TimeoutError' || err.name === 'AbortError');
-    return { ok: false, retryable: true, reason: timedOut ? 'timeout' : 'network_error', detail: errorMessage(err) };
+    log('warn', 'mark_notified_failed', { id, error: errorMessage(err) });
   }
-
-  const text = await response.text().catch(() => '');
-  if (!response.ok) {
-    return {
-      ok: false,
-      retryable: response.status >= 500 || response.status === 429,
-      reason: `http_${response.status}`,
-      detail: text.slice(0, 300),
-    };
-  }
-
-  let body;
-  try {
-    body = JSON.parse(text);
-  } catch {
-    // 例如 Google 的錯誤頁或登入頁（HTML）
-    return { ok: false, retryable: true, reason: 'unexpected_response', detail: text.slice(0, 300) };
-  }
-
-  if (body && body.result === 'success') {
-    return { ok: true };
-  }
-  return {
-    ok: false,
-    retryable: true,
-    reason: 'apps_script_error',
-    detail: JSON.stringify(body).slice(0, 300),
-  };
 }
 
-/**
- * 補送暫存區裡的訊息。遇到第一筆失敗就停止（代表 Apps Script 還沒恢復）。
- * 已送出的會從暫存區刪除。
- */
-async function drainPending(env, limit, trigger) {
-  const kv = env.SUBMISSIONS_KV;
-  if (!kv || !env.APPS_SCRIPT_URL) return;
+// ---------- Email 通知 ----------
 
+async function notifyAndCatchUp(env, record) {
+  const mailed = await sendNotification(env, record);
+  if (!mailed.ok) {
+    log('error', 'notify_failed', { id: record.id, reason: mailed.reason });
+    return;
+  }
+  await markNotified(env, record.id);
+  log('info', 'notified', { id: record.id });
+
+  // 通知信寄得出去，順便補寄先前沒寄成功的
   try {
-    const { keys } = await kv.list({ prefix: PENDING_PREFIX, limit });
-    if (keys.length === 0) return;
-
-    let delivered = 0;
-    for (const { name } of keys) {
-      const entry = await kv.get(name, 'json');
-      if (!entry || !entry.record) {
-        await kv.delete(name);
-        continue;
-      }
-      const result = await forwardToAppsScript(env.APPS_SCRIPT_URL, entry.record, 1);
+    const cutoff = new Date(Date.now() - CATCH_UP_MIN_AGE_MS).toISOString();
+    const { results = [] } = await env.DB.prepare(UNNOTIFIED_SQL).bind(cutoff, CATCH_UP_BATCH).all();
+    for (const row of results) {
+      const late = {
+        id: row.id,
+        createdAt: row.created_at,
+        name: row.name,
+        email: row.email,
+        category: row.category,
+        message: row.message,
+      };
+      const result = await sendNotification(env, late, { late: true });
       if (!result.ok) {
-        log('warn', 'pending_retry_failed', { trigger, id: entry.record.submissionId, reason: result.reason });
+        log('warn', 'catch_up_failed', { id: row.id, reason: result.reason });
         break;
       }
-      await kv.delete(name);
-      delivered++;
-      log('info', 'pending_delivered', { trigger, id: entry.record.submissionId, queuedAt: entry.queuedAt });
+      await markNotified(env, row.id);
+      log('info', 'catch_up_notified', { id: row.id });
     }
-    log('info', 'drain_finished', { trigger, delivered, checked: keys.length });
   } catch (err) {
-    log('error', 'drain_failed', { trigger, error: errorMessage(err) });
+    log('warn', 'catch_up_error', { error: errorMessage(err) });
   }
+}
+
+async function sendNotification(env, record, { databaseFailed = false, late = false } = {}) {
+  if (!env.EMAIL || !env.NOTIFY_TO) return { ok: false, reason: 'email_not_configured' };
+
+  const name = singleLine(record.name);
+  const category = CATEGORY_LABELS[record.category] || CATEGORY_LABELS.other;
+  const message = {
+    to: env.NOTIFY_TO,
+    from: { email: env.NOTIFY_FROM || DEFAULT_NOTIFY_FROM, name: '網站聯絡表單' },
+    subject: `[網站聯絡表單] ${category}｜${name}`,
+    text: buildEmailText(record, { databaseFailed, late }),
+  };
+  if (REPLY_TO_RE.test(record.email)) {
+    message.replyTo = { email: record.email, name };
+  }
+
+  let reason = '';
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      await env.EMAIL.send(message);
+      return { ok: true };
+    } catch (err) {
+      reason = [err && err.code, errorMessage(err)].filter(Boolean).join(' ');
+      if (attempt < 2) await sleep(RETRY_DELAY_MS);
+    }
+  }
+  return { ok: false, reason };
+}
+
+function buildEmailText(record, { databaseFailed, late }) {
+  const lines = [];
+  if (databaseFailed) {
+    lines.push('⚠ 這則訊息沒有存進資料庫（資料庫暫時無法寫入），請保留這封信。', '');
+  }
+  if (late) {
+    lines.push('（這是補寄的通知，訊息先前已存進資料庫，但當時通知信沒有寄出。）', '');
+  }
+  lines.push(
+    '網站聯絡表單收到一則新訊息：',
+    '',
+    `姓名：${singleLine(record.name)}`,
+    `Email：${record.email}`,
+    `類別：${CATEGORY_LABELS[record.category] || CATEGORY_LABELS.other}`,
+    `時間：${formatTaipeiTime(record.createdAt)}（台灣時間）`,
+    '',
+    '──────────',
+    record.message,
+    '──────────',
+    '',
+    '直接回覆這封信就會寄給對方。',
+    `編號：${record.id}`
+  );
+  return lines.join('\n');
 }
 
 // ---------- 驗證與資料處理 ----------
@@ -332,7 +344,7 @@ function validate(data) {
   const name = typeof data.name === 'string' ? data.name.trim() : '';
   const email = typeof data.email === 'string' ? data.email.trim() : '';
   const message = typeof data.message === 'string' ? data.message.trim() : '';
-  const category = CATEGORIES.includes(data.category) ? data.category : 'other';
+  const category = Object.hasOwn(CATEGORY_LABELS, data.category) ? data.category : 'other';
 
   if (!name) {
     errors.name = '請輸入您的姓名';
@@ -361,21 +373,13 @@ function validate(data) {
   };
 }
 
-/**
- * 試算表會把 = + - @ 開頭的文字當成公式（可能變成 #ERROR! 或被注入公式）。
- * 開頭加上單引號會讓試算表把它當純文字，顯示時不會看到這個單引號。
- */
-function escapeForSheet(value) {
-  return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+function singleLine(value) {
+  return String(value).replace(/[\r\n\t]+/g, ' ').trim();
 }
 
-function toSheetPayload(record) {
-  return {
-    ...record,
-    name: escapeForSheet(record.name),
-    email: escapeForSheet(record.email),
-    message: escapeForSheet(record.message),
-  };
+function formatTaipeiTime(iso) {
+  const date = new Date(new Date(iso).getTime() + 8 * 60 * 60 * 1000);
+  return date.toISOString().slice(0, 16).replace('T', ' ');
 }
 
 // ---------- 防濫用 ----------

@@ -1,21 +1,25 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "yi-hung-lee-contact-form"
 main = "contact-form.js"
-compatibility_date = "2024-11-01"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2026-10-15"
 
 # 部署時保留在 Cloudflare Dashboard 設定的環境變數（例如 ALLOWED_ORIGINS），避免被清空。
-# APPS_SCRIPT_URL 請設成 Secret（加密），Secret 本來就不會被部署覆蓋。
+# NOTIFY_TO（通知信收件信箱）請設成 Secret，Secret 不會被部署覆蓋。
 keep_vars = true
-
-# Environment variables (set via GitHub Secrets or wrangler CLI)
-# These are NOT committed to the repository for security
-[vars]
-# APPS_SCRIPT_URL will be set as a secret
 
 # Workers Logs：保存 Worker 的日誌，可在 Dashboard → Worker → Logs 查詢送出失敗的紀錄
 [observability]
 enabled = true
+
+# 訊息資料庫（結構見 worker/schema.sql）
+[[d1_databases]]
+binding = "DB"
+database_name = "contact-form"
+database_id = "6ab5ec47-56da-4123-8009-e9fb09dae9d0"
+
+# 通知信：透過 Cloudflare Email Routing 寄到已驗證的信箱（收件信箱由 Secret NOTIFY_TO 指定）
+[[send_email]]
+name = "EMAIL"
 
 # 速率限制：同一個 IP 每 60 秒最多送出 5 次（需要 wrangler 4.36.0 以上）
 # namespace_id 是自訂的整數，同一個帳號內不要和其他 Worker 重複
@@ -27,24 +31,10 @@ namespace_id = "7301"
   limit = 5
   period = 60
 
-# 選用：失敗訊息暫存區 + 定期補送（建議啟用）
-# 啟用後，即使 Google Apps Script 暫時故障，訊息也會先存起來，之後自動補寫進試算表。
-# 設定步驟請見 worker/DEPLOYMENT.md「啟用失敗訊息暫存區」
-# [[kv_namespaces]]
-# binding = "SUBMISSIONS_KV"
-# id = "your-kv-namespace-id"
-#
-# [triggers]
-# crons = ["*/30 * * * *"]
-
 # Production environment
 [env.production]
 name = "yi-hung-lee-contact-form"
 route = { pattern = "contact.lee-yi-hung.com", zone_name = "lee-yi-hung.com", custom_domain = true }
-
-# Workers limits (only available on paid plans)
-# [limits]
-# cpu_ms = 50
 
 # For local development
 [dev]

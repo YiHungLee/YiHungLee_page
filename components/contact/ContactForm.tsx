@@ -20,7 +20,7 @@ interface SubmitResult {
   fieldErrors?: FormErrors;
 }
 
-// Cloudflare Worker endpoint (secure proxy to Google Apps Script)
+// Cloudflare Worker endpoint（後端見 worker/contact-form.js）
 const WORKER_URL = import.meta.env.VITE_WORKER_URL || 'https://yi-hung-lee-contact-form.lee2952000.workers.dev';
 
 // 欄位限制（與 worker/contact-form.js 的 LIMITS 保持一致）
