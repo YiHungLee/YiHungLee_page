@@ -1,4 +1,5 @@
 import type { BlogPostData, PortfolioItemData, RouteInfo } from './route-collector.js';
+import { BLOG_CATEGORY_LABELS, isAiCategory } from '../../utils/blogCategories.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 const DEFAULT_IMAGE = `${SITE_URL}/assets/yihung_transparent.webp`;
@@ -36,9 +37,7 @@ function getCategoryName(category: string): string {
     'academic': '學術研究',
     'coding': '程式專案',
     'music': '音樂創作',
-    'professional': '專業分享',
-    'creative': '創意探索',
-    'casual': '心情隨筆',
+    ...BLOG_CATEGORY_LABELS,
   };
   return categoryMap[category] || category;
 }
@@ -118,7 +117,9 @@ function getStaticPageMeta(path: string): MetaConfig {
 function getBlogPostMeta(post: BlogPostData): MetaConfig {
   return {
     title: `${post.title} - 李奕宏部落格`,
-    description: truncateDescription(post.summary),
+    description: truncateDescription(
+      isAiCategory(post.category) ? `【AI 撰寫】${post.summary}` : post.summary
+    ),
     url: `${SITE_URL}/blog/${post.id}`,
     image: DEFAULT_IMAGE,
     type: 'article',

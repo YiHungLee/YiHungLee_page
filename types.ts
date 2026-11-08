@@ -1,3 +1,5 @@
+import type { BlogCategoryId } from './utils/blogCategories';
+
 // ===== 主題與頁面類型 =====
 export type ThemeMode = 'light' | 'dark';
 export type PageType = 'professional' | 'creative';
@@ -57,7 +59,7 @@ export interface BlogPost {
   summary: string;
   content: string;           // Markdown 內容
   tags: string[];
-  category: 'professional' | 'creative' | 'casual'; // 主分類
+  category: BlogCategoryId; // 主分類（見 utils/blogCategories.ts）
   featured?: boolean;        // 首頁精選標記
   readTime?: number;         // 閱讀時間（分鐘）
 }

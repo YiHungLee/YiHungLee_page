@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { fileURLToPath } from 'url';
+import type { BlogCategoryId } from '../../utils/blogCategories.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,7 +17,7 @@ export interface BlogPostData {
   summary: string;
   content: string;
   tags: string[];
-  category: 'professional' | 'creative' | 'casual';
+  category: BlogCategoryId;
   featured?: boolean;
   readTime?: number;
 }

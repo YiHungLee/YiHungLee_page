@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import { Feed } from 'feed';
 import { fileURLToPath } from 'url';
 import { marked, Renderer } from 'marked';
+import { AI_EDITOR, isAiCategory } from '../utils/blogCategories.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -172,7 +173,9 @@ function generateRSS(): void {
       id: postUrl,
       link: postUrl,
       description: post.summary,
-      content: markdownToHtml(post.content),
+      content: isAiCategory(post.category)
+        ? `<p><em>${AI_EDITOR.byline}</em></p>${markdownToHtml(post.content)}<hr><p><em>${AI_EDITOR.disclaimer}</em></p>`
+        : markdownToHtml(post.content),
       author: [{
         name: '李奕宏',
         link: SITE_URL,

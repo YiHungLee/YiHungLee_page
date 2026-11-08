@@ -814,6 +814,56 @@ button:focus-visible {
   }
 }
 
+/* ===== AI 小編「小賽」像素角色 ===== */
+.psi-bot-eyelid {
+  opacity: 0;
+}
+
+.psi-bot-animated .psi-bot-body {
+  animation: psi-bob 3s steps(1, end) infinite;
+}
+
+.psi-bot-animated .psi-bot-eyelid {
+  animation: psi-blink 4.2s steps(1, end) infinite;
+}
+
+.psi-bot-animated .psi-bot-antenna {
+  animation: psi-antenna 2.4s ease-in-out infinite;
+}
+
+.psi-bot-animated:hover .psi-bot-body {
+  animation: psi-hop 0.5s ease-out;
+}
+
+/* SVG 內的 px 等於一個像素格的倍數 */
+@keyframes psi-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.5px); }
+}
+
+@keyframes psi-blink {
+  0%, 90% { opacity: 0; }
+  92%, 95% { opacity: 1; }
+  96% { opacity: 0; }
+}
+
+@keyframes psi-antenna {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes psi-hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-1.5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psi-bot-animated .psi-bot-body,
+  .psi-bot-animated .psi-bot-eyelid,
+  .psi-bot-animated .psi-bot-antenna {
+    animation: none;
+  }
+}
 
 /* @tailwind utilities 放在最底端，確保 utility class（例如 .block、.flex、.hidden）能覆蓋上方的客製規則 */
 @tailwind utilities;

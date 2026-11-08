@@ -8,6 +8,7 @@ import {
   getPublishedBlogPosts,
   loadPortfolioItems,
 } from './route-collector.js';
+import { AI_EDITOR, getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 
@@ -37,11 +38,7 @@ function formatDate(iso: string): string {
 }
 
 function blogCategoryLabel(cat: string): string {
-  return {
-    professional: '專業分享',
-    creative: '創意探索',
-    casual: '心情隨筆',
-  }[cat] ?? cat;
+  return getBlogCategoryLabel(cat);
 }
 
 function portfolioCategoryLabel(cat: string): string {
@@ -125,6 +122,13 @@ function renderBlogPost(post: BlogPostData): string {
   const readTimeHtml = post.readTime
     ? `<span class="prerendered-readtime">${post.readTime} 分鐘閱讀</span>`
     : '';
+  const isAi = isAiCategory(post.category);
+  const aiBylineHtml = isAi
+    ? `<p class="prerendered-ai-byline">${escapeHtml(AI_EDITOR.byline)}</p>`
+    : '';
+  const aiDisclaimerHtml = isAi
+    ? `<aside class="prerendered-ai-disclaimer"><p>${escapeHtml(AI_EDITOR.disclaimer)}</p><p>${escapeHtml(AI_EDITOR.helpline)}</p></aside>`
+    : '';
 
   return `<main class="prerendered">
   <nav class="prerendered-breadcrumb" aria-label="Breadcrumb">
@@ -138,12 +142,14 @@ function renderBlogPost(post: BlogPostData): string {
         <time datetime="${escapeHtml(post.date)}">${formatDate(post.date)}</time>
         ${readTimeHtml}
       </p>
+      ${aiBylineHtml}
       ${summaryHtml}
       ${tagsHtml}
     </header>
     <div class="prerendered-content">
 ${articleHtml}
     </div>
+    ${aiDisclaimerHtml}
   </article>
 </main>`;
 }
@@ -195,7 +201,7 @@ function renderBlogList(): string {
       post => `
     <li>
       <article>
-        <p class="prerendered-category">${escapeHtml(blogCategoryLabel(post.category))}</p>
+        <p class="prerendered-category">${escapeHtml(blogCategoryLabel(post.category))}${isAiCategory(post.category) ? `・${escapeHtml(AI_EDITOR.badge)}` : ''}</p>
         <h2><a href="/blog/${escapeHtml(post.id)}">${escapeHtml(post.title)}</a></h2>
         <p class="prerendered-meta">
           <time datetime="${escapeHtml(post.date)}">${formatDate(post.date)}</time>

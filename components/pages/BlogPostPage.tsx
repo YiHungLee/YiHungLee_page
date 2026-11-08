@@ -5,6 +5,8 @@ import { formatDate, isPostPublished } from '../../utils/featured';
 import { MarkdownRenderer } from '../shared/MarkdownRenderer';
 import UtterancesComments from '../shared/UtterancesComments';
 import { StructuredData } from '../shared/StructuredData';
+import { AiEditorByline, AiEditorDisclaimer } from '../shared/AiEditor';
+import { getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories';
 
 const BlogPostPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -148,9 +150,7 @@ const BlogPostPage: React.FC = () => {
             <div className="opacity-0 animate-fade-in-up stagger-1">
               <p className="font-body text-xs tracking-widest uppercase
                             text-charcoal-600 dark:text-darkMode-textMuted">
-                {post.category === 'professional' ? '專業分享' :
-                 post.category === 'creative' ? '創意探索' :
-                 '心情隨筆'}
+                {getBlogCategoryLabel(post.category)}
               </p>
             </div>
 
@@ -197,6 +197,13 @@ const BlogPostPage: React.FC = () => {
               )}
             </div>
 
+            {/* AI 署名 */}
+            {isAiCategory(post.category) && (
+              <div className="opacity-0 animate-fade-in-up stagger-3">
+                <AiEditorByline />
+              </div>
+            )}
+
             {/* Summary */}
             {post.summary && (
               <div className="opacity-0 animate-fade-in-up stagger-4">
@@ -236,6 +243,8 @@ const BlogPostPage: React.FC = () => {
           <div className="prose-custom opacity-0 animate-fade-in-up stagger-6">
             <MarkdownRenderer content={post.content} />
           </div>
+
+          {isAiCategory(post.category) && <AiEditorDisclaimer />}
         </div>
       </article>
 
