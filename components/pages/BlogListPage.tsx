@@ -4,14 +4,20 @@ import { BLOG_POSTS } from '../../constants';
 import { formatDate, getPublishedPosts } from '../../utils/featured';
 import { Search, ArrowUp } from 'lucide-react';
 import { StructuredData } from '../shared/StructuredData';
+import { PsiBot } from '../shared/PsiBot';
+import { AiEditorBadge, AiEditorIntro } from '../shared/AiEditor';
+import {
+  BLOG_CATEGORY_IDS,
+  BLOG_CATEGORY_LABELS,
+  BlogCategoryId,
+  isAiCategory,
+} from '../../utils/blogCategories';
 
-type BlogCategory = 'all' | 'professional' | 'creative' | 'casual';
+type BlogCategory = 'all' | BlogCategoryId;
 
 const categoryLabels: Record<BlogCategory, string> = {
   all: '全部文章',
-  professional: '專業分享',
-  creative: '創意探索',
-  casual: '心情隨筆',
+  ...BLOG_CATEGORY_LABELS,
 };
 
 const BlogListPage: React.FC = () => {
@@ -86,7 +92,7 @@ const BlogListPage: React.FC = () => {
   // 準備結構化資料
   const blogListData = useMemo(() => ({
     name: '文章',
-    description: '李奕宏的部落格文章：專業分享、創意探索與心情隨筆',
+    description: '李奕宏的部落格文章：專業分享、創意探索、心情隨筆與 AI 小編整理的心聞週報',
     url: '/blog',
     items: publishedPosts.map((post) => ({
       id: post.id,
@@ -96,12 +102,10 @@ const BlogListPage: React.FC = () => {
   }), [publishedPosts]);
 
   // 計算每個分類的文章數量
-  const categoryCounts: Record<BlogCategory, number> = {
-    all: publishedPosts.length,
-    professional: publishedPosts.filter(p => p.category === 'professional').length,
-    creative: publishedPosts.filter(p => p.category === 'creative').length,
-    casual: publishedPosts.filter(p => p.category === 'casual').length,
-  };
+  const categoryCounts = Object.fromEntries([
+    ['all', publishedPosts.length],
+    ...BLOG_CATEGORY_IDS.map(id => [id, publishedPosts.filter(p => p.category === id).length]),
+  ]) as Record<BlogCategory, number>;
 
   // 依據分類過濾
   const categoryFilteredPosts = selectedCategory === 'all'
@@ -128,7 +132,7 @@ const BlogListPage: React.FC = () => {
   const endIndex = startIndex + POSTS_PER_PAGE;
   const currentPosts = filteredPosts.slice(startIndex, endIndex);
 
-  const categories: BlogCategory[] = ['all', 'professional', 'creative', 'casual'];
+  const categories: BlogCategory[] = ['all', ...BLOG_CATEGORY_IDS];
 
   // 處理標籤點擊
   const handleTagClick = (tag: string) => {
@@ -246,15 +250,16 @@ const BlogListPage: React.FC = () => {
                 <button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
-                  className={`relative font-body text-sm md:text-base tracking-wide
+                  className={`relative inline-flex items-center gap-2 font-body text-sm md:text-base tracking-wide
                              transition-all duration-300 pb-2
                              ${selectedCategory === category
                                ? 'text-ochre-500 dark:text-darkMode-ochre'
                                : 'text-charcoal-600 dark:text-darkMode-textMuted hover:text-ochre-500 dark:hover:text-darkMode-ochre'
                              }`}
                 >
+                  {isAiCategory(category) && <PsiBot size={16} animated={false} decorative />}
                   {categoryLabels[category]}
-                  <span className="ml-1.5 opacity-60">({categoryCounts[category]})</span>
+                  <span className="-ml-0.5 opacity-60">({categoryCounts[category]})</span>
 
                   {/* Active Indicator */}
                   {selectedCategory === category && (
@@ -292,6 +297,9 @@ const BlogListPage: React.FC = () => {
       {/* Posts List */}
       <section ref={postsListRef} className="relative py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+          {/* AI 小編自我介紹 */}
+          {isAiCategory(selectedCategory) && <AiEditorIntro />}
 
           {/* Results Count */}
           {filteredPosts.length > 0 && (
@@ -341,8 +349,9 @@ const BlogListPage: React.FC = () => {
                       <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                       <p className="font-body text-xs tracking-widest uppercase
                                     text-charcoal-600 dark:text-darkMode-textMuted">
-                        {categoryLabels[post.category as BlogCategory]}
+                        {categoryLabels[post.category] ?? post.category}
                       </p>
+                      {isAiCategory(post.category) && <AiEditorBadge />}
                     </div>
 
                     {/* Date & Reading Time */}

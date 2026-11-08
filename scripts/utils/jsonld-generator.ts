@@ -1,5 +1,6 @@
 import type { BlogPostData, PortfolioItemData, RouteInfo } from './route-collector.js';
 import { markdownToPlainText } from './body-renderer.js';
+import { getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 const DEFAULT_IMAGE = `${SITE_URL}/assets/yihung_transparent.webp`;
@@ -53,12 +54,6 @@ export function generatePersonSchema(): object {
 
 // BlogPosting Schema
 export function generateBlogPostSchema(post: BlogPostData): object {
-  const categoryMap: Record<string, string> = {
-    'professional': '專業分享',
-    'creative': '創意探索',
-    'casual': '心情隨筆',
-  };
-
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -83,8 +78,8 @@ export function generateBlogPostSchema(post: BlogPostData): object {
       '@type': 'WebPage',
       '@id': `${SITE_URL}/blog/${post.id}`,
     },
-    'keywords': post.tags.join(', '),
-    'articleSection': categoryMap[post.category] || post.category,
+    'keywords': [...post.tags, ...(isAiCategory(post.category) ? ['AI 生成'] : [])].join(', '),
+    'articleSection': getBlogCategoryLabel(post.category),
     'articleBody': markdownToPlainText(post.content),
     'wordCount': Math.round(post.content.length / 2), // 中文字數估算
     'timeRequired': `PT${post.readTime || 5}M`,

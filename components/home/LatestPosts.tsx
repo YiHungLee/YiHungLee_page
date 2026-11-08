@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getLatestPosts, getPublishedPosts, formatDate } from '../../utils/featured';
 import { BLOG_POSTS } from '../../constants';
+import { getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories';
+import { AiEditorBadge } from '../shared/AiEditor';
 
 export const LatestPosts: React.FC = () => {
   const posts = getLatestPosts(2);
@@ -81,8 +83,9 @@ export const LatestPosts: React.FC = () => {
                     <div className="h-px w-12 bg-border-light dark:bg-darkMode-border"></div>
                     <p className="font-body text-xs tracking-widest uppercase
                                   text-charcoal-600 dark:text-darkMode-textMuted">
-                      {post.category === 'professional' ? '專業分享' : '創意探索'}
+                      {getBlogCategoryLabel(post.category)}
                     </p>
+                    {isAiCategory(post.category) && <AiEditorBadge />}
                   </div>
 
                   {/* Date & Reading Time */}

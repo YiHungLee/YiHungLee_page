@@ -6,6 +6,7 @@ import {
   loadPortfolioItems,
 } from './utils/route-collector.js';
 import { markdownToPlainText } from './utils/body-renderer.js';
+import { isAiCategory } from '../utils/blogCategories.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,7 +45,7 @@ function generateLlmsTxt(): string {
 ${posts
   .map(
     p =>
-      `- [${p.title}](${SITE_URL}/blog/${p.id}): ${p.summary || ''}`,
+      `- [${p.title}](${SITE_URL}/blog/${p.id}): ${isAiCategory(p.category) ? '(AI-generated) ' : ''}${p.summary || ''}`,
   )
   .join('\n')}`);
   }
@@ -104,7 +105,7 @@ function generateLlmsFullTxt(): string {
         `\n## ${p.title}
 URL: ${SITE_URL}/blog/${p.id}
 Date: ${p.date}
-Category: ${p.category}${p.tags?.length ? `\nTags: ${p.tags.join(', ')}` : ''}${p.summary ? `\nSummary: ${p.summary}` : ''}
+Category: ${p.category}${isAiCategory(p.category) ? ' (AI-generated)' : ''}${p.tags?.length ? `\nTags: ${p.tags.join(', ')}` : ''}${p.summary ? `\nSummary: ${p.summary}` : ''}
 
 ${body}`,
       );

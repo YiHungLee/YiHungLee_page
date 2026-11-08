@@ -82,6 +82,15 @@ const PRERENDER_STYLE = `<style id="prerender-style">
     padding: 1.5rem 0;
     border-bottom: 1px solid #e8e5e0;
   }
+  .prerendered .prerendered-ai-byline,
+  .prerendered .prerendered-ai-disclaimer {
+    font-size: 0.875rem;
+    color: #627550;
+    border-left: 2px solid #758762;
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 1rem 0;
+  }
+  .prerendered .prerendered-ai-disclaimer { margin-top: 3rem; color: #4a4a4a; }
   .prerendered .prerendered-content img { max-width: 100%; height: auto; }
   .prerendered section { margin: 2rem 0; }
   .prerendered ul { padding-left: 1.25rem; }
@@ -93,6 +102,8 @@ const PRERENDER_STYLE = `<style id="prerender-style">
     .prerendered .prerendered-summary { color: #b8b0a6; border-left-color: #c7a378; }
     .prerendered .prerendered-tags li { color: #b8b0a6; border-color: #44413d; }
     .prerendered .prerendered-list > li { border-bottom-color: #44413d; }
+    .prerendered .prerendered-ai-byline { color: #9aaa8e; border-left-color: #9aaa8e; }
+    .prerendered .prerendered-ai-disclaimer { color: #b8b0a6; border-left-color: #9aaa8e; }
   }
 </style>`;
 

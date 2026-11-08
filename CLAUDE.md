@@ -156,6 +156,12 @@ Content is managed through Markdown files with YAML frontmatter:
 
 Files prefixed with `_` are treated as drafts and excluded everywhere.
 
+Blog category ids and labels live in `utils/blogCategories.ts` (shared by components and build scripts — it must not import `virtual:content`). Add new categories there instead of hard-coding labels.
+
+### AI 週報（`ai-weekly`）
+
+The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Each post may set an `aiNote` frontmatter field (小賽's weekly mood line, shown after 「本文是我寫的！」 in the byline). Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The mascot is `components/shared/PsiBot.tsx` (pixel SVG, animations in `styles.css`); the badge/byline/intro/disclaimer components are in `components/shared/AiEditor.tsx`. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
+
 ### Frontmatter Format
 
 **Blog Post:**
@@ -164,7 +170,7 @@ Files prefixed with `_` are treated as drafts and excluded everywhere.
 id: 2025-12-06
 title: 文章標題
 date: 2025-12-06
-category: professional  # professional | creative | casual
+category: professional  # professional | creative | casual | ai-weekly
 summary: 簡短摘要
 tags: [標籤1, 標籤2]
 featured: true

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BlogPost, PortfolioItem } from '../../types';
+import { isAiCategory } from '../../utils/blogCategories';
 
 const BASE_URL = 'https://yi-hung-lee.work';
 const AUTHOR = {
@@ -70,7 +71,7 @@ function generateArticleSchema(post: BlogPost) {
       '@id': `${BASE_URL}/#person`,
     },
     inLanguage: 'zh-TW',
-    keywords: post.tags?.join(', '),
+    keywords: [...(post.tags ?? []), ...(isAiCategory(post.category) ? ['AI 生成'] : [])].join(', '),
     articleSection: getCategoryLabel(post.category),
   };
 }
@@ -244,6 +245,8 @@ function getCategoryLabel(category: string): string {
       return '創作文章';
     case 'casual':
       return '日常隨筆';
+    case 'ai-weekly':
+      return '心聞週報';
     default:
       return '文章';
   }
