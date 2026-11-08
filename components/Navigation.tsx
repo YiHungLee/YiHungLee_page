@@ -3,7 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { PowerSwitchToggle } from './PowerSwitchToggle';
 
-export const Navigation: React.FC = () => {
+interface NavigationProps {
+  /** 手機版在頁面頂端先隱藏，往下捲後才滑出（首頁的 MobileHero 頂端已有自己的按鈕） */
+  hideOnMobileTop?: boolean;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({ hideOnMobileTop = false }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -11,9 +16,12 @@ export const Navigation: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 80);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const hiddenOnMobile = hideOnMobileTop && !isScrolled && !isMobileMenuOpen;
 
   const navLinks = [
     { label: '首頁', path: '/' },
@@ -29,9 +37,9 @@ export const Navigation: React.FC = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-warmCream-50/95 dark:bg-darkMode-bg/95 backdrop-blur-md py-4 border-b border-fine border-border-light dark:border-darkMode-border nav-glow-dark'
+            ? 'bg-warmCream-50/95 dark:bg-darkMode-bg/95 backdrop-blur-md py-4 border-b border-border-light dark:border-darkMode-border nav-glow-dark'
             : 'bg-transparent py-6'
-        }`}
+        } ${hiddenOnMobile ? 'max-md:-translate-y-full max-md:opacity-0 max-md:invisible' : ''}`}
       >
         <style>{`
           /* 暗色模式下的微弱崁燈發光效果 */
@@ -139,7 +147,7 @@ export const Navigation: React.FC = () => {
                   end={link.path === '/'}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `py-4 border-b border-fine border-border-light dark:border-darkMode-border
+                    `py-4 border-b border-border-light dark:border-darkMode-border
                      font-display text-3xl transition-all duration-300
                      ${isActive
                        ? 'text-ochre-500 dark:text-darkMode-ochre border-ochre-500 dark:border-darkMode-ochre'

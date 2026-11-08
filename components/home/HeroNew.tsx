@@ -59,7 +59,7 @@ export const HeroNew: React.FC = () => {
 
             {/* Professional Title */}
             <div className="space-y-4">
-              <div className="inline-block px-4 py-2 border border-fine border-border-light dark:border-darkMode-border
+              <div className="inline-block px-4 py-2 border border-border-light dark:border-darkMode-border
                               rounded-full bg-warmCream-50/50 dark:bg-darkMode-bgElevated backdrop-blur-sm">
                 <span className="font-body text-sm tracking-wide
                                  text-charcoal-700 dark:text-darkMode-textMuted">
@@ -75,7 +75,7 @@ export const HeroNew: React.FC = () => {
             </div>
 
             {/* Tagline - Large Editorial Text */}
-            <div className="relative pl-5 py-1 border-1 border-fine border-ochre-500 dark:border-darkMode-ochre">
+            <div className="relative pl-5 py-1 border-l border-ochre-500 dark:border-darkMode-ochre">
               <p className="font-display text-2xl md:text-3xl lg:text-4xl
                             text-charcoal-800 dark:text-darkMode-text
                             leading-relaxed italic">
@@ -87,7 +87,7 @@ export const HeroNew: React.FC = () => {
             <div className="flex flex-wrap gap-6 pt-8">
               <a
                 href="/about"
-                className="group inline-block px-8 py-4 border border-fine
+                className="group inline-block px-8 py-4 border
                            border-charcoal-900 dark:border-darkMode-text
                            text-charcoal-900 dark:text-darkMode-text
                            font-body text-sm tracking-wide uppercase
@@ -155,11 +155,11 @@ export const HeroNew: React.FC = () => {
                   地點
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-darkMode-border
+                  <span className="px-3 py-1 border border-border-light dark:border-darkMode-border
                                    font-body text-xs text-charcoal-700 dark:text-darkMode-textMuted">
                     台北市
                   </span>
-                  <span className="px-3 py-1 border border-fine border-border-light dark:border-darkMode-border
+                  <span className="px-3 py-1 border border-border-light dark:border-darkMode-border
                                    font-body text-xs text-charcoal-700 dark:text-darkMode-textMuted">
                     臺北市立大學
                   </span>

@@ -229,7 +229,7 @@ const ProjectCategoryPage: React.FC = () => {
 
                     {/* Award Badge */}
                     {project.award && (
-                      <div className="inline-block px-3 py-1 border border-fine
+                      <div className="inline-block px-3 py-1 border
                                       border-ochre-500 dark:border-darkMode-ochre
                                       font-body text-xs tracking-wide
                                       text-ochre-500 dark:text-darkMode-ochre">
@@ -286,7 +286,7 @@ const ProjectCategoryPage: React.FC = () => {
                               key={tech}
                               className="font-body text-xs tracking-wide
                                          text-charcoal-700 dark:text-darkMode-textMuted
-                                         px-3 py-1 border border-fine
+                                         px-3 py-1 border
                                          border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
                                          group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
@@ -310,7 +310,7 @@ const ProjectCategoryPage: React.FC = () => {
                               key={tool}
                               className="font-body text-xs tracking-wide
                                          text-charcoal-700 dark:text-darkMode-textMuted
-                                         px-3 py-1 border border-fine
+                                         px-3 py-1 border
                                          border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
                                          group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
@@ -337,7 +337,7 @@ const ProjectCategoryPage: React.FC = () => {
                             key={tag}
                             className="font-body text-xs tracking-wide
                                        text-charcoal-600 dark:text-darkMode-textMuted
-                                       px-3 py-1 border border-fine
+                                       px-3 py-1 border
                                        border-border-light dark:border-darkMode-border
                                        transition-colors duration-300
                                        group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">

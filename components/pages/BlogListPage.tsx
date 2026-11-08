@@ -237,7 +237,7 @@ const BlogListPage: React.FC = () => {
 
       {/* Category Filter & Search */}
       <section className="sticky top-20 z-30 bg-warmCream-50/95 dark:bg-darkMode-bg/95
-                          backdrop-blur-md border-b border-fine
+                          backdrop-blur-md border-b
                           border-border-light dark:border-darkMode-borderLight
                           transition-colors duration-500">
 
@@ -370,7 +370,7 @@ const BlogListPage: React.FC = () => {
 
                     {/* Featured Badge */}
                     {post.featured && (
-                      <div className="inline-block px-3 py-1 border border-fine
+                      <div className="inline-block px-3 py-1 border
                                       border-ochre-500 dark:border-darkMode-ochre
                                       font-body text-xs tracking-wide
                                       text-ochre-500 dark:text-darkMode-ochre">
@@ -380,7 +380,7 @@ const BlogListPage: React.FC = () => {
 
                     {/* Read Badge */}
                     {readPosts.has(post.id) && (
-                      <div className="inline-block px-3 py-1 border border-fine
+                      <div className="inline-block px-3 py-1 border
                                       border-charcoal-300 dark:border-darkMode-border
                                       font-body text-xs tracking-wide
                                       text-charcoal-500 dark:text-darkMode-textMuted
@@ -422,7 +422,7 @@ const BlogListPage: React.FC = () => {
                             }}
                             className="font-body text-xs tracking-wide
                                        text-charcoal-600 dark:text-darkMode-textMuted
-                                       px-3 py-1 border border-fine
+                                       px-3 py-1 border
                                        border-border-light dark:border-darkMode-border
                                        transition-all duration-300
                                        hover:bg-ochre-500 hover:text-white hover:border-ochre-500
@@ -510,7 +510,7 @@ const BlogListPage: React.FC = () => {
                       key={page}
                       onClick={() => handlePageChange(page)}
                       className={`w-10 h-10 font-body text-sm
-                                 border border-fine
+                                 border
                                  transition-all duration-300
                                  ${currentPage === page
                                    ? 'bg-ochre-500 dark:bg-darkMode-ochre text-white border-ochre-500 dark:border-darkMode-ochre'

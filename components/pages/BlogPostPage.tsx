@@ -187,7 +187,7 @@ const BlogPostPage: React.FC = () => {
               {post.featured && (
                 <>
                   <div className="h-4 w-px bg-border-light dark:bg-darkMode-border"></div>
-                  <div className="inline-block px-3 py-1 border border-fine
+                  <div className="inline-block px-3 py-1 border
                                   border-ochre-500 dark:border-darkMode-ochre
                                   font-body text-xs tracking-wide
                                   text-ochre-500 dark:text-darkMode-ochre">
@@ -209,7 +209,7 @@ const BlogPostPage: React.FC = () => {
               <div className="opacity-0 animate-fade-in-up stagger-4">
                 <p className="font-body text-lg md:text-xl
                               text-charcoal-700 dark:text-darkMode-textMuted
-                              leading-relaxed border-l border-fine
+                              leading-relaxed border-l
                               border-ochre-500 dark:border-darkMode-ochre pl-6 py-2">
                   {post.summary}
                 </p>
@@ -224,7 +224,7 @@ const BlogPostPage: React.FC = () => {
                     key={tag}
                     className="font-body text-xs tracking-wide
                                text-charcoal-600 dark:text-darkMode-textMuted
-                               px-3 py-1 border border-fine
+                               px-3 py-1 border
                                border-border-light dark:border-darkMode-border">
                     {tag}
                   </span>
@@ -309,7 +309,7 @@ const BlogPostPage: React.FC = () => {
 
                           {/* Read Badge */}
                           {readPosts.has(relatedPost.id) && (
-                            <div className="inline-block px-3 py-1 border border-fine
+                            <div className="inline-block px-3 py-1 border
                                             border-charcoal-300 dark:border-darkMode-border
                                             font-body text-xs tracking-wide
                                             text-charcoal-500 dark:text-darkMode-textMuted

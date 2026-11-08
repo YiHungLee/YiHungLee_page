@@ -81,7 +81,7 @@ const ProjectDetailPage: React.FC = () => {
               {project.award && (
                 <>
                   <div className="h-4 w-px bg-border-light dark:bg-darkMode-border"></div>
-                  <div className="inline-block px-3 py-1 border border-fine
+                  <div className="inline-block px-3 py-1 border
                                   border-ochre-500 dark:border-darkMode-ochre font-body text-xs tracking-wide
                                   text-ochre-500 dark:text-darkMode-ochre">
                     獲獎作品
@@ -172,7 +172,7 @@ const ProjectDetailPage: React.FC = () => {
                   <span
                     key={tech}
                     className="font-body text-sm tracking-wide text-charcoal-700 dark:text-darkMode-textMuted
-                               px-4 py-2 border border-fine border-border-light dark:border-darkMode-border
+                               px-4 py-2 border border-border-light dark:border-darkMode-border
                                hover:border-ochre-500 dark:hover:border-darkMode-ochre transition-colors duration-300">
                     {tech}
                   </span>
@@ -192,7 +192,7 @@ const ProjectDetailPage: React.FC = () => {
                   <span
                     key={tool}
                     className="font-body text-sm tracking-wide text-charcoal-700 dark:text-darkMode-textMuted
-                               px-4 py-2 border border-fine border-border-light dark:border-darkMode-border
+                               px-4 py-2 border border-border-light dark:border-darkMode-border
                                hover:border-ochre-500 dark:hover:border-darkMode-ochre transition-colors duration-300">
                     {tool}
                   </span>
@@ -244,7 +244,7 @@ const ProjectDetailPage: React.FC = () => {
                   <span
                     key={tag}
                     className="font-body text-xs tracking-wide text-charcoal-600 dark:text-darkMode-textMuted
-                               px-3 py-1 border border-fine border-border-light dark:border-darkMode-border">
+                               px-3 py-1 border border-border-light dark:border-darkMode-border">
                     {tag}
                   </span>
                 ))}
