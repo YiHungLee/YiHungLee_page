@@ -19,16 +19,14 @@ import BlogPostPage from './components/pages/BlogPostPage';
 // Layout wrapper for pages with Navigation and Footer
 const MainLayout: React.FC<{
   children: React.ReactNode;
-  hideNavigationOnMobile?: boolean;
-}> = ({ children, hideNavigationOnMobile = false }) => {
+  hideNavOnMobileTop?: boolean;
+}> = ({ children, hideNavOnMobileTop = false }) => {
   return (
     <div className="min-h-screen font-body
                     bg-warmCream-50 dark:bg-darkMode-bg
                     text-charcoal-900 dark:text-darkMode-text
                     transition-colors duration-400">
-      <div className={hideNavigationOnMobile ? 'hidden md:block' : ''}>
-        <Navigation />
-      </div>
+      <Navigation hideOnMobileTop={hideNavOnMobileTop} />
       <main>{children}</main>
       <Footer />
     </div>
@@ -55,7 +53,7 @@ const App: React.FC = () => {
       <ThemeProvider>
         <Routes>
           {/* Main routes with Navigation and Footer */}
-          <Route path="/" element={<MainLayout hideNavigationOnMobile><HomePage /></MainLayout>} />
+          <Route path="/" element={<MainLayout hideNavOnMobileTop><HomePage /></MainLayout>} />
           <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
           <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
 
