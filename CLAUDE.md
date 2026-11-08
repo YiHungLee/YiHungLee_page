@@ -162,7 +162,7 @@ Blog category ids and labels live in `utils/blogCategories.ts` (shared by compon
 
 The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Each post may set an `aiNote` frontmatter field (小賽's weekly mood line, shown after 「本文是我寫的！」 in the byline). Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The mascot is `components/shared/PsiBot.tsx` (pixel SVG, animations in `styles.css`); the badge/byline/intro/disclaimer components are in `components/shared/AiEditor.tsx`. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
 
-The weekly workflow (research four topics → 奕宏 picks one → write → humanize → build → push to `main` → confirm live) is the project skill `.claude/skills/xinwen-weekly/SKILL.md`, run by a Monday-morning scheduled task. `references/humanizer-zh-tw.md` is a copy of the humanizer rules for sessions that cannot load that account skill.
+The weekly workflow (research four topics → 奕宏 picks one → write → humanize → build → push to `main` → confirm live) is the `xinwen-weekly` skill in 奕宏's claude.ai account (not in this repo), run by a Monday-morning scheduled task. It writes posts from `_ai-weekly-template.md`.
 
 ### Frontmatter Format
 
