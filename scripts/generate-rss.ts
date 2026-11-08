@@ -4,7 +4,10 @@ import matter from 'gray-matter';
 import { Feed } from 'feed';
 import { fileURLToPath } from 'url';
 import { marked, Renderer } from 'marked';
-import { AI_EDITOR, isAiCategory } from '../utils/blogCategories.js';
+import { AI_EDITOR, getAiByline, isAiCategory } from '../utils/blogCategories.js';
+
+const escapeXml = (str: string): string =>
+  str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,6 +89,7 @@ interface BlogPostData {
   category: string;
   featured?: boolean;
   readTime?: number;
+  aiNote?: string;
 }
 
 function isPostPublished(dateInput: string | Date): boolean {
@@ -174,7 +178,7 @@ function generateRSS(): void {
       link: postUrl,
       description: post.summary,
       content: isAiCategory(post.category)
-        ? `<p><em>${AI_EDITOR.byline}</em></p>${markdownToHtml(post.content)}<hr><p><em>${AI_EDITOR.disclaimer}</em></p>`
+        ? `<p><em>${AI_EDITOR.title}：${escapeXml(getAiByline(post.aiNote))}</em></p>${markdownToHtml(post.content)}<hr><p><em>${AI_EDITOR.disclaimer}</em></p>`
         : markdownToHtml(post.content),
       author: [{
         name: '李奕宏',

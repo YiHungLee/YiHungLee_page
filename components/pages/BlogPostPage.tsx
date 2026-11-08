@@ -200,7 +200,7 @@ const BlogPostPage: React.FC = () => {
             {/* AI 署名 */}
             {isAiCategory(post.category) && (
               <div className="opacity-0 animate-fade-in-up stagger-3">
-                <AiEditorByline />
+                <AiEditorByline aiNote={post.aiNote} />
               </div>
             )}
 

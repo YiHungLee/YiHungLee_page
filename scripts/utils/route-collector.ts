@@ -20,6 +20,7 @@ export interface BlogPostData {
   category: BlogCategoryId;
   featured?: boolean;
   readTime?: number;
+  aiNote?: string;
 }
 
 export interface PortfolioItemData {
@@ -119,6 +120,7 @@ export function loadBlogPosts(): BlogPostData[] {
       category: data.category || 'casual',
       featured: data.featured || false,
       readTime: data.readTime,
+      aiNote: data.aiNote,
     };
   });
 }

@@ -160,7 +160,7 @@ Blog category ids and labels live in `utils/blogCategories.ts` (shared by compon
 
 ### AI 週報（`ai-weekly`）
 
-The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The mascot is `components/shared/PsiBot.tsx` (pixel SVG, animations in `styles.css`); the badge/byline/intro/disclaimer components are in `components/shared/AiEditor.tsx`. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
+The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Each post may set an `aiNote` frontmatter field (小賽's weekly mood line, shown after 「本文是我寫的！」 in the byline). Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The mascot is `components/shared/PsiBot.tsx` (pixel SVG, animations in `styles.css`); the badge/byline/intro/disclaimer components are in `components/shared/AiEditor.tsx`. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
 
 ### Frontmatter Format
 

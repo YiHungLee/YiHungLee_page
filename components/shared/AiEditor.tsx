@@ -1,6 +1,6 @@
 import React from 'react';
 import { PsiBot } from './PsiBot';
-import { AI_EDITOR } from '../../utils/blogCategories';
+import { AI_EDITOR, getAiByline } from '../../utils/blogCategories';
 
 /** 文章列表用的小標籤：「AI 撰寫・小賽」 */
 export const AiEditorBadge: React.FC<{ className?: string }> = ({ className = '' }) => (
@@ -17,7 +17,7 @@ export const AiEditorBadge: React.FC<{ className?: string }> = ({ className = ''
 );
 
 /** 文章頁標題下方的署名 */
-export const AiEditorByline: React.FC = () => (
+export const AiEditorByline: React.FC<{ aiNote?: string }> = ({ aiNote }) => (
   <div
     className="flex items-center gap-4 px-5 py-4
                bg-sage-300/15 dark:bg-darkMode-sage/10
@@ -26,10 +26,10 @@ export const AiEditorByline: React.FC = () => (
     <PsiBot size={40} />
     <div className="space-y-1">
       <p className="font-body text-sm font-semibold text-sage-600 dark:text-darkMode-sage">
-        {AI_EDITOR.role}・{AI_EDITOR.name}（{AI_EDITOR.nameEn}）
+        {AI_EDITOR.title}
       </p>
       <p className="font-body text-sm text-charcoal-700 dark:text-darkMode-textMuted">
-        {AI_EDITOR.byline}
+        {getAiByline(aiNote)}
       </p>
     </div>
   </div>
@@ -48,7 +48,7 @@ export const AiEditorIntro: React.FC = () => (
     </div>
     <div className="space-y-3">
       <p className="font-body text-xs tracking-widest uppercase text-sage-600 dark:text-darkMode-sage">
-        {AI_EDITOR.role}・{AI_EDITOR.name}（{AI_EDITOR.nameEn}）
+        {AI_EDITOR.title}
       </p>
       <p className="font-body text-base md:text-lg leading-relaxed
                     text-charcoal-700 dark:text-darkMode-textMuted max-w-3xl">

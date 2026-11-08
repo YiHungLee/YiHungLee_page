@@ -8,7 +8,7 @@ import {
   getPublishedBlogPosts,
   loadPortfolioItems,
 } from './route-collector.js';
-import { AI_EDITOR, getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories.js';
+import { AI_EDITOR, getAiByline, getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 
@@ -124,7 +124,7 @@ function renderBlogPost(post: BlogPostData): string {
     : '';
   const isAi = isAiCategory(post.category);
   const aiBylineHtml = isAi
-    ? `<p class="prerendered-ai-byline">${escapeHtml(AI_EDITOR.byline)}</p>`
+    ? `<p class="prerendered-ai-byline">${escapeHtml(AI_EDITOR.title)}：${escapeHtml(getAiByline(post.aiNote))}</p>`
     : '';
   const aiDisclaimerHtml = isAi
     ? `<aside class="prerendered-ai-disclaimer"><p>${escapeHtml(AI_EDITOR.disclaimer)}</p><p>${escapeHtml(AI_EDITOR.helpline)}</p></aside>`
