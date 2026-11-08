@@ -192,7 +192,7 @@ const convertPortfolioItems = () => {
       fields.push(`techStack:\n${item.techStack.map(t => `  - ${t}`).join('\n')}`);
     }
     if (item.githubUrl) fields.push(`githubUrl: ${item.githubUrl}`);
-    if (item.liveUrl) fields.push(`liveUrl: ${item.liveUrl}`);
+    if ('liveUrl' in item && item.liveUrl) fields.push(`liveUrl: ${item.liveUrl}`);
     if (item.audioUrl) fields.push(`audioUrl: ${item.audioUrl}`);
     if (item.duration) fields.push(`duration: ${item.duration}`);
     if (item.tools) {
