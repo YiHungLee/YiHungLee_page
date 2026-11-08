@@ -97,7 +97,7 @@ export const IdentityGateway: React.FC = () => {
                   </div>
 
                   {/* Tagline */}
-                  <div className="pt-8 border-t border-border-light dark:border-darkMode-border">
+                  <div className="pt-8 border-t border-fine border-border-light dark:border-darkMode-border">
                     <p className="font-display text-2xl md:text-3xl
                                   text-charcoal-800 dark:text-darkMode-text
                                   leading-relaxed whitespace-pre-line">
@@ -130,7 +130,7 @@ export const IdentityGateway: React.FC = () => {
               </div>
 
               {/* Hover Effect - Subtle Border Highlight */}
-              <div className="absolute inset-0 border border-transparent
+              <div className="absolute inset-0 border border-fine border-transparent
                               group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre
                               transition-colors duration-500 pointer-events-none"></div>
             </Link>

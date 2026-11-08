@@ -95,7 +95,7 @@ const ProjectsPage: React.FC = () => {
 
       {/* Category Navigation */}
       <section className="sticky top-20 z-30 bg-warmCream-50/95 dark:bg-darkMode-bg/95
-                          backdrop-blur-md border-b
+                          backdrop-blur-md border-b border-fine
                           border-border-light dark:border-darkMode-borderLight
                           transition-colors duration-500">
 
@@ -172,7 +172,7 @@ const ProjectsPage: React.FC = () => {
 
                     {/* Award Badge */}
                     {project.award && (
-                      <div className="inline-block px-3 py-1 border
+                      <div className="inline-block px-3 py-1 border border-fine
                                       border-ochre-500 dark:border-darkMode-ochre
                                       font-body text-xs tracking-wide
                                       text-ochre-500 dark:text-darkMode-ochre">
@@ -229,7 +229,7 @@ const ProjectsPage: React.FC = () => {
                               key={tech}
                               className="font-body text-xs tracking-wide
                                          text-charcoal-700 dark:text-darkMode-textMuted
-                                         px-3 py-1 border
+                                         px-3 py-1 border border-fine
                                          border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
                                          group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
@@ -253,7 +253,7 @@ const ProjectsPage: React.FC = () => {
                               key={tool}
                               className="font-body text-xs tracking-wide
                                          text-charcoal-700 dark:text-darkMode-textMuted
-                                         px-3 py-1 border
+                                         px-3 py-1 border border-fine
                                          border-border-light dark:border-darkMode-border
                                          transition-colors duration-300
                                          group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">
@@ -280,7 +280,7 @@ const ProjectsPage: React.FC = () => {
                             key={tag}
                             className="font-body text-xs tracking-wide
                                        text-charcoal-600 dark:text-darkMode-textMuted
-                                       px-3 py-1 border
+                                       px-3 py-1 border border-fine
                                        border-border-light dark:border-darkMode-border
                                        transition-colors duration-300
                                        group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">

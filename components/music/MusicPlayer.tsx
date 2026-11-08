@@ -335,7 +335,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       `}</style>
 
       {/* Main Player */}
-      <div className="bg-warmCream-50 dark:bg-darkMode-bgElevated rounded-lg border border-border-light dark:border-darkMode-border p-8 md:p-12 shadow-lg">
+      <div className="bg-warmCream-50 dark:bg-darkMode-bgElevated rounded-lg border border-fine border-border-light dark:border-darkMode-border p-8 md:p-12 shadow-lg">
 
         {/* Vinyl Record Visual */}
         <div className="flex justify-center mb-12">
@@ -510,7 +510,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
       {/* Playlist */}
       {showPlaylist && tracks.length > 1 && (
-        <div className="mt-6 bg-warmCream-100 dark:bg-darkMode-bgSubtle rounded-lg border border-border-light dark:border-darkMode-border overflow-hidden">
+        <div className="mt-6 bg-warmCream-100 dark:bg-darkMode-bgSubtle rounded-lg border border-fine border-border-light dark:border-darkMode-border overflow-hidden">
           <div className="p-4 border-b border-border-light dark:border-darkMode-border">
             <h4 className="font-display text-lg font-bold text-charcoal-900 dark:text-darkMode-text">
               播放清單 ({tracks.length} 首曲目)

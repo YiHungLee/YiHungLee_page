@@ -130,7 +130,7 @@ export const LatestPosts: React.FC = () => {
                           key={tag}
                           className="font-body text-xs tracking-wide
                                      text-charcoal-600 dark:text-darkMode-textMuted
-                                     px-3 py-1 border
+                                     px-3 py-1 border border-fine
                                      border-border-light dark:border-darkMode-border
                                      transition-colors duration-300
                                      group-hover:border-ochre-500 dark:group-hover:border-darkMode-ochre">

@@ -186,7 +186,7 @@ export const FeaturedProjects: React.FC = () => {
 
                               {project.award && (
                                 <div className={`inline-flex px-2.5 py-1
-                                                border
+                                                border border-fine
                                                 font-body text-xs tracking-wide
                                                 ${category === 'academic' ? 'border-ochre-500 dark:border-darkMode-ochre text-ochre-500 dark:text-darkMode-ochre' : ''}
                                                 ${category === 'coding' ? 'border-sage-500 dark:border-darkMode-sage text-sage-500 dark:text-darkMode-sage' : ''}
@@ -243,7 +243,7 @@ export const FeaturedProjects: React.FC = () => {
                                              text-charcoal-600 dark:text-darkMode-textMuted
                                              px-2.5 py-1
                                              bg-warmCream-100 dark:bg-darkMode-bgElevated
-                                             border border-border-light dark:border-darkMode-border
+                                             border border-fine border-border-light dark:border-darkMode-border
                                              transition-all duration-300
                                              group-hover:border-charcoal-400 dark:group-hover:border-darkMode-border">
                                   {tag}

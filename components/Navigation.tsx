@@ -147,7 +147,7 @@ export const Navigation: React.FC<NavigationProps> = ({ hideOnMobileTop = false 
                   end={link.path === '/'}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `py-4 border-b border-border-light dark:border-darkMode-border
+                    `py-4 border-b border-fine border-border-light dark:border-darkMode-border
                      font-display text-3xl transition-all duration-300
                      ${isActive
                        ? 'text-ochre-500 dark:text-darkMode-ochre border-ochre-500 dark:border-darkMode-ochre'

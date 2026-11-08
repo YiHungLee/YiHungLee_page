@@ -5,7 +5,7 @@ import { AI_EDITOR, getAiByline } from '../../utils/blogCategories';
 /** 文章列表用的小標籤：「AI 撰寫・小賽」 */
 export const AiEditorBadge: React.FC<{ className?: string }> = ({ className = '' }) => (
   <span
-    className={`inline-flex items-center gap-2 px-3 py-1 border
+    className={`inline-flex items-center gap-2 px-3 py-1 border border-fine
                 border-sage-500 dark:border-darkMode-sage
                 font-body text-xs tracking-wide
                 text-sage-600 dark:text-darkMode-sage
@@ -41,7 +41,7 @@ export const AiEditorIntro: React.FC = () => (
     className="mb-12 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10
                p-8 md:p-10
                bg-warmCream-100 dark:bg-darkMode-bgElevated
-               border border-sage-500/40 dark:border-darkMode-sage/40"
+               border border-fine border-sage-500/40 dark:border-darkMode-sage/40"
   >
     <div className="flex justify-center sm:block pt-2">
       <PsiBot size={88} />
@@ -63,7 +63,7 @@ export const AiEditorDisclaimer: React.FC = () => (
   <aside
     className="mt-16 flex gap-4 p-6
                bg-warmCream-100 dark:bg-darkMode-bgElevated
-               border border-sage-500/40 dark:border-darkMode-sage/40"
+               border border-fine border-sage-500/40 dark:border-darkMode-sage/40"
   >
     <PsiBot size={30} animated={false} decorative className="mt-1" />
     <div className="space-y-2 font-body text-sm leading-relaxed text-charcoal-600 dark:text-darkMode-textMuted">

@@ -42,6 +42,10 @@ body {
 }
 
 /* ========== FINE LINE AESTHETICS ========== */
+.border-fine {
+  border-width: 1px;
+}
+
 .divide-fine > * + * {
   border-top-width: 1px;
 }
