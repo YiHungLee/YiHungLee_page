@@ -60,6 +60,36 @@ export const AI_EDITOR = {
   helpline: '如果你正感到困擾，歡迎尋求專業協助：衛福部安心專線 1925（24 小時、免付費）。',
 } as const;
 
+/**
+ * 小賽的 12 種表情（像素圖在 components/shared/psiSprites.ts）。
+ * 心聞週報可在 frontmatter 用 aiMood 指定署名旁的表情，配合 aiNote 的心情。
+ */
+export const PSI_MOOD_LABELS = {
+  default: '預設',
+  happy: '開心',
+  wink: '眨眼',
+  surprised: '驚訝',
+  thinking: '思考',
+  sad: '難過',
+  shy: '害羞',
+  angry: '生氣',
+  sleepy: '想睡',
+  love: '心動',
+  dizzy: '暈眩',
+  sparkle: '閃亮',
+} as const;
+
+export type PsiMood = keyof typeof PSI_MOOD_LABELS;
+
+export function isPsiMood(value: unknown): value is PsiMood {
+  return typeof value === 'string' && Object.prototype.hasOwnProperty.call(PSI_MOOD_LABELS, value);
+}
+
+/** frontmatter 的 aiMood 沒填或拼錯時用預設表情 */
+export function getPsiMood(value: unknown): PsiMood {
+  return isPsiMood(value) ? value : 'default';
+}
+
 /** 文章頂部署名：「本文是我寫的！」＋每週由 AI 生成的心情（frontmatter 的 aiNote） */
 export function getAiByline(aiNote?: string): string {
   const note = aiNote?.trim();

@@ -1,13 +1,21 @@
 name: Deploy to Cloudflare Pages
 
+# main 分支 → 正式站；其他分支 → 預覽網址（https://<分支名>.<專案>.pages.dev）
+# 分支名的大寫轉小寫、英數字以外的字元換成 -，例如 claude/fix-nav → claude-fix-nav
+# 預覽網址預設公開，但 Cloudflare 會加上 X-Robots-Tag: noindex，不會被搜尋引擎收錄
 on:
   push:
     branches:
-      - main
+      - '**'
   schedule:
-    # 每天台灣時間 00:01 自動部署（UTC 16:01）
+    # 每天台灣時間 00:01 自動部署（UTC 16:01），只會跑 main
     - cron: '1 16 * * *'
   workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.ref }}
+  # 預覽：同一分支有新推送就取消舊的部署；正式站：依序部署，不中途取消
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   deploy:
@@ -32,9 +40,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Wrangler 從 git 讀出目前的分支：是正式分支（main）就更新正式站，否則建立預覽部署
+      # gitHubToken 讓部署出現在 GitHub 的 commit／PR 上（View deployment），並在執行摘要列出網址
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
