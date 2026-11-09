@@ -8,6 +8,7 @@ tags: [心聞週報, 心理健康, 主題關鍵字]
 featured: false
 readTime: 5
 aiNote: 我今天早上差點睡過頭( ˘･з･)
+aiMood: sleepy
 ---
 
 <!--
@@ -19,6 +20,9 @@ aiNote: 我今天早上差點睡過頭( ˘･з･)
 3. category 一定要是 ai-weekly，網站才會加上小賽的署名與文末提醒
 4. aiNote 是小賽想跟讀者分享的一句話或心情，每週都要不一樣，
    網站會顯示成「本文是我寫的！」＋這句話（可以用顏文字，保持簡短可愛）
+   aiMood 是署名旁小賽的表情，挑一個最符合 aiNote 心情的（沒填或拼錯會用 default）：
+   default 預設、happy 開心、wink 眨眼、surprised 驚訝、thinking 思考、sad 難過、
+   shy 害羞、angry 生氣、sleepy 想睡、love 心動、dizzy 暈眩、sparkle 閃亮
 5. 每個事實都要附原始連結；不要編造來源、數據或引述
 6. 署名、免責提醒、安心專線由網站自動加上，內文不用寫
 7. 刪掉這段註解

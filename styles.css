@@ -815,52 +815,75 @@ button:focus-visible {
 }
 
 /* ===== AI 小編「小賽」像素角色 ===== */
+/* 逐格動畫一律用 steps(1, end) 切換，保留點陣的頓挫感 */
+.psi-frame-2-2,
+.psi-frame-3-2,
+.psi-frame-3-3,
 .psi-bot-eyelid {
   opacity: 0;
 }
 
-.psi-bot-animated .psi-bot-body {
-  animation: psi-bob 3s steps(1, end) infinite;
+.psi-bot-animated .psi-frame {
+  animation-duration: var(--psi-duration, 1s);
+  animation-timing-function: steps(1, end);
+  animation-iteration-count: infinite;
 }
 
+.psi-bot-animated .psi-frame-2-1 { animation-name: psi-frame-2-1; }
+.psi-bot-animated .psi-frame-2-2 { animation-name: psi-frame-2-2; }
+.psi-bot-animated .psi-frame-3-1 { animation-name: psi-frame-3-1; }
+.psi-bot-animated .psi-frame-3-2 { animation-name: psi-frame-3-2; }
+.psi-bot-animated .psi-frame-3-3 { animation-name: psi-frame-3-3; }
+
+/* 待機：每 4 秒眨一次眼 */
 .psi-bot-animated .psi-bot-eyelid {
-  animation: psi-blink 4.2s steps(1, end) infinite;
+  animation: psi-blink 4s steps(1, end) infinite;
 }
 
-.psi-bot-animated .psi-bot-antenna {
-  animation: psi-antenna 2.4s ease-in-out infinite;
+@keyframes psi-frame-2-1 {
+  0% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
-.psi-bot-animated:hover .psi-bot-body {
-  animation: psi-hop 0.5s ease-out;
+@keyframes psi-frame-2-2 {
+  0% { opacity: 0; }
+  50%, 100% { opacity: 1; }
 }
 
-/* SVG 內的 px 等於一個像素格的倍數 */
-@keyframes psi-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-0.5px); }
+@keyframes psi-frame-3-1 {
+  0% { opacity: 1; }
+  33.333%, 100% { opacity: 0; }
+}
+
+@keyframes psi-frame-3-2 {
+  0% { opacity: 0; }
+  33.333% { opacity: 1; }
+  66.666%, 100% { opacity: 0; }
+}
+
+@keyframes psi-frame-3-3 {
+  0% { opacity: 0; }
+  66.666%, 100% { opacity: 1; }
 }
 
 @keyframes psi-blink {
-  0%, 90% { opacity: 0; }
-  92%, 95% { opacity: 1; }
-  96% { opacity: 0; }
+  0% { opacity: 0; }
+  94%, 100% { opacity: 1; }
 }
 
-@keyframes psi-antenna {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
+/* 可以戳的小賽（PsiBuddy） */
+.psi-buddy {
+  -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes psi-hop {
-  0%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-1.5px); }
+.psi-buddy:active .psi-bot {
+  transform: translateY(1px);
 }
 
+/* 減少動態：動作停在第一格、不眨眼 */
 @media (prefers-reduced-motion: reduce) {
-  .psi-bot-animated .psi-bot-body,
-  .psi-bot-animated .psi-bot-eyelid,
-  .psi-bot-animated .psi-bot-antenna {
+  .psi-bot-animated .psi-frame,
+  .psi-bot-animated .psi-bot-eyelid {
     animation: none;
   }
 }

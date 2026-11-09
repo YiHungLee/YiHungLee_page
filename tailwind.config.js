@@ -45,6 +45,15 @@ export default {
           500: '#a86d57',
           600: '#945f4b',
         },
+        // 小賽（Psi）像素角色的輔助色；主體用 sage-500、天線燈與符號用 ochre-500
+        psi: {
+          lampOff: '#cdd2c2', // 熄燈、地上的影子
+          tool: '#4a5640',    // 道具（筆電）
+          ink: '#2f3529',     // 筆電底座
+          blush: '#e3a586',   // 腮紅
+          tear: '#8fb3cf',    // 淚滴
+          paper: '#faf8f5',   // 書頁
+        },
         // Neutral borders and accents
         border: {
           light: '#e8e5e0',
@@ -68,6 +77,13 @@ export default {
           sageDim: '#869780',
           rust: '#b88a76',
           rustDim: '#a07765',
+          // 小賽輔助色（深色模式）
+          psiLampOff: '#5d6656',
+          psiTool: '#56634b',
+          psiInk: '#1f221c',
+          psiBlush: '#c99179',
+          psiTear: '#86a8c2',
+          psiPaper: '#e8e3db',
         },
       },
       fontFamily: {

@@ -257,7 +257,7 @@ const BlogListPage: React.FC = () => {
                                : 'text-charcoal-600 dark:text-darkMode-textMuted hover:text-ochre-500 dark:hover:text-darkMode-ochre'
                              }`}
                 >
-                  {isAiCategory(category) && <PsiBot size={16} animated={false} decorative />}
+                  {isAiCategory(category) && <PsiBot size={13} animated={false} decorative />}
                   {categoryLabels[category]}
                   <span className="-ml-0.5 opacity-60">({categoryCounts[category]})</span>
 
@@ -299,7 +299,9 @@ const BlogListPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
 
           {/* AI 小編自我介紹 */}
-          {isAiCategory(selectedCategory) && <AiEditorIntro />}
+          {isAiCategory(selectedCategory) && (
+            <AiEditorIntro searchQuery={searchQuery} resultCount={filteredPosts.length} />
+          )}
 
           {/* Results Count */}
           {filteredPosts.length > 0 && (

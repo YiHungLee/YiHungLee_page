@@ -160,7 +160,14 @@ Blog category ids and labels live in `utils/blogCategories.ts` (shared by compon
 
 ### AI 週報（`ai-weekly`）
 
-The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Each post may set an `aiNote` frontmatter field (小賽's weekly mood line, shown after 「本文是我寫的！」 in the byline). Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The home page's latest-posts list (React `getLatestPosts` and the prerendered home body) shows at most one AI post — the newest — via `limitAiPosts` in `utils/blogCategories.ts`; the blog list still shows them all. The mascot is `components/shared/PsiBot.tsx` (pixel SVG, animations in `styles.css`); the badge/byline/intro/disclaimer components are in `components/shared/AiEditor.tsx`. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
+The `ai-weekly` category (label 心聞週報) holds weekly psychology/counseling news written by AI. Each post may set an `aiNote` frontmatter field (小賽's weekly mood line, shown after 「本文是我寫的！」 in the byline). Posts in it automatically get the AI editor 小賽 (Psi) byline, list badge, and end-of-post disclaimer — in the React pages, prerendered HTML, RSS, meta description, JSON-LD keywords, and llms.txt. The home page's latest-posts list (React `getLatestPosts` and the prerendered home body) shows at most one AI post — the newest — via `limitAiPosts` in `utils/blogCategories.ts`; the blog list still shows them all. Template for new issues: `public/content/blog/_ai-weekly-template.md`.
+
+小賽 (Psi) pixel mascot, from the 小賽角色設計 design canvas:
+- `components/shared/psiSprites.ts` — pixel data as character grids: 12 moods (`default`, `happy`, `wink`, `surprised`, `thinking`, `sad`, `shy`, `angry`, `sleepy`, `love`, `dizzy`, `sparkle`) and 8 looping actions (`wave`, `hop`, `writing`, `loading`, `idea`, `cheer`, `reading`, `doze`, 2–3 frames each). Coordinates are relative to the 13 × 12 body; symbols sit outside it.
+- `components/shared/PsiBot.tsx` — renders one mood or action. The SVG box covers only the body and symbols overflow it, so switching poses never shifts layout. Use sizes that are multiples of 13 (13, 26, 39, 91). Frame-by-frame and blink animations are in `styles.css` (`steps(1, end)`); helper colors are the `psi` / `darkMode.psi*` Tailwind colors.
+- `components/shared/PsiBuddy.tsx` — the clickable 小賽 used in the byline and intro card: waves when it appears, does random idle fidgets, dozes after 45 s without user activity (wakes up surprised), reacts to pokes (hop, shy, happy, love, cheer; 6+ quick pokes → dizzy, 10+ → angry), and is sleepy at rest between 1–6 a.m. local time. With `prefers-reduced-motion` only poke reactions remain, shown as still frames. A `cue` prop plays a sequence when its key changes.
+- `components/shared/AiEditor.tsx` — badge, byline (rests on the post's `aiMood`), intro card (on the ai-weekly blog filter: flips through a book while searching, then happy if posts match or sad if none), disclaimer (`thinking`).
+- `aiMood` frontmatter picks the byline mood to match `aiNote`; mood ids and labels are `PSI_MOOD_LABELS` in `utils/blogCategories.ts`, and missing or misspelled values fall back to `default`.
 
 The weekly workflow (research four topics → 奕宏 picks one → load the 知識文章清楚保真編修 writing skill → write → re-check with that skill → build → push to `main` → confirm live) is the `weekly-news` skill in 奕宏's claude.ai account (not in this repo), run by a Monday-morning scheduled task. It writes posts from `_ai-weekly-template.md`.
 
@@ -232,6 +239,7 @@ Defined in `tailwind.config.js` (dark mode uses the `class` strategy).
 - **Ochre** (300-700): Accent highlights
 - **Sage** (300-600): Secondary accents
 - **Rust** (300-600): Tertiary accents
+- **Psi**: helper colors for the 小賽 pixel mascot (lamp off, laptop, blush, tear, paper), with `darkMode.psi*` counterparts
 
 **Dark Mode:**
 - Background: `#2a2826` (primary), `#35322f` (cards)

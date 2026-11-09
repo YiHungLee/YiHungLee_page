@@ -63,6 +63,7 @@ export interface BlogPost {
   featured?: boolean;        // 首頁精選標記
   readTime?: number;         // 閱讀時間（分鐘）
   aiNote?: string;           // 心聞週報：小賽在署名後跟讀者說的話（每週由 AI 生成）
+  aiMood?: string;           // 心聞週報：小賽在署名旁的表情（PSI_MOOD_LABELS 的 key，用 getPsiMood 檢查）
 }
 
 // ===== 經歷項目介面（保留原有） =====
