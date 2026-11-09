@@ -2,6 +2,7 @@
 
 import { PORTFOLIO_ITEMS, BLOG_POSTS } from '../constants';
 import { PortfolioItem, BlogPost } from '../types';
+import { compareNewestFirst, limitAiPosts } from './blogCategories';
 
 /**
  * 取得精選作品
@@ -51,14 +52,14 @@ export const getPublishedPosts = (posts: BlogPost[]): BlogPost[] => {
 };
 
 /**
- * 取得最新文章（只包含已發布的文章）
+ * 取得首頁的最新文章（只包含已發布的文章）
+ * 小賽（AI）的文章最多只出現一篇，也就是最新的那篇。
  * @param limit 數量限制（預設 2）
  * @returns 最新文章陣列
  */
 export const getLatestPosts = (limit: number = 2): BlogPost[] => {
-  return getPublishedPosts(BLOG_POSTS)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, limit);
+  const sorted = getPublishedPosts(BLOG_POSTS).sort(compareNewestFirst);
+  return limitAiPosts(sorted, 1).slice(0, limit);
 };
 
 /**

@@ -20,6 +20,32 @@ export function isAiCategory(category: string): boolean {
   return category === 'ai-weekly';
 }
 
+/**
+ * 首頁文章排序：日期新的在前；同一天時 id 大的在前
+ * （同日第二篇週報的 id 會加 -2，例如 ai-weekly-2026-11-09-2，排在 ai-weekly-2026-11-09 前面）。
+ */
+export function compareNewestFirst(
+  a: { date: string; id: string },
+  b: { date: string; id: string },
+): number {
+  const byDate = new Date(b.date).getTime() - new Date(a.date).getTime();
+  if (byDate !== 0) return byDate;
+  return a.id < b.id ? 1 : a.id > b.id ? -1 : 0;
+}
+
+/**
+ * 限制 AI 文章的篇數（首頁用）：只保留最前面的 max 篇，其他分類不受影響。
+ * 傳入的陣列需已用 compareNewestFirst 排序，才會留下最新的那幾篇。
+ */
+export function limitAiPosts<T extends { category: string }>(posts: T[], max = 1): T[] {
+  let aiCount = 0;
+  return posts.filter(post => {
+    if (!isAiCategory(post.category)) return true;
+    aiCount += 1;
+    return aiCount <= max;
+  });
+}
+
 /** AI 小編「小賽」的文字設定 */
 export const AI_EDITOR = {
   name: '小賽',

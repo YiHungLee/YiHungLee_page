@@ -8,7 +8,14 @@ import {
   getPublishedBlogPosts,
   loadPortfolioItems,
 } from './route-collector.js';
-import { AI_EDITOR, getAiByline, getBlogCategoryLabel, isAiCategory } from '../../utils/blogCategories.js';
+import {
+  AI_EDITOR,
+  compareNewestFirst,
+  getAiByline,
+  getBlogCategoryLabel,
+  isAiCategory,
+  limitAiPosts,
+} from '../../utils/blogCategories.js';
 
 const SITE_URL = 'https://yi-hung-lee.work';
 
@@ -270,9 +277,8 @@ function renderPortfolioList(category?: 'academic' | 'coding' | 'music'): string
 }
 
 function renderHome(): string {
-  const recentPosts = getPublishedBlogPosts()
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
-    .slice(0, 5);
+  // 小賽（AI）的文章在首頁最多一篇（最新的那篇），與 utils/featured.ts 的 getLatestPosts 一致
+  const recentPosts = limitAiPosts(getPublishedBlogPosts().sort(compareNewestFirst), 1).slice(0, 5);
   const featured = loadPortfolioItems().filter(i => i.featured).slice(0, 4);
 
   const recentHtml = recentPosts
