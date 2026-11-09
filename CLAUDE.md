@@ -320,9 +320,12 @@ Key types defined in `types.ts`:
 Automated deployment via GitHub Actions to Cloudflare Pages.
 
 ### Triggers
-- Push to `main` branch
+- Push to `main` branch → production
+- Push to any other branch → preview deployment at `https://<branch>.<project>.pages.dev` (branch name lowercased, non-alphanumerics replaced with `-`, e.g. `claude/fix-nav` → `claude-fix-nav`). Preview URLs are public but served with `X-Robots-Tag: noindex`. The URL shows up as a GitHub deployment ("View deployment") on the commit/PR and in the workflow run summary. A newer push to the same branch cancels an in-progress preview deploy
 - Scheduled: Daily at UTC 16:01 (Taiwan 00:01) — enables scheduled publishing of future-dated posts
-- Manual: `workflow_dispatch`
+- Manual: `workflow_dispatch` (deploys the chosen branch: `main` → production, others → preview)
+
+To preview a change before it goes live, push it to a non-`main` branch and open the preview URL; merge to `main` only after checking it. The contact form does not work on preview URLs: the Worker only accepts the production domain and localhost (`DEFAULT_ALLOWED_ORIGINS` in `worker/contact-form.js`).
 
 ### GitHub Secrets Required
 - `CLOUDFLARE_API_TOKEN` - Cloudflare API token with Pages edit permissions
@@ -332,7 +335,7 @@ Automated deployment via GitHub Actions to Cloudflare Pages.
 - `CLOUDFLARE_PROJECT_NAME` - Cloudflare Pages project name
 
 ### Workflows
-- `.github/workflows/deploy.yml` - Main Pages deployment
+- `.github/workflows/deploy.yml` - Pages deployment (production from `main`, previews from other branches)
 - `.github/workflows/deploy-worker.yml` - Worker deployment (contact form backend)
 
 ## Content Language
