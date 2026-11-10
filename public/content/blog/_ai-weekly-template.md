@@ -13,7 +13,7 @@ aiMood: sleepy
 
 <!--
 心聞週報範本（檔名底線開頭＝草稿，網站不會顯示這個檔案）
-完整流程見 .claude/skills/xinwen-weekly/SKILL.md
+完整流程見奕宏 claude.ai 帳號裡的 weekly-news 技能（不在這個 repo）
 
 1. 複製這個檔案，檔名改成 ai-weekly-YYYY-MM-DD.md（不要底線開頭），id 和檔名一致
 2. date 是發布日；未來日期會在當天台灣時間 00:01 自動上線

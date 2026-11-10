@@ -19,11 +19,12 @@ npm run dev      # Start dev server on http://localhost:3000
 npm run build    # vite build + RSS feed + SEO prerendering + sitemap + llms.txt
 npm run preview  # Preview production build
 
-# Tests
+# Checks
+npx tsc --noEmit     # Type-check (NOT part of `npm run build` — run it yourself)
 npm run test:worker  # Contact form Worker tests (node:test)
 ```
 
-Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEmit` to type-check.
+There is no linter and no frontend test suite; `npx tsc --noEmit` plus `npm run build` are the checks for site changes. CI builds with Node 20 (`deploy.yml`).
 
 ## Tech Stack
 
@@ -50,7 +51,7 @@ Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEm
 ├── App.tsx                 # Root component with React Router
 ├── index.tsx               # Entry point
 ├── types.ts                # TypeScript type definitions
-├── constants.ts            # Static data (profile, experiences, etc.)
+├── constants.ts            # Static data (profile, experiences, etc.); re-exports BLOG_POSTS / PORTFOLIO_ITEMS
 ├── styles.css              # Global styles (Tailwind directives + custom CSS)
 ├── tailwind.config.js      # Tailwind custom theme (colors, fonts, animations)
 ├── postcss.config.js       # PostCSS config (Tailwind + Autoprefixer)
@@ -89,6 +90,8 @@ Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEm
 │   │   └── MusicPlayer.tsx         # Audio player (multi-track support)
 │   └── shared/
 │       ├── MarkdownRenderer.tsx    # Custom Markdown renderer
+│       ├── AiEditor.tsx            # 小賽 badge / byline / intro card / disclaimer (see AI 週報)
+│       ├── PsiBot.tsx, PsiBuddy.tsx, psiSprites.ts  # 小賽 pixel mascot (see AI 週報)
 │       ├── StructuredData.tsx      # JSON-LD structured data for SEO
 │       ├── EmailOctopusForm.tsx    # Newsletter subscription form
 │       ├── UtterancesComments.tsx  # Utterances comment system
@@ -97,6 +100,7 @@ Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEm
 │   └── vite-plugin-markdown.ts     # Custom Vite plugin for Markdown loading
 ├── utils/
 │   ├── contentLoader.ts            # Re-exports BLOG_POSTS / PORTFOLIO_ITEMS from virtual:content
+│   ├── blogCategories.ts           # Blog category ids/labels, AI editor text, 小賽 moods (shared with build scripts)
 │   └── featured.ts                 # Featured/published filtering, date formatting
 ├── scripts/                        # Build-time scripts (run with tsx)
 │   ├── generate-rss.ts             # RSS feed generation (dist/feed.xml)
@@ -116,13 +120,15 @@ Note: `npm run build` does NOT run TypeScript type checking. Run `npx tsc --noEm
 │   ├── schema.sql                  # D1 schema for the contact-form database
 │   ├── wrangler.toml               # Worker config (D1, send_email, rate limit bindings)
 │   └── DEPLOYMENT.md               # Setup, monitoring, troubleshooting
+├── .github/workflows/              # deploy.yml (Pages), deploy-worker.yml (Worker)
 └── public/
     ├── content/
     │   ├── blog/                   # Blog post Markdown files
     │   └── portfolio/              # Portfolio item Markdown files
     ├── assets/                     # Images and media
     ├── robots.txt
-    └── _redirects                  # Cloudflare redirects
+    ├── _headers                    # Cloudflare Pages response headers
+    └── _redirects                  # Cloudflare Pages SPA fallback (`/* → /index.html`)
 ```
 
 ## Routing
@@ -143,7 +149,7 @@ Uses React Router DOM for client-side routing (defined in `App.tsx`):
 
 Navigation menu: 首頁 → 關於 → 作品 → Blog → 聯絡
 
-**Note:** The prerender scripts (`scripts/utils/route-collector.ts`) and sitemap also list a `/bio` route that has no matching React route in `App.tsx`. Keep these two route lists in sync when adding or removing pages.
+**Note:** Static routes are listed by hand in three places besides `App.tsx`: `STATIC_ROUTES` in `scripts/utils/route-collector.ts`, `scripts/generate-sitemap.ts`, and the per-route entries in `scripts/utils/meta-generator.ts` / `body-renderer.ts`. Update all of them when adding or removing a page. They currently also contain a `/bio` route (prerendered and in the sitemap) that has no React route, so in the browser it redirects to `/`.
 
 ## Content Management
 
@@ -184,8 +190,12 @@ summary: 簡短摘要
 tags: [標籤1, 標籤2]
 featured: true
 readTime: 5
+aiNote: 小賽的一句話    # ai-weekly only
+aiMood: happy           # ai-weekly only, a key of PSI_MOOD_LABELS
 ---
 ```
+
+The post URL is `/blog/<id>`. An unquoted `date` is parsed by gray-matter into a `Date`, so in the app it arrives as an ISO string (`2025-12-06T00:00:00.000Z`), not `YYYY-MM-DD`; the plugin only normalizes `id` back to a string.
 
 **Portfolio Item:**
 ```yaml
@@ -195,14 +205,29 @@ title: 作品標題
 description: 作品描述
 category: academic  # academic | coding | music
 type: research      # research | publication | tool | app | composition
-date: 2025-12-06
+year: 2025
 featured: true
-technologies: [React, TypeScript]
-links:
-  demo: https://example.com
-  github: https://github.com/...
+tags: [標籤1, 標籤2]
+imageUrl: /assets/preview.webp
+# academic
+venue: 發表場合
+award: 獎項
+# coding
+techStack: [React, TypeScript]
+githubUrl: https://github.com/...
+liveUrl: https://example.com
+# music
+albumCover: https://music.yi-hung-lee.work/...
+tracks:
+  - id: track-1
+    title: 曲名
+    audioUrl: https://music.yi-hung-lee.work/...
+    duration: "3:45"
+    trackNumber: 1
 ---
 ```
+
+Field names follow `PortfolioItem` in `types.ts` (portfolio items use `year`, not `date`). The project URL is `/projects/<category>/<id>`.
 
 ### Vite Plugin
 
@@ -295,6 +320,7 @@ Key types defined in `types.ts`:
 | `ProjectCategory` | `'academic' \| 'coding' \| 'music'` |
 | `ProjectType` | `'research' \| 'publication' \| 'tool' \| 'app' \| 'composition'` |
 | `BlogPost` | Blog post structure (id, title, date, content, tags, etc.) |
+| `BlogCategoryId`, `PsiMood` | Defined in `utils/blogCategories.ts`, not `types.ts` |
 | `PortfolioItem` | Portfolio item structure |
 | `ExperienceItem` | Work/award/education experience |
 | `TrainingItem` | Training course record |
@@ -309,7 +335,7 @@ Key types defined in `types.ts`:
 | `vite.config.ts` | Dev server (port 3000), path alias `@`, custom Markdown plugin |
 | `index.html` | SEO meta tags (with prerender markers), JSON-LD, Google Fonts, theme FOUC-prevention script |
 | `tailwind.config.js` | Custom theme: colors, fonts, animations |
-| `.env.local` | Environment variables (`VITE_WORKER_URL` for contact form) |
+| `.env.local` | Optional, git-ignored. `VITE_WORKER_URL` overrides the contact form Worker URL (`ContactForm.tsx` falls back to the production Worker) |
 | `plugins/vite-plugin-markdown.ts` | Auto-loads Markdown content |
 | `scripts/prerender.ts` | SEO prerendering during build |
 | `scripts/generate-rss.ts` | Generates RSS feed during build |
